@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0284c7" />
+  <title>WARDIPA - Penilaian LKPD IPA</title>
+
+  <!-- PWA Manifest & Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/print.css" media="print" />
+</head>
+<body>
+
+  <!-- HEADER SEDERHANA -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-area">
+        <img src="icons/icon.svg" alt="Logo WARDIPA" class="brand-logo" />
+        <div>
+          <h1 class="brand-title">WARDIPA</h1>
+          <span class="brand-subtitle">Penilaian LKPD IPA (Pengetahuan, Keterampilan, Sikap)</span>
+        </div>
+      </div>
+
+      <!-- Navigasi Tab Sederhana -->
+      <nav class="desktop-nav">
+        <button class="nav-btn active" data-tab="penilaian">
+          <span>📝</span> Form Penilaian
+        </button>
+        <button class="nav-btn" data-tab="rekap">
+          <span>📊</span> Rekap Nilai
+        </button>
+        <button class="nav-btn" data-tab="grafik">
+          <span>📈</span> Grafik Capaian Belajar
+        </button>
+      </nav>
+
+      <!-- Tombol Cepat Input Kelas, Kelompok & Siswa -->
+      <div class="header-actions">
+        <button id="btnOpenModalShare" class="btn btn-primary btn-sm" title="Bagikan Link & QR Code Pengumpulan ke Siswa">
+          <span>🔗</span> Link &amp; QR Siswa
+        </button>
+        <button id="btnOpenModalMateri" class="btn btn-secondary btn-sm" title="Tambah Bab & Pertemuan Baru">
+          <span>📚</span> + Input Bab / Materi
+        </button>
+        <button id="btnOpenModalKelas" class="btn btn-secondary btn-sm" title="Tambah Kelas Baru">
+          <span>🏫</span> + Input Kelas
+        </button>
+        <button id="btnOpenModalKelompok" class="btn btn-secondary btn-sm" title="Tambah Kelompok Baru">
+          <span>👥</span> + Input Kelompok
+        </button>
+        <button id="btnOpenModalSiswa" class="btn btn-secondary btn-sm" title="Tambah Siswa Baru">
+          <span>👤</span> + Input Siswa
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- KONTEN UTAMA -->
+  <main class="main-content">
+
+    <!-- ==================== TAB 1: FORM PENILAIAN SISWA ==================== -->
+    <section id="tab-penilaian" class="tab-pane active">
+      
+      <!-- Card Identitas Penilaian -->
+      <div class="form-card" style="margin-bottom: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h2 style="font-size: 1.15rem; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+            <span>📋</span> Identitas Siswa &amp; LKPD
+          </h2>
+          <span style="font-size: 0.8rem; color: #38bdf8;">
+            Penilaian 3 Aspek: Pengetahuan, Keterampilan &amp; Sikap
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem;">
+          <div>
+            <label class="filter-label">1. Pilih Kelas:</label>
+            <select id="penKelas" class="select-control" style="width: 100%; font-weight: bold;"></select>
+          </div>
+          <div>
+            <label class="filter-label">2. Nama Siswa:</label>
+            <select id="penSiswa" class="select-control" style="width: 100%; font-weight: bold; color: #38bdf8;"></select>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="filter-label">3. Kelompok:</label>
+              <button type="button" id="btnQuickAddKelompok" class="btn btn-outline btn-sm" style="padding: 1px 6px; font-size: 0.72rem; line-height: 1.2;" title="Tambah Kelompok Baru">+ Tambah</button>
+            </div>
+            <select id="penKelompok" class="select-control" style="width: 100%; font-weight: bold;"></select>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="filter-label">4. Materi / Topik LKPD:</label>
+              <button type="button" id="btnQuickAddMateri" class="btn btn-outline btn-sm" style="padding: 1px 6px; font-size: 0.72rem; line-height: 1.2;" title="Tambah Bab / Materi Baru">+ Tambah</button>
+            </div>
+            <select id="penTopik" class="select-control" style="width: 100%;"></select>
+          </div>
+          <div>
+            <label class="filter-label">5. Pertemuan Ke:</label>
+            <input type="number" id="penPertemuan" class="input-control" min="1" max="20" value="1" style="width: 100%;" />
+          </div>
+          <div>
+            <label class="filter-label">6. Tanggal:</label>
+            <input type="date" id="penTanggal" class="input-control" style="width: 100%;" />
+          </div>
+        </div>
+
+        <!-- BAR STATUS & AKSI FOTO LKPD SISWA -->
+        <div style="margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span id="badgeFotoSiswaStatus" class="badge badge-secondary" style="font-size: 0.82rem; padding: 4px 10px;">
+              📷 Foto LKPD: Belum Tersedia
+            </span>
+            <button type="button" id="btnToggleFotoViewer" class="btn btn-outline btn-sm" style="display: inline-flex;">
+              <span>👁️</span> Buka Lembar LKPD Siswa
+            </button>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" id="btnSyncFotoDrive" class="btn btn-secondary btn-sm" title="Tarik foto LKPD yang dikirim siswa dari Google Drive">
+              <span>📥</span> Tarik Foto dari Google Drive
+            </button>
+            <button type="button" id="btnUploadManualFoto" class="btn btn-outline btn-sm" title="Lampirkan foto lembar kerja dari laptop">
+              <span>📁</span> Upload Foto Manual
+            </button>
+            <input type="file" id="inputManualFotoFiles" accept="image/*" multiple style="display: none;" />
+            <button type="button" id="btnShareQuickPenilaian" class="btn btn-primary btn-sm" title="Buka Link & QR Code Pengumpulan">
+              <span>🔗</span> Link &amp; QR Siswa
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL PENAMPIL FOTO LEMBAR LKPD SISWA (BERDAMPINGAN / COLLAPSIBLE) -->
+      <div id="panelFotoSiswa" class="form-card" style="display: none; border-top: 4px solid var(--primary); margin-bottom: 1.25rem; padding: 1.15rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <h3 style="color: #fff; font-size: 1.05rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>📄</span> Lembaran Kerja: <span id="fotoViewerNamaSiswa" style="color: #38bdf8;">-</span>
+            </h3>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">
+              Periksa lembar kerja di bawah ini sambil menginput level rubrik di bawah.
+            </span>
+          </div>
+          <!-- Lembar Tabs & Controls -->
+          <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+            <div class="btn-group" id="fotoViewerTabs" style="display: flex; gap: 4px;">
+              <button type="button" class="btn btn-secondary btn-sm active" data-lembar="1">Lembar 1 (Memahami)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-lembar="2">Lembar 2 (Mengaplikasi)</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-lembar="3">Lembar 3 (Refleksi)</button>
+            </div>
+            <button type="button" id="btnFotoZoomOut" class="btn btn-secondary btn-sm" title="Perkecil">−</button>
+            <button type="button" id="btnFotoZoomIn" class="btn btn-secondary btn-sm" title="Perbesar">+</button>
+            <button type="button" id="btnFotoRotate" class="btn btn-secondary btn-sm" title="Putar 90 Derajat">↻</button>
+            <button type="button" id="btnFotoReset" class="btn btn-secondary btn-sm" title="Reset Tampilan">⟲</button>
+            <a id="btnFotoOpenDrive" href="#" target="_blank" class="btn btn-outline btn-sm" style="display: none; text-decoration: none;" title="Buka foto asli di Google Drive">🔗 Buka di Drive</a>
+            <button type="button" id="btnCloseFotoViewer" class="btn btn-outline btn-sm" title="Tutup Panel Foto">✕ Tutup</button>
+          </div>
+        </div>
+
+        <!-- Area Kanvas / Gambar Viewport -->
+        <div id="fotoViewerViewport" style="position: relative; width: 100%; min-height: 400px; max-height: 560px; background: #050b18; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: auto; display: flex; justify-content: center; align-items: center; user-select: none;">
+          <img id="fotoViewerImage" src="" alt="Foto LKPD Siswa" style="max-width: 100%; max-height: 540px; object-fit: contain; transition: transform 0.2s ease; transform-origin: center center;" />
+          <div id="fotoViewerLoadingState" style="display: none; text-align: center; color: #38bdf8; padding: 2rem;"></div>
+          <div id="fotoViewerEmptyState" style="display: none; text-align: center; color: var(--text-muted); padding: 2rem;">
+            <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">📷</span>
+            <p style="font-size: 0.9rem;">Belum ada foto yang diunggah untuk lembar ini.</p>
+          </div>
+        </div>
+
+        <!-- Catatan Siswa jika ada -->
+        <div id="fotoViewerCatatanBox" style="display: none; margin-top: 0.65rem; padding: 0.6rem 0.85rem; background: rgba(255,255,255,0.03); border-left: 3px solid #38bdf8; font-size: 0.82rem; color: #cbd5e1;">
+          <strong>Catatan Siswa:</strong> <span id="fotoViewerCatatanText">-</span>
+        </div>
+      </div>
+
+      <!-- CARD 3 ASPEK PENILAIAN LKPD -->
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+        <!-- 1. ASPEK PENGETAHUAN (KOGNITIF) -->
+        <div class="form-card" style="border-top: 4px solid var(--color-memahami);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h3 style="color: #38bdf8; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+                <span>🧠</span> 1. Aspek Pengetahuan (Kognitif)
+              </h3>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.15rem;">
+                Menilai ketepatan jawaban, pemahaman konsep, dan analisis latihan di dalam LKPD (Memahami, Mengaplikasi, Merefleksi).
+              </p>
+            </div>
+            <span class="badge badge-blue">Aktivitas LKPD</span>
+          </div>
+
+          <div class="form-grid-3" style="margin-top: 0.75rem;">
+            
+            <!-- A. Memahami (Halaman 1) -->
+            <div class="dimension-card-box">
+              <div class="dimension-box-header">
+                <span class="dimension-tag" style="background: rgba(14, 165, 233, 0.2); color: var(--color-memahami);">
+                  A. Memahami (15 Soal)
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Objektif</span>
+              </div>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                5 Isian + 5 Benar/Salah + 5 Menjodohkan
+              </p>
+
+              <label class="filter-label">Jumlah Benar (0–15):</label>
+              <div class="stepper-container">
+                <button type="button" class="stepper-btn" id="btnDecBenar">−</button>
+                <input type="number" id="inputJumlahBenar" value="13" min="0" max="50" class="stepper-val" style="background: transparent; border: none;" />
+                <button type="button" class="stepper-btn" id="btnIncBenar">+</button>
+              </div>
+
+              <div style="margin-top: auto; background: var(--bg-card); padding: 0.5rem; border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--border-color);">
+                <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">Skor Memahami:</span>
+                <strong id="displaySkorMemahami" style="font-size: 1.5rem; color: var(--color-memahami);">86,7%</strong>
+              </div>
+            </div>
+
+            <!-- B. Mengaplikasi -->
+            <div class="dimension-card-box">
+              <div class="dimension-box-header">
+                <span class="dimension-tag" style="background: rgba(16, 185, 129, 0.2); color: var(--color-mengaplikasi);">
+                  B. Mengaplikasi
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Skala 1–4</span>
+              </div>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                Penerapan Konsep &amp; Pertanyaan Analisis
+              </p>
+
+              <div class="rubric-selector" id="mengaplikasiRubricSelector">
+                <div class="rubric-opt-btn" data-level="4">
+                  <div class="rubric-opt-level" style="color: #34d399;">Level 4: Sangat Baik</div>
+                  <span class="rubric-opt-desc">Penerapan konsep materi tepat pada semua kegiatan, analisis mendalam, dan alasan logis.</span>
+                </div>
+                <div class="rubric-opt-btn selected" data-level="3">
+                  <div class="rubric-opt-level" style="color: #60a5fa;">Level 3: Baik</div>
+                  <span class="rubric-opt-desc">Penerapan konsep materi tepat pada sebagian besar kegiatan, penjelasan cukup jelas.</span>
+                </div>
+                <div class="rubric-opt-btn" data-level="2">
+                  <div class="rubric-opt-level" style="color: #fbbf24;">Level 2: Cukup</div>
+                  <span class="rubric-opt-desc">Penerapan konsep materi masih sebagian tepat, terdapat beberapa kekeliruan analisis.</span>
+                </div>
+                <div class="rubric-opt-btn" data-level="1">
+                  <div class="rubric-opt-level" style="color: #fb7185;">Level 1: Perlu Bimbingan</div>
+                  <span class="rubric-opt-desc">Belum mampu menerapkan konsep materi, jawaban keliru atau banyak yang kosong.</span>
+                </div>
+              </div>
+
+              <div style="margin-top: auto; background: var(--bg-card); padding: 0.5rem; border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--border-color);">
+                <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">Konversi Skala 0–100:</span>
+                <strong id="displaySkorMengaplikasi" style="font-size: 1.5rem; color: var(--color-mengaplikasi);">75</strong>
+                <span style="font-size: 0.7rem; color: var(--text-dim); display: block;">(Level 3 ÷ 4 × 100)</span>
+              </div>
+            </div>
+
+            <!-- C. Merefleksi -->
+            <div class="dimension-card-box">
+              <div class="dimension-box-header">
+                <span class="dimension-tag" style="background: rgba(139, 92, 246, 0.2); color: var(--color-merefleksi);">
+                  C. Merefleksi
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Kualitatif + Bintang</span>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span style="font-size: 0.75rem; color: var(--text-muted);">
+                  Rating Pemahaman Diri Siswa:
+                </span>
+                <span id="starRatingTextLabel" style="font-size: 0.75rem; font-weight: 600; color: #fbbf24;">
+                  4★ - Paham dengan Baik
+                </span>
+              </div>
+              <div class="star-rating-selector" id="starRatingSelector" style="margin: 0.2rem 0;">
+                <button type="button" class="star-btn active" data-rating="1" title="1★ - Belum Paham">★</button>
+                <button type="button" class="star-btn active" data-rating="2" title="2★ - Kurang Paham">★</button>
+                <button type="button" class="star-btn active" data-rating="3" title="3★ - Cukup Paham">★</button>
+                <button type="button" class="star-btn active" data-rating="4" title="4★ - Paham dengan Baik">★</button>
+                <button type="button" class="star-btn" data-rating="5" title="5★ - Sangat Paham & Menguasai">★</button>
+              </div>
+
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+                Kedalaman Refleksi Guru:
+              </p>
+              <div class="rubric-selector" id="merefleksiRubricSelector">
+                <div class="rubric-opt-btn" data-level="4">
+                  <div class="rubric-opt-level" style="color: #a78bfa;">L4: Sangat Reflektif</div>
+                  <span class="rubric-opt-desc">Mengidentifikasi pemahaman baru, kendala, dan contoh penerapan dengan spesifik.</span>
+                </div>
+                <div class="rubric-opt-btn selected" data-level="3">
+                  <div class="rubric-opt-level" style="color: #818cf8;">L3: Reflektif</div>
+                  <span class="rubric-opt-desc">Menyampaikan pemahaman baru dan proses belajar secara relevan dan cukup jelas.</span>
+                </div>
+                <div class="rubric-opt-btn" data-level="2">
+                  <div class="rubric-opt-level" style="color: #fbbf24;">L2: Kurang Reflektif</div>
+                  <span class="rubric-opt-desc">Refleksi masih sangat singkat atau umum (hanya menulis seru/senang/paham tanpa rincian).</span>
+                </div>
+                <div class="rubric-opt-btn" data-level="1">
+                  <div class="rubric-opt-level" style="color: #fb7185;">L1: Belum Reflektif</div>
+                  <span class="rubric-opt-desc">Belum mampu merefleksikan proses belajar (kolom kosong atau tidak relevan).</span>
+                </div>
+              </div>
+
+              <label class="filter-label" style="margin-top: 0.4rem;">Teks Refleksi Siswa:</label>
+              <textarea id="inputTeksRefleksi" class="input-control" rows="2" placeholder="Tuliskan intisari jawaban refleksi siswa (pemahaman baru, kesulitan yang dialami, dsb)..." style="width: 100%; resize: vertical;"></textarea>
+
+              <div style="margin-top: 0.5rem; background: var(--bg-card); padding: 0.5rem; border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--border-color);">
+                <span style="font-size: 0.7rem; color: var(--text-muted); display: block;">Konversi Skala 0–100:</span>
+                <strong id="displaySkorMerefleksi" style="font-size: 1.5rem; color: var(--color-merefleksi);">75</strong>
+                <span style="font-size: 0.7rem; color: var(--text-dim); display: block;">(Level 3 ÷ 4 × 100)</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BANNER HASIL KONVERSI NILAI TUGAS PERTEMUAN (0-100) -->
+          <div style="margin-top: 1rem; background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(251, 191, 36, 0.45); border-radius: var(--radius-md); padding: 0.9rem 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.25rem;">🎯</span>
+                <strong style="color: #fbbf24; font-size: 1.05rem;">Nilai Tugas Pertemuan Siswa (Skala 0–100)</strong>
+                <span id="badgePredikatTugas" class="badge badge-emerald">Baik (B)</span>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                Rata-rata 3 Dimensi: <span id="textRumusTugas" style="color: #cbd5e1;">(Memahami: 86,7 + Mengaplikasi: 75 + Merefleksi: 75) ÷ 3</span>
+              </p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.85rem;">
+              <div style="text-align: right;">
+                <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Nilai Siap Input:</span>
+                <strong id="displayNilaiTugasAkhir" style="font-size: 2.25rem; color: #fbbf24; line-height: 1; font-weight: 800;">78,9</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">/ 100</span>
+              </div>
+              <button type="button" id="btnCopyNilaiTugas" class="btn btn-secondary btn-sm" title="Salin angka nilai tugas ini ke clipboard">
+                <span>📋</span> Salin Nilai
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. ASPEK KETERAMPILAN (PSIKOMOTORIK) -->
+        <div class="form-card" style="border-top: 4px solid var(--color-mengaplikasi);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h3 style="color: #34d399; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+                <span>🔬</span> 2. Aspek Keterampilan (Psikomotorik)
+              </h3>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.15rem;">
+                Menilai keaktifan, kerapian, ketepatan langkah kerja, serta hasil unjuk kerja atau praktikum IPA.
+              </p>
+            </div>
+            <span class="badge badge-emerald">Praktikum / Unjuk Kerja</span>
+          </div>
+
+          <div class="rubric-selector" id="keterampilanSelector" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;">
+            <div class="rubric-opt-btn" data-level="4">
+              <div class="rubric-opt-level" style="color: #34d399;">Level 4: Sangat Terampil</div>
+              <span class="rubric-opt-desc">Langkah kerja sangat tepat dan runtut, peralatan/bahan digunakan rapi &amp; aman, aktif, hasil akurat.</span>
+            </div>
+            <div class="rubric-opt-btn selected" data-level="3">
+              <div class="rubric-opt-level" style="color: #60a5fa;">Level 3: Terampil</div>
+              <span class="rubric-opt-desc">Langkah kerja tepat, penggunaan peralatan/bahan cukup rapi, aktif selama kegiatan praktikum.</span>
+            </div>
+            <div class="rubric-opt-btn" data-level="2">
+              <div class="rubric-opt-level" style="color: #fbbf24;">Level 2: Cukup Terampil</div>
+              <span class="rubric-opt-desc">Langkah kerja cukup, membutuhkan sesekali arahan guru dalam prosedur atau pengamatan.</span>
+            </div>
+            <div class="rubric-opt-btn" data-level="1">
+              <div class="rubric-opt-level" style="color: #fb7185;">Level 1: Perlu Bimbingan</div>
+              <span class="rubric-opt-desc">Pasif selama kegiatan atau banyak melakukan kesalahan prosedur yang membutuhkan bimbingan intensif.</span>
+            </div>
+          </div>
+
+          <label class="filter-label" style="margin-top: 0.75rem;">Catatan Keterampilan (Opsional):</label>
+          <input type="text" id="inputCatatanKeterampilan" class="input-control" placeholder="Cth: Langkah kerja runtut, teliti dalam mengamati dan mencatat data..." style="width: 100%;" />
+        </div>
+
+        <!-- 3. ASPEK SIKAP (AFEKTIF) -->
+        <div class="form-card" style="border-top: 4px solid var(--color-merefleksi);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h3 style="color: #a78bfa; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+                <span>🤝</span> 3. Aspek Sikap (Afektif)
+              </h3>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.15rem;">
+                Menilai kerjasama kelompok, kedisiplinan, tanggung jawab, dan keaktifan saat diskusi.
+              </p>
+            </div>
+            <span class="badge badge-purple">Profil Pelajar / Afektif</span>
+          </div>
+
+          <div class="rubric-selector" id="sikapSelector" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;">
+            <div class="rubric-opt-btn" data-level="4">
+              <div class="rubric-opt-level" style="color: #a78bfa;">Level 4: Sangat Baik (SB)</div>
+              <span class="rubric-opt-desc">Sangat kooperatif, disiplin waktu, bertanggung jawab penuh terhadap tugas kelompok, santun.</span>
+            </div>
+            <div class="rubric-opt-btn selected" data-level="3">
+              <div class="rubric-opt-level" style="color: #818cf8;">Level 3: Baik (B)</div>
+              <span class="rubric-opt-desc">Bekerja sama dengan baik dalam kelompok, disiplin, menjalankan peran dan tugasnya.</span>
+            </div>
+            <div class="rubric-opt-btn" data-level="2">
+              <div class="rubric-opt-level" style="color: #fbbf24;">Level 2: Cukup (C)</div>
+              <span class="rubric-opt-desc">Kurang fokus pada diskusi, sesekali perlu diingatkan guru untuk bekerjasama.</span>
+            </div>
+            <div class="rubric-opt-btn" data-level="1">
+              <div class="rubric-opt-level" style="color: #fb7185;">Level 1: Perlu Pembinaan (PB)</div>
+              <span class="rubric-opt-desc">Pasif, tidak menjalankan tugas kelompok, atau mengganggu jalannya kegiatan/diskusi.</span>
+            </div>
+          </div>
+
+          <label class="filter-label" style="margin-top: 0.75rem;">Catatan Sikap (Opsional):</label>
+          <input type="text" id="inputCatatanSikap" class="input-control" placeholder="Cth: Sangat aktif dalam diskusi kelompok, disiplin dan menghargai pendapat teman..." style="width: 100%;" />
+        </div>
+
+      </div>
+
+      <!-- Tombol Aksi Simpan di Bawah -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+        <button type="button" id="btnResetPenilaian" class="btn btn-secondary">🔄 Reset Form</button>
+        <button type="button" id="btnSavePenilaianOnly" class="btn btn-outline">💾 Simpan Nilai</button>
+        <button type="button" id="btnSaveAndNextStudent" class="btn btn-primary btn-lg">
+          <span>⏩</span> Simpan &amp; Lanjut Siswa Berikutnya
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ==================== TAB 2: REKAP NILAI ==================== -->
+    <section id="tab-rekap" class="tab-pane">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title"><span>📊</span> Rekapitulasi Nilai LKPD IPA</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.2rem;">
+            Daftar rekap nilai lengkap siswa meliputi Pengetahuan (Memahami, Mengaplikasi, Merefleksi), Keterampilan, dan Sikap.
+          </p>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-group">
+            <span class="filter-label">Kelas:</span>
+            <select id="rekapFilterKelas" class="select-control">
+              <option value="all">Semua Kelas</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Pertemuan:</span>
+            <select id="rekapFilterPertemuan" class="select-control">
+              <option value="all">Semua Pertemuan</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Urutan:</span>
+            <select id="rekapFilterUrutan" class="select-control">
+              <option value="nilai_desc">🏆 Nilai Tertinggi ➔ Terendah (Peringkat)</option>
+              <option value="nilai_asc">📉 Nilai Terendah ➔ Tertinggi</option>
+              <option value="nama_asc">🔤 Nama Siswa (A – Z)</option>
+              <option value="default">📋 Default (Waktu Input)</option>
+            </select>
+          </div>
+          <button id="btnExportCsv" class="btn btn-success btn-sm" onclick="exportRekapToCSV()">
+            <span>📗</span> Ekspor Excel (CSV)
+          </button>
+          <button id="btnPrintRekap" class="btn btn-primary btn-sm" onclick="openModalPrintConfig()">
+            <span>🖨️</span> Cetak / PDF
+          </button>
+          <button id="btnLihatGrafikFromRekap" class="btn btn-secondary btn-sm" title="Lihat Grafik Capaian Belajar">
+            <span>📈</span> Lihat Grafik Capaian Belajar
+          </button>
+        </div>
+      </div>
+
+      <!-- Sub-Navigasi Mode Tampilan Tab Rekap -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.75rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+        <div style="display: flex; gap: 0.4rem; background: rgba(15, 23, 42, 0.5); padding: 4px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <button type="button" id="btnViewModeTable" class="btn btn-primary btn-sm" style="font-weight: 600;">
+            <span>📋</span> Tabel Rekapitulasi Lengkap
+          </button>
+          <button type="button" id="btnViewModeLeaderboard" class="btn btn-secondary btn-sm" style="font-weight: 600;">
+            <span>🏆</span> Papan Peringkat Nilai (Tertinggi ke Terendah)
+          </button>
+        </div>
+        <span id="labelTotalSiswaRekap" style="font-size: 0.8rem; color: var(--text-muted);">
+          Memuat data siswa...
+        </span>
+      </div>
+
+      <!-- TAMPILAN 1: TABEL REKAPITULASI LENGKAP -->
+      <div id="viewRekapTable">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow-x: auto; box-shadow: var(--shadow-md);">
+          <table id="tableRekap" style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+              <tr style="background: var(--bg-surface); border-bottom: 2px solid var(--border-color); color: var(--text-muted);">
+                <th style="padding: 0.75rem 1rem;">No</th>
+                <th style="padding: 0.75rem 1rem;">Nama Siswa</th>
+                <th style="padding: 0.75rem 1rem;">Kelas</th>
+                <th style="padding: 0.75rem 1rem;">Kelompok</th>
+                <th style="padding: 0.75rem 1rem; color: #fbbf24; font-weight: 700; background: rgba(251, 191, 36, 0.08); border-left: 2px solid #fbbf24; border-right: 2px solid #fbbf24;">🎯 Nilai Tugas (0–100)</th>
+                <th style="padding: 0.75rem 1rem; color: #38bdf8;">1. Rincian 3 Dimensi (0–100)</th>
+                <th style="padding: 0.75rem 1rem; color: #34d399;">2. Keterampilan</th>
+                <th style="padding: 0.75rem 1rem; color: #a78bfa;">3. Sikap</th>
+                <th style="padding: 0.75rem 1rem;">Refleksi Siswa</th>
+                <th style="padding: 0.75rem 1rem; text-align: center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableRekapBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAMPILAN 2: PAPAN PERINGKAT NILAI PER PERTEMUAN (LEADERBOARD) -->
+      <div id="viewRekapLeaderboard" style="display: none; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- 4 KARTU STATISTIK CEPAT PERTEMUAN -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.85rem;">
+          
+          <!-- Kartu 1: Nilai Tertinggi -->
+          <div class="form-card" style="border-top: 4px solid #fbbf24; padding: 0.9rem 1.1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">🥇 Nilai Tertinggi (Max)</span>
+              <span class="badge badge-amber">Peringkat 1</span>
+            </div>
+            <div style="margin-top: 0.4rem; display: flex; align-items: baseline; gap: 0.5rem;">
+              <strong id="lbMaxScore" style="font-size: 1.85rem; color: #fbbf24; font-weight: 800;">0</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">/ 100</span>
+            </div>
+            <p id="lbMaxStudent" style="font-size: 0.8rem; color: #38bdf8; margin-top: 0.25rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              -
+            </p>
+          </div>
+
+          <!-- Kartu 2: Nilai Terendah -->
+          <div class="form-card" style="border-top: 4px solid #f87171; padding: 0.9rem 1.1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">📉 Nilai Terendah (Min)</span>
+              <span class="badge badge-rose">Perlu Bimbingan</span>
+            </div>
+            <div style="margin-top: 0.4rem; display: flex; align-items: baseline; gap: 0.5rem;">
+              <strong id="lbMinScore" style="font-size: 1.85rem; color: #f87171; font-weight: 800;">0</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">/ 100</span>
+            </div>
+            <p id="lbMinStudent" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              -
+            </p>
+          </div>
+
+          <!-- Kartu 3: Rata-rata Pertemuan -->
+          <div class="form-card" style="border-top: 4px solid #38bdf8; padding: 0.9rem 1.1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">🎯 Rata-Rata Kelas</span>
+              <span class="badge badge-blue">Rerata Nilai</span>
+            </div>
+            <div style="margin-top: 0.4rem; display: flex; align-items: baseline; gap: 0.5rem;">
+              <strong id="lbAvgScore" style="font-size: 1.85rem; color: #38bdf8; font-weight: 800;">0</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">/ 100</span>
+            </div>
+            <p id="lbAvgPredikat" style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem;">
+              Predikat Kelas: -
+            </p>
+          </div>
+
+          <!-- Kartu 4: Ketuntasan Belajar -->
+          <div class="form-card" style="border-top: 4px solid #34d399; padding: 0.9rem 1.1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">🟢 Ketuntasan Belajar</span>
+              <span class="badge badge-emerald">KKM / Kriteria ≥ 70</span>
+            </div>
+            <div style="margin-top: 0.4rem; display: flex; align-items: baseline; gap: 0.5rem;">
+              <strong id="lbPassPercent" style="font-size: 1.85rem; color: #34d399; font-weight: 800;">0%</strong>
+            </div>
+            <p id="lbPassCount" style="font-size: 0.8rem; color: #cbd5e1; margin-top: 0.25rem;">
+              0 dari 0 siswa tuntas
+            </p>
+          </div>
+
+        </div>
+
+        <!-- PODIUM TOP 3 SISWA -->
+        <div id="leaderboardPodiumContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+          <!-- Diisi dinamis via JS -->
+        </div>
+
+        <!-- TABEL LENGKAP PERINGKAT DARI TERTINGGI KE TERENDAH -->
+        <div class="form-card" style="padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <h3 style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>🏆</span> Daftar Nilai Siswa (Tertinggi ke Terendah)
+              </h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+                Daftar terurut lengkap seluruh siswa dari peringkat 1 hingga peringkat terakhir untuk pertemuan yang dipilih.
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" id="btnCopyAllLeaderboard" class="btn btn-secondary btn-sm" title="Salin daftar peringkat ke clipboard">
+                <span>📋</span> Salin Daftar Peringkat
+              </button>
+            </div>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow-x: auto;">
+            <table id="tableLeaderboard" style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+              <thead>
+                <tr style="background: rgba(255, 255, 255, 0.05); border-bottom: 2px solid var(--border-color); color: #f8fafc;">
+                  <th style="padding: 0.85rem 1rem; width: 90px; text-align: center;">Peringkat</th>
+                  <th style="padding: 0.85rem 1rem;">Nama Siswa</th>
+                  <th style="padding: 0.85rem 1rem; width: 110px;">Kelas</th>
+                  <th style="padding: 0.85rem 1rem; width: 120px;">Kelompok</th>
+                  <th style="padding: 0.85rem 1rem; color: #fbbf24; font-weight: 700; width: 190px; text-align: center; background: rgba(251, 191, 36, 0.08);">🎯 Nilai Tugas (0–100)</th>
+                  <th style="padding: 0.85rem 1rem; width: 130px; text-align: center;">Predikat</th>
+                  <th style="padding: 0.85rem 1rem; color: #38bdf8;">Rincian 3 Dimensi</th>
+                  <th style="padding: 0.85rem 1rem; width: 140px; text-align: center;">Status Ketercapaian</th>
+                </tr>
+              </thead>
+              <tbody id="tableLeaderboardBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: GRAFIK CAPAIAN BELAJAR IPA ==================== -->
+    <section id="tab-grafik" class="tab-pane">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title"><span>📈</span> Grafik Capaian Belajar IPA</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.2rem;">
+            Pantau tren capaian belajar IPA antar pertemuan (P1, P2, P3, dst.) untuk aspek Memahami, Mengaplikasi, dan Merefleksi.
+          </p>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-group">
+            <span class="filter-label">Filter Kelas:</span>
+            <select id="grafikFilterKelas" class="select-control">
+              <option value="all">Semua Kelas</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Fokus Aspek:</span>
+            <select id="grafikFilterDimensi" class="select-control">
+              <option value="all">Semua 3 Dimensi</option>
+              <option value="memahami">1. Memahami (0–100%)</option>
+              <option value="mengaplikasi">2. Mengaplikasi (Level 1–4)</option>
+              <option value="merefleksi">3. Merefleksi (Level L1–L4)</option>
+            </select>
+          </div>
+          <button id="btnExportGrafikPng" class="btn btn-secondary btn-sm" title="Simpan Grafik sebagai Gambar PNG">
+            <span>📷</span> Unduh Grafik (PNG)
+          </button>
+        </div>
+      </div>
+
+      <!-- 3 KARTU STATISTIK CAPAIAN BELAJAR -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+        
+        <!-- Kartu 1: Rata-Rata Memahami -->
+        <div class="form-card" style="border-top: 4px solid #38bdf8; padding: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">1. Rata-rata Memahami</span>
+            <span class="badge badge-blue">Skor 0–100%</span>
+          </div>
+          <div style="margin-top: 0.6rem; display: flex; align-items: baseline; gap: 0.6rem;">
+            <strong id="statRataMemahami" style="font-size: 2rem; color: #38bdf8; font-weight: 800;">0%</strong>
+            <span id="statTrenMemahami" style="font-size: 0.85rem; font-weight: 600; color: #34d399;">+0% vs P1</span>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.35rem;">
+            Penguasaan konsep materi sains (15 butir tes objektif LKPD)
+          </p>
+        </div>
+
+        <!-- Kartu 2: Rata-Rata Mengaplikasi -->
+        <div class="form-card" style="border-top: 4px solid #34d399; padding: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">2. Rata-rata Mengaplikasi</span>
+            <span class="badge badge-emerald">Skala 1,0–4,0</span>
+          </div>
+          <div style="margin-top: 0.6rem; display: flex; align-items: baseline; gap: 0.6rem;">
+            <strong id="statRataMengaplikasi" style="font-size: 2rem; color: #34d399; font-weight: 800;">0,0</strong>
+            <span id="statTrenMengaplikasi" style="font-size: 0.85rem; font-weight: 600; color: #34d399;">+0,0 vs P1</span>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.35rem;">
+            Penerapan konsep &amp; kemampuan bernalar praktikum LKPD
+          </p>
+        </div>
+
+        <!-- Kartu 3: Rata-Rata Merefleksi -->
+        <div class="form-card" style="border-top: 4px solid #a78bfa; padding: 1.1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">3. Rata-rata Merefleksi</span>
+            <span class="badge badge-purple">Rubrik Level L1–L4</span>
+          </div>
+          <div style="margin-top: 0.6rem; display: flex; align-items: baseline; gap: 0.6rem;">
+            <strong id="statRataMerefleksi" style="font-size: 2rem; color: #a78bfa; font-weight: 800;">0,0</strong>
+            <span id="statTrenMerefleksi" style="font-size: 0.85rem; font-weight: 600; color: #34d399;">+0,0 vs P1</span>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.35rem;">
+            Kedalaman refleksi proses belajar, kendala &amp; pemahaman baru
+          </p>
+        </div>
+
+      </div>
+
+      <!-- CARD GRAFIK UTAMA -->
+      <div class="form-card" style="margin-bottom: 1.25rem; padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h3 id="grafikTitle" style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span>📈</span> Kurva Capaian Belajar IPA per Pertemuan
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">
+              Sumbu mendatar menunjukkan urutan pertemuan; garis kurva memperlihatkan tren capaian Memahami, Mengaplikasi, dan Merefleksi.
+            </p>
+          </div>
+
+          <!-- Legend / Keterangan Garis -->
+          <div id="grafikLegend" style="display: flex; flex-wrap: wrap; gap: 0.85rem; font-size: 0.85rem; align-items: center;">
+            <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #38bdf8;">
+              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #38bdf8;"></span> 1. Memahami (%)
+            </span>
+            <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #34d399;">
+              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #34d399;"></span> 2. Mengaplikasi (Level 1–4)
+            </span>
+            <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #a78bfa;">
+              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #a78bfa;"></span> 3. Merefleksi (Level L1–L4)
+            </span>
+          </div>
+        </div>
+
+        <!-- Wadah Canvas Responsif -->
+        <div style="position: relative; width: 100%; height: 360px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+          <canvas id="canvasGrafikTren" style="width: 100%; height: 100%; display: block;"></canvas>
+        </div>
+      </div>
+
+      <!-- ==================== TABEL REKAPITULASI & PENJELASAN ANGKA ==================== -->
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- CARD TABEL REKAPAN -->
+        <div class="form-card" style="padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <h3 style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>📊</span> Tabel Capaian Belajar per Pertemuan
+              </h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">
+                Rekapitulasi rata-rata Skor Memahami (0–100%), Mengaplikasi (Skala 1,0–4,0), dan Merefleksi (Rubrik L1–L4) per pertemuan.
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" id="btnCopyPenjelasan" class="btn btn-secondary btn-sm" title="Salin teks analisis naratif ke clipboard">
+                <span>📋</span> Salin Narasi Penjelasan
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabel Capaian 3 Dimensi -->
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow-x: auto;">
+            <table id="tableRekapSederhana" style="width: 100%; border-collapse: collapse; font-size: 0.95rem; text-align: left;">
+              <thead>
+                <tr style="background: rgba(255, 255, 255, 0.05); border-bottom: 2px solid var(--border-color); color: #f8fafc;">
+                  <th style="padding: 0.9rem 1.25rem; font-weight: 600; width: 14%;">Pertemuan</th>
+                  <th style="padding: 0.9rem 1.25rem; font-weight: 600; width: 22%;">Topik Materi IPA</th>
+                  <th style="padding: 0.9rem 1.25rem; font-weight: 600; width: 16%; color: #38bdf8;">1. Memahami (%)</th>
+                  <th style="padding: 0.9rem 1.25rem; font-weight: 600; width: 16%; color: #34d399;">2. Mengaplikasi (1–4)</th>
+                  <th style="padding: 0.9rem 1.25rem; font-weight: 600; width: 16%; color: #a78bfa;">3. Merefleksi (L1–L4)</th>
+                  <th style="padding: 0.9rem 1.25rem; font-weight: 700; width: 16%; color: #fbbf24; background: rgba(251, 191, 36, 0.08);">🎯 Rata-rata Nilai Tugas (0–100)</th>
+                </tr>
+              </thead>
+              <tbody id="tableRekapSederhanaBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- CARD PENJELASAN SETIAP ASPEK NILAI -->
+        <div class="form-card" style="border-top: 4px solid #38bdf8; padding: 1.25rem;">
+          <div style="margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">
+            <h3 style="color: #38bdf8; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span>💡</span> Penjelasan &amp; Kriteria Capaian 3 Dimensi
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+              Panduan arti capaian, cara perolehan nilai, dan kriteria penilaian untuk setiap aspek capaian belajar siswa.
+            </p>
+          </div>
+
+          <!-- Grid 3 Kolom Penjelasan Parameter Nilai -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            
+            <!-- Parameter 1: Memahami -->
+            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.25); border-radius: var(--radius-md); padding: 1rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                <strong style="color: #38bdf8; font-size: 0.95rem;">1. Skor Memahami (0–100%)</strong>
+                <span class="badge badge-blue">Kognitif</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.45;">
+                <strong>Cara Perolehan:</strong> Dihitung otomatis dari <code>(Jumlah Benar ÷ 15 Soal) × 100%</code>. Mengukur persentase ketepatan siswa dalam menjawab 15 butir soal objektif LKPD (isian, B/S, menjodohkan).
+              </p>
+              <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.45rem;">
+                <strong>Kategori Capaian:</strong>
+                <ul style="padding-left: 1.2rem; margin-top: 0.25rem;">
+                  <li><code>≥ 85%</code>: <strong>Sangat Baik</strong> (Konsep dasar sangat dikuasai)</li>
+                  <li><code>70% – 84%</code>: <strong>Baik</strong> (Konsep dikuasai secara tepat)</li>
+                  <li><code>55% – 69%</code>: <strong>Cukup</strong> (Perlu sedikit penguatan)</li>
+                  <li><code>&lt; 55%</code>: <strong>Perlu Bimbingan</strong> (Belum tuntas)</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Parameter 2: Mengaplikasi -->
+            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 1rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                <strong style="color: #34d399; font-size: 0.95rem;">2. Skor Mengaplikasi (Skala 1,0–4,0)</strong>
+                <span class="badge badge-emerald">Aplikasi Sains</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.45;">
+                <strong>Cara Perolehan:</strong> Rata-rata dari skor rubrik penilaian guru skala 1,0–4,0. Mengukur kemampuan bernalar dalam menerapkan konsep materi ke dalam kegiatan eksperimen atau fenomena nyata.
+              </p>
+              <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.45rem;">
+                <strong>Kategori Capaian Rubrik:</strong>
+                <ul style="padding-left: 1.2rem; margin-top: 0.25rem;">
+                  <li><strong>Level 4 (Sangat Baik)</strong>: Penerapan konsep tepat pada semua kegiatan, analisis mendalam, alasan logis.</li>
+                  <li><strong>Level 3 (Baik)</strong>: Penerapan konsep tepat pada sebagian besar kegiatan, penjelasan cukup jelas.</li>
+                  <li><strong>Level 2 (Cukup)</strong>: Penerapan konsep masih sebagian tepat, terdapat beberapa kekeliruan analisis.</li>
+                  <li><strong>Level 1 (Perlu Bimbingan)</strong>: Belum mampu menerapkan konsep materi, jawaban keliru atau banyak kosong.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Parameter 3: Merefleksi -->
+            <div style="background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.25); border-radius: var(--radius-md); padding: 1rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                <strong style="color: #a78bfa; font-size: 0.95rem;">3. Skor Merefleksi (Rubrik L1–L4)</strong>
+                <span class="badge badge-purple">Metakognisi</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-main); margin-bottom: 0.5rem; line-height: 1.45;">
+                <strong>Cara Perolehan:</strong> Rata-rata penilaian guru skala 1,0–4,0 berdasarkan kedalaman refleksi belajar siswa (bukan dinilai dari pemberian bintang).
+              </p>
+              <div style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.45; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 0.45rem;">
+                <strong>Rubrik Kedalaman Refleksi:</strong>
+                <ul style="padding-left: 1.2rem; margin-top: 0.25rem;">
+                  <li><strong>L4: Sangat Reflektif</strong>: Mengidentifikasi pemahaman baru, kendala, dan contoh penerapan dengan spesifik.</li>
+                  <li><strong>L3: Reflektif</strong>: Menyampaikan pemahaman baru dan proses belajar secara relevan dan cukup jelas.</li>
+                  <li><strong>L2: Kurang Reflektif</strong>: Refleksi masih sangat singkat atau umum (hanya menulis seru/senang/paham tanpa rincian).</li>
+                  <li><strong>L1: Belum Reflektif</strong>: Belum mampu merefleksikan proses belajar (kolom kosong atau tidak relevan).</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- NARASI ANALISIS HASIL BELAJAR OTOMATIS -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.15rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+              <h4 style="color: #fff; font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+                <span>📝</span> Narasi Analisis Perkembangan Belajar Siswa Antar Pertemuan
+              </h4>
+              <span id="badgeStatusNarasi" class="badge badge-emerald">🟢 Capaian Meningkat</span>
+            </div>
+            <div id="narasiPenjelasanContainer" style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6; display: flex; flex-direction: column; gap: 0.6rem;">
+              <!-- Akan diisi otomatis oleh JavaScript berdasarkan data pertemuan yang aktif -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==================== MODAL: INPUT KELAS BARU ==================== -->
+  <div id="modalKelas" class="modal-overlay">
+    <div class="modal-box" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>🏫</span> Tambah Kelas Baru
+        </h3>
+        <button id="btnCloseModalKelas" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 30px; height: 30px; padding: 0;">✕</button>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label class="filter-label">Nama Kelas:</label>
+        <input type="text" id="inputNamaKelasBaru" class="input-control" placeholder="Cth: Kelas 7C, Kelas 8B" style="width: 100%; margin-top: 0.35rem;" />
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button id="btnCancelModalKelas" class="btn btn-secondary">Batal</button>
+        <button id="btnSaveModalKelas" class="btn btn-primary">💾 Simpan Kelas</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: INPUT KELOMPOK BARU ==================== -->
+  <div id="modalKelompok" class="modal-overlay">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>👥</span> Tambah Kelompok Baru
+        </h3>
+        <button id="btnCloseModalKelompok" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 30px; height: 30px; padding: 0;">✕</button>
+      </div>
+      <div style="margin-bottom: 0.75rem;">
+        <label class="filter-label">Pilih Kelas:</label>
+        <select id="modalKelompokSelectKelas" class="select-control" style="width: 100%; margin-top: 0.35rem;"></select>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <label class="filter-label">Nama Kelompok Baru:</label>
+        <input type="text" id="inputNamaKelompokBaru" class="input-control" placeholder="Cth: Kelompok 1, Kelompok Newton, dll" style="width: 100%; margin-top: 0.35rem;" />
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button id="btnCancelModalKelompok" class="btn btn-secondary">Batal</button>
+        <button id="btnSaveModalKelompok" class="btn btn-primary">💾 Simpan Kelompok</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: INPUT SISWA BARU ==================== -->
+  <div id="modalSiswa" class="modal-overlay">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>👤</span> Tambah Siswa Baru
+        </h3>
+        <button id="btnCloseModalSiswa" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 30px; height: 30px; padding: 0;">✕</button>
+      </div>
+      
+      <div style="margin-bottom: 0.75rem;">
+        <label class="filter-label">Pilih Kelas:</label>
+        <select id="modalSiswaSelectKelas" class="select-control" style="width: 100%; margin-top: 0.35rem;"></select>
+      </div>
+
+      <div style="margin-bottom: 0.75rem;">
+        <label class="filter-label">Pilih Kelompok:</label>
+        <select id="modalSiswaSelectKelompok" class="select-control" style="width: 100%; margin-top: 0.35rem;"></select>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label class="filter-label">Daftar Nama Siswa (bisa satu atau banyak dipisahkan koma):</label>
+        <textarea id="modalSiswaNamaTextarea" class="input-control" rows="3" placeholder="Cth: Dimas, Erna, Fajar, Gita" style="width: 100%; margin-top: 0.35rem;"></textarea>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button id="btnCancelModalSiswa" class="btn btn-secondary">Batal</button>
+        <button id="btnSaveModalSiswa" class="btn btn-primary">💾 Simpan Siswa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: INPUT BAB & MATERI BARU ==================== -->
+  <div id="modalMateri" class="modal-overlay">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="color: #fff; font-size: 1.1rem; display: flex; align-items: center; gap: 0.4rem;">
+          <span>📚</span> Tambah BAB &amp; Pertemuan Baru
+        </h3>
+        <button id="btnCloseModalMateri" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 30px; height: 30px; padding: 0;">✕</button>
+      </div>
+      
+      <div style="margin-bottom: 0.75rem;">
+        <label class="filter-label">Nama BAB:</label>
+        <input type="text" id="inputModalBab" class="input-control" list="listExistingBab" placeholder="Cth: BAB 1. Besaran dan pengukuran" style="width: 100%; margin-top: 0.35rem;" />
+        <datalist id="listExistingBab">
+          <option value="BAB 1. Besaran dan pengukuran"></option>
+        </datalist>
+        <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Ketik nama BAB baru atau pilih dari daftar BAB yang sudah ada.</span>
+      </div>
+
+      <div style="margin-bottom: 0.75rem;">
+        <label class="filter-label">Pertemuan Ke:</label>
+        <input type="number" id="inputModalPertemuan" class="input-control" min="1" max="30" value="1" style="width: 100%; margin-top: 0.35rem;" />
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label class="filter-label">Judul Materi / Topik Pertemuan:</label>
+        <input type="text" id="inputModalJudulMateri" class="input-control" placeholder="Cth: Besaran dan satuan, Konversi satuan, dll" style="width: 100%; margin-top: 0.35rem;" />
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button id="btnCancelModalMateri" class="btn btn-secondary">Batal</button>
+        <button id="btnSaveModalMateri" class="btn btn-primary">💾 Simpan Materi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SHARE LINK & QR CODE SISWA ==================== -->
+  <div id="modalShare" class="modal-overlay">
+    <div class="modal-box" style="max-width: 540px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3 style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🔗</span> Link &amp; QR Code Pengumpulan LKPD
+        </h3>
+        <button id="btnCloseModalShare" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 30px; height: 30px; padding: 0;">✕</button>
+      </div>
+
+      <!-- Tab Navigasi Modal -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+        <button type="button" id="tabModalShareLink" class="btn btn-primary btn-sm active">
+          <span>📲</span> Link &amp; QR Code
+        </button>
+        <button type="button" id="tabModalShareConfig" class="btn btn-secondary btn-sm">
+          <span>⚙️</span> Pengaturan Google Drive
+        </button>
+      </div>
+
+      <!-- KONTEN TAB 1: LINK & QR CODE -->
+      <div id="contentModalShareLink">
+        <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.25); border-radius: var(--radius-sm); padding: 0.85rem; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <strong style="color: #38bdf8; font-size: 0.95rem;">Tautan Pengumpulan Siswa</strong>
+            <span id="modalShareBadgeTarget" class="badge badge-blue">Kelas 7A - P1</span>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.65rem;">
+            Bagikan link ini ke WhatsApp grup kelas atau tampilkan QR Code di proyektor kelas agar siswa memotret LKPD.
+          </p>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="inputShareUrlDisplay" class="input-control" readonly style="background: var(--bg-surface); font-size: 0.85rem; color: #38bdf8;" />
+            <button type="button" id="btnCopyShareUrl" class="btn btn-primary btn-sm" style="white-space: nowrap;">
+              <span>📋</span> Salin Link
+            </button>
+          </div>
+        </div>
+
+        <!-- TAMPILAN QR CODE -->
+        <div style="text-align: center; padding: 1.25rem 1rem; background: #ffffff; border-radius: var(--radius-md); margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+          <div id="modalShareQrContainer" style="display: flex; justify-content: center; align-items: center; min-height: 220px;">
+            <!-- QR Code SVG akan dirender di sini -->
+          </div>
+          <p style="font-size: 0.82rem; color: #1e293b; margin-top: 0.65rem; font-weight: 700;">
+            Arahkan kamera HP siswa ke QR Code di atas untuk membuka halaman foto LKPD
+          </p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+          <button type="button" id="btnTestOpenStudentPage" class="btn btn-outline btn-sm">
+            <span>🌐</span> Buka Halaman Siswa (Uji Coba)
+          </button>
+          <button type="button" id="btnShareWhatsAppDirect" class="btn btn-success btn-sm">
+            <span>💬</span> Bagikan ke WhatsApp
+          </button>
+        </div>
+      </div>
+
+      <!-- KONTEN TAB 2: PENGATURAN GOOGLE DRIVE APPS SCRIPT -->
+      <div id="contentModalShareConfig" style="display: none;">
+        <div style="margin-bottom: 1rem;">
+          <label class="filter-label">URL Web App Google Apps Script Guru:</label>
+          <input type="url" id="inputGoogleAppsScriptUrl" class="input-control" placeholder="https://script.google.com/macros/s/.../exec" style="width: 100%; margin-top: 0.35rem; font-size: 0.85rem;" />
+          <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.35rem;">
+            Masukkan URL Web App dari Google Apps Script Anda (100% gratis). Foto siswa otomatis tersimpan di Google Drive Anda.
+          </span>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-bottom: 1rem;">
+          <button type="button" id="btnTestGoogleConnection" class="btn btn-secondary btn-sm">
+            <span>🧪</span> Uji Koneksi
+          </button>
+          <button type="button" id="btnSaveGoogleScriptUrl" class="btn btn-primary btn-sm">
+            <span>💾</span> Simpan Pengaturan
+          </button>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.8rem; line-height: 1.5; color: #cbd5e1;">
+          <strong style="color: #38bdf8; display: block; margin-bottom: 0.35rem;">📌 Cara Memasang Skrip Google Drive (Hanya 1 Kali):</strong>
+          <ol style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem;">
+            <li>Buka file <code>google-apps-script.js</code> yang telah kami sediakan.</li>
+            <li>Buka <a href="https://script.google.com/" target="_blank" style="color: #38bdf8; text-decoration: underline;">script.google.com</a>, klik <strong>New project</strong>, lalu tempelkan (paste) kodenya.</li>
+            <li>Klik tombol <strong>Deploy &gt; New deployment</strong>, pilih tipe <strong>Web app</strong>.</li>
+            <li>Atur <em>Execute as</em>: <strong>Me</strong>, dan <em>Who has access</em>: <strong>Anyone</strong>.</li>
+            <li>Salin <strong>Web app URL</strong> lalu tempelkan pada isian di atas, lalu klik <strong>Simpan Pengaturan</strong>.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: OPSI CETAK & EKSPOR PDF ==================== -->
+  <div id="modalPrintConfig" class="modal-overlay">
+    <div class="modal-box" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3 style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🖨️</span> Opsi Cetak Dokumen Rekap Nilai (PDF)
+        </h3>
+        <button type="button" id="btnCloseModalPrint" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 30px; height: 30px; padding: 0;">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1.1rem;">
+        
+        <!-- BAGIAN 1: UKURAN KERTAS & ORIENTASI -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+          <strong style="color: #38bdf8; font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">
+            📄 1. Format Halaman &amp; Kertas
+          </strong>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <!-- Pilihan Ukuran Kertas: A4 atau FOLIO -->
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.4rem;">Ukuran Kertas:</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                  <input type="radio" name="printPaperSize" value="A4" checked id="printPaperA4" />
+                  <span>A4</span>
+                </label>
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                  <input type="radio" name="printPaperSize" value="FOLIO" id="printPaperFolio" />
+                  <span>FOLIO (F4)</span>
+                </label>
+              </div>
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">
+                A4 (210×297 mm) / Folio F4 (215×330 mm)
+              </span>
+            </div>
+
+            <!-- Pilihan Orientasi: POTRAIT atau LANSCAP -->
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.4rem;">Orientasi Halaman:</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                  <input type="radio" name="printOrientation" value="portrait" checked id="printOrientPortrait" />
+                  <span>📄 Potrait</span>
+                </label>
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                  <input type="radio" name="printOrientation" value="landscape" id="printOrientLandscape" />
+                  <span>📜 Lanskap</span>
+                </label>
+              </div>
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">
+                Tegak (Potrait) atau Mendatar (Lanskap)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAGIAN 2: FILTER KELAS & PERTEMUAN -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+          <strong style="color: #34d399; font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">
+            🎯 2. Data yang Dicetak &amp; Pengurutan
+          </strong>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 0.75rem;">
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.35rem;">Kelas:</label>
+              <select id="printSelectKelas" class="select-control" style="width: 100%;">
+                <option value="all">Semua Kelas</option>
+              </select>
+            </div>
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.35rem;">Pertemuan:</label>
+              <select id="printSelectPertemuan" class="select-control" style="width: 100%;">
+                <option value="all">Semua Pertemuan</option>
+              </select>
+            </div>
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.35rem;">Urutan Nilai:</label>
+              <select id="printSelectUrutan" class="select-control" style="width: 100%;">
+                <option value="nilai_desc">🏆 Tertinggi ➔ Terendah (Peringkat)</option>
+                <option value="nama_asc">🔤 Nama Siswa (A – Z)</option>
+                <option value="nilai_asc">📉 Terendah ➔ Tertinggi</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAGIAN 3: IDENTITAS PENILAIAN DI ATAS TABEL -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <strong style="color: #fbbf24; font-size: 0.9rem;">
+              📋 3. Identitas Penilaian (Kop di Atas Tabel)
+            </strong>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Dapat diedit bebas oleh guru</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Mata Pelajaran:</label>
+              <input type="text" id="printInputMapel" class="input-control" value="IPA" style="width: 100%;" />
+            </div>
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Pertemuan ke:</label>
+              <input type="text" id="printInputPertemuanKe" class="input-control" value="1" style="width: 100%;" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">BAB:</label>
+              <input type="text" id="printInputBab" class="input-control" value="BAB 1. Besaran dan pengukuran" style="width: 100%;" />
+            </div>
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Materi:</label>
+              <input type="text" id="printInputMateri" class="input-control" value="Besaran dan satuan" style="width: 100%;" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;">
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Sekolah (Opsional):</label>
+              <input type="text" id="printInputSekolah" class="input-control" placeholder="SMP / MTs..." style="width: 100%; font-size: 0.82rem;" />
+            </div>
+            <div>
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Tanggal Cetak / Asesmen:</label>
+              <input type="date" id="printInputTanggal" class="input-control" style="width: 100%; font-size: 0.82rem;" />
+            </div>
+          </div>
+        </div>
+
+        <!-- BAGIAN 4: OPSI KOLOM TABEL & PENGESAHAN -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
+          <strong style="color: #cbd5e1; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">
+            ⚙️ 4. Opsi Kolom Tabel &amp; Pengesahan:
+          </strong>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; font-size: 0.82rem;">
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+              <input type="checkbox" id="printOptTtd" checked />
+              <span>Sertakan Kolom Tanda Tangan Guru &amp; KS</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+              <input type="checkbox" id="printOptStatistik" checked />
+              <span>Sertakan Ringkasan Statistik Nilai Kelas</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #94a3b8;">
+              <input type="checkbox" id="printOptKelompok" />
+              <span>Sertakan Kolom Kelompok Siswa</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #94a3b8;">
+              <input type="checkbox" id="printOptPredikat" />
+              <span>Sertakan Kolom Predikat / Keterangan</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER MODAL & TOMBOL AKSI -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; padding-top: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.78rem; color: #38bdf8;">
+          💡 Di jendela cetak browser, pilih <strong>"Save as PDF"</strong> untuk mengunduh PDF.
+        </span>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" id="btnCancelModalPrint" class="btn btn-secondary">Batal</button>
+          <button type="button" id="btnExecutePrint" class="btn btn-primary" style="font-weight: 700; padding: 0.6rem 1.25rem;">
+            <span>🖨️</span> Cetak / Simpan PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AREA DOKUMEN CETAK KHUSUS (TERSEMBUNYI DI LAYAR, MUNCUL DI PRINT) -->
+  <div id="printArea" class="print-document"></div>
+
+  <!-- TOAST NOTIFIKASI -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- BUNDLE JAVASCRIPT UTAMA -->
+  <script src="js/bundle.js"></script>
+</body>
+</html>
