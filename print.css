@@ -1,0 +1,187 @@
+/* css/print.css - Format Cetak Rapi untuk Rekapitulasi Nilai LKPD */
+
+@media screen {
+  #printArea {
+    display: none !important;
+  }
+}
+
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 10pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Sembunyikan seluruh antarmuka web saat mencetak */
+  .app-header,
+  .mobile-nav,
+  .main-content,
+  .modal-overlay,
+  .toast-container,
+  .no-print,
+  #toastContainer {
+    display: none !important;
+  }
+
+  /* Tampilkan hanya area dokumen cetak terstruktur */
+  #printArea {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .print-document {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Kop Laporan Resmi */
+  .print-header {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .print-main-title {
+    font-size: 13.5pt;
+    font-weight: 800;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #000000;
+    line-height: 1.25;
+  }
+
+  .print-sub-title {
+    font-size: 10.5pt;
+    font-weight: 600;
+    margin: 4px 0 0 0;
+    color: #1e293b;
+  }
+
+  .print-divider {
+    border-bottom: 2px solid #000000;
+    border-top: 1px solid #000000;
+    height: 2px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  /* Kotak Identitas Penilaian */
+  .print-identitas-box {
+    margin-bottom: 12px;
+    border: 1px solid #475569;
+    background-color: #f8fafc !important;
+    border-radius: 4px;
+    padding: 8px 12px;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .table-identitas {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    line-height: 1.5;
+  }
+
+  .table-identitas td {
+    padding: 2px 4px;
+    vertical-align: top;
+  }
+
+  .table-identitas .id-label {
+    width: 120px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .table-identitas .id-sep {
+    width: 12px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .table-identitas .id-val {
+    color: #000000;
+  }
+
+  /* Tabel Rekapan Nilai */
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+    font-size: 9.5pt;
+  }
+
+  .print-table th,
+  .print-table td {
+    border: 1px solid #1e293b !important;
+    padding: 5px 8px;
+  }
+
+  .print-table thead th {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+    font-weight: 700;
+    text-align: center;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .print-table tbody tr:nth-child(even) {
+    background-color: #f8fafc !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .print-table tbody tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-score-cell {
+    font-size: 10.5pt;
+    font-weight: 800;
+    text-align: center;
+    color: #000000;
+  }
+
+  /* Ringkasan Statistik Kelas */
+  .print-stats-box {
+    border: 1px solid #475569;
+    background-color: #f8fafc !important;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+    font-size: 9pt;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* Kolom Tanda Tangan */
+  .print-ttd-container {
+    width: 100%;
+    margin-top: 20px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-ttd-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+  }
+
+  .print-ttd-table td {
+    width: 50%;
+    vertical-align: top;
+    text-align: center;
+  }
+}
