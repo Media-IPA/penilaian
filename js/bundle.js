@@ -8019,11 +8019,13 @@
   let fotoViewerRotate = 0;
 
   function refreshFotoViewerForActiveStudent() {
+    const badgeStatus = document.getElementById('badgeFotoSiswaStatus');
+    const panel = document.getElementById('panelFotoSiswa');
+    if (!badgeStatus && !panel) return;
+
     const sId = document.getElementById('penSiswa')?.value;
     const pKe = Number(document.getElementById('penPertemuan')?.value) || 1;
-    const badgeStatus = document.getElementById('badgeFotoSiswaStatus');
     const btnToggle = document.getElementById('btnToggleFotoViewer');
-    const panel = document.getElementById('panelFotoSiswa');
     const nameDisplay = document.getElementById('fotoViewerNamaSiswa');
     const catatanBox = document.getElementById('fotoViewerCatatanBox');
     const catatanText = document.getElementById('fotoViewerCatatanText');
