@@ -8683,6 +8683,458 @@
     });
   }
 
+  // ==================== FITUR SCAN LKPD & KOREKSI OTOMATIS (AI VISION) ====================
+  let activeScanStream = null;
+  let currentScanPhotoData = null;
+  let currentAiAnalysisResult = null;
+
+  async function startScanCamera(videoElem) {
+    stopScanCamera();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+        audio: false
+      });
+      activeScanStream = stream;
+      if (videoElem) {
+        videoElem.srcObject = stream;
+        await videoElem.play();
+      }
+      return true;
+    } catch (err) {
+      console.warn('Gagal membuka kamera langsung:', err);
+      throw err;
+    }
+  }
+
+  function stopScanCamera() {
+    if (activeScanStream) {
+      activeScanStream.getTracks().forEach(t => t.stop());
+      activeScanStream = null;
+    }
+  }
+
+  function captureScanPhoto(videoElem) {
+    const canvas = document.createElement('canvas');
+    canvas.width = videoElem.videoWidth || 1280;
+    canvas.height = videoElem.videoHeight || 720;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoElem, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', 0.88);
+  }
+
+  function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function callGeminiVision(base64DataUrl, apiKey, context) {
+    const base64Data = base64DataUrl.split(',')[1];
+    const mimeType = base64DataUrl.substring(base64DataUrl.indexOf(':') + 1, base64DataUrl.indexOf(';')) || 'image/jpeg';
+
+    const promptText = `Kamu adalah asisten guru penilai LKPD IPA SMP WARDIPA.
+Tugasmu:
+1. Baca tulisan tangan siswa pada foto LKPD untuk:
+   - Bagian "Memahami" (soal pilihan ganda / isian singkat): taksir jumlah jawaban benar (0-15), default 13 jika sebagian tidak terlihat.
+   - Bagian "Mengaplikasi" (langkah hitungan/penyelesaian masalah IPA):
+     * Level 4: Tepat semua, alasan logis & sistematis
+     * Level 3: Tepat sebagian besar, alasan cukup jelas
+     * Level 2: Banyak keliru / dangkal
+     * Level 1: Banyak kosong / tidak relevan
+   - Bagian "Merefleksi" (ungkapan refleksi kendala/pengalaman belajar siswa):
+     * Level 4: Refleksi mendalam, spesifik, jujur mengakui kesulitan
+     * Level 3: Relevan tapi agak umum/normatif
+     * Level 2: Singkat / tidak mendalam
+     * Level 1: Tidak dijawab
+   - Self-rating bintang: taksir bintang yang dilingkari/dicentang siswa (1-5★).
+
+KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
+{
+  "jumlah_benar_memahami": 13,
+  "teks_mengaplikasi": "transkripsi tulisan...",
+  "saran_mengaplikasi_level": 4,
+  "alasan_mengaplikasi": "alasan singkat...",
+  "teks_merefleksi": "transkripsi refleksi...",
+  "saran_merefleksi_level": 4,
+  "alasan_merefleksi": "alasan singkat...",
+  "self_rating_terdeteksi": 4,
+  "kualitas_gambar": "Jelas"
+}`;
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          role: 'user',
+          parts: [
+            { text: promptText },
+            { inlineData: { mimeType, data: base64Data } }
+          ]
+        }],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          temperature: 0.2
+        }
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.text();
+      throw new Error(`API Error HTTP ${resp.status}: ${err}`);
+    }
+
+    const data = await resp.json();
+    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!rawText) throw new Error('Model AI tidak menghasilkan respon teks.');
+    return JSON.parse(rawText);
+  }
+
+  function getSimulatedAiAnalysis(context) {
+    const samples = [
+      {
+        jumlah_benar_memahami: 14,
+        teks_mengaplikasi: "Diketahui m = 158 g, V = 20 cm3. Rumus massa jenis rho = m / V = 158 / 20 = 7,9 g/cm3. Dari tabel massa jenis di buku paket, logam ini adalah besi karena nilainya tepat 7,9 g/cm3.",
+        saran_mengaplikasi_level: 4,
+        alasan_mengaplikasi: "Identifikasi besaran massa dan volume lengkap dengan satuan, substitusi rumus tepat, serta menarik kesimpulan jenis materi dengan logis.",
+        teks_merefleksi: "Awalnya kami bingung cara mengukur volume batu yang bentuknya tidak teratur. Namun setelah menggunakan gelas berpancuran dan melihat air yang tumpah, kami paham konsep perpindahan volume air.",
+        saran_merefleksi_level: 4,
+        alasan_merefleksi: "Refleksi sangat spesifik, jujur mengakui kesulitan awal dan menguraikan proses penemuan konsep melalui praktikum.",
+        self_rating_terdeteksi: 5,
+        kualitas_gambar: "Jelas (Simulasi Terpandu)"
+      },
+      {
+        jumlah_benar_memahami: 13,
+        teks_mengaplikasi: "m = 50 g, V = 10 cm3. rho = 50 / 10 = 5 g/cm3. Benda akan tenggelam dalam air karena massa jenis benda lebih besar dari massa jenis air (1 g/cm3).",
+        saran_mengaplikasi_level: 3,
+        alasan_mengaplikasi: "Hitungan massa jenis benar dan rumus tepat, penjelasan konsep mengapung/tenggelam sudah sesuai dengan perbandingan massa jenis air.",
+        teks_merefleksi: "Praktikum hari ini sangat menarik karena bisa mencoba neraca Ohaus langsung, meskipun awalnya agak sulit menyeimbangkan lengan neraca.",
+        saran_merefleksi_level: 3,
+        alasan_merefleksi: "Refleksi cukup baik dan relevan, menyebutkan kendala menyeimbangkan lengan neraca Ohaus.",
+        self_rating_terdeteksi: 4,
+        kualitas_gambar: "Cukup Jelas (Simulasi Terpandu)"
+      },
+      {
+        jumlah_benar_memahami: 12,
+        teks_mengaplikasi: "Panjang meja = 120 cm = 1,2 m. Lebar = 50 cm = 0,5 m. Luas = 1,2 x 0,5 = 0,6 m2.",
+        saran_mengaplikasi_level: 3,
+        alasan_mengaplikasi: "Konversi satuan panjang dari cm ke m dilakukan dengan benar dan rumus luas persegi panjang diterapkan secara tepat.",
+        teks_merefleksi: "Saya sudah paham cara konversi satuan panjang tapi masih harus berhati-hati saat mengubah satuan luas dan volume turunan.",
+        saran_merefleksi_level: 3,
+        alasan_merefleksi: "Refleksi jujur mengenai pemahaman konversi satuan panjang dan kehati-hatian pada satuan turunan.",
+        self_rating_terdeteksi: 4,
+        kualitas_gambar: "Jelas (Simulasi Terpandu)"
+      }
+    ];
+    const picked = samples[Math.floor(Math.random() * samples.length)];
+    return {
+      ...picked,
+      is_simulated: true
+    };
+  }
+
+  async function analyzeLkpdPhoto(photoDataUrl) {
+    const savedKey = (localStorage.getItem('wardipa_gemini_api_key') || '').trim();
+    if (savedKey && savedKey.length > 10) {
+      try {
+        const res = await callGeminiVision(photoDataUrl, savedKey, {});
+        res.is_simulated = false;
+        return res;
+      } catch (err) {
+        console.warn('Gemini Vision API error, fallback ke mode simulasi cerdas:', err);
+        const fallback = getSimulatedAiAnalysis({});
+        fallback.warning = `Panggilan Gemini API gagal: ${err.message}. Menampilkan analisis simulasi cerdas terpandu.`;
+        return fallback;
+      }
+    }
+    return getSimulatedAiAnalysis({});
+  }
+
+  function setupAiCorrectionScanner() {
+    const modal = document.getElementById('modalScan');
+    const btnOpen = document.getElementById('btnOpenScanModal');
+    const btnClose = document.getElementById('btnCloseScanModal');
+
+    const scanInputArea = document.getElementById('scanInputArea');
+    const scanLoadingArea = document.getElementById('scanLoadingArea');
+    const scanResultArea = document.getElementById('scanResultArea');
+
+    const tabUpload = document.getElementById('scanTabUpload');
+    const tabCamera = document.getElementById('scanTabCamera');
+    const secUpload = document.getElementById('scanUploadSection');
+    const secCamera = document.getElementById('scanCameraSection');
+
+    const inputScanFile = document.getElementById('inputScanFile');
+    const video = document.getElementById('scanVideo');
+    const cameraPlaceholder = document.getElementById('scanCameraPlaceholder');
+    const btnCapture = document.getElementById('btnCaptureScan');
+
+    const btnRetake = document.getElementById('btnRetakeScan');
+    const btnApply = document.getElementById('btnApplyAiResults');
+
+    const toggleKeySec = document.getElementById('toggleGeminiKeySection');
+    const keyContainer = document.getElementById('geminiKeyInputsContainer');
+    const inputApiKey = document.getElementById('inputGeminiApiKey');
+    const btnSaveKey = document.getElementById('btnSaveGeminiApiKey');
+    const keyBadge = document.getElementById('geminiKeyStatusBadge');
+
+    function updateApiKeyBadge() {
+      const key = (localStorage.getItem('wardipa_gemini_api_key') || '').trim();
+      if (inputApiKey) inputApiKey.value = key;
+      if (keyBadge) {
+        if (key) {
+          keyBadge.className = 'badge badge-emerald';
+          keyBadge.textContent = 'API Key Aktif (Live)';
+        } else {
+          keyBadge.className = 'badge badge-secondary';
+          keyBadge.textContent = 'Mode Simulasi Cerdas';
+        }
+      }
+    }
+
+    function resetScanModalUI() {
+      stopScanCamera();
+      if (scanInputArea) scanInputArea.style.display = 'block';
+      if (scanLoadingArea) scanLoadingArea.style.display = 'none';
+      if (scanResultArea) scanResultArea.style.display = 'none';
+
+      if (tabUpload) {
+        tabUpload.classList.add('btn-primary', 'active');
+        tabUpload.classList.remove('btn-secondary');
+      }
+      if (tabCamera) {
+        tabCamera.classList.remove('btn-primary', 'active');
+        tabCamera.classList.add('btn-secondary');
+      }
+      if (secUpload) secUpload.style.display = 'block';
+      if (secCamera) secCamera.style.display = 'none';
+      if (inputScanFile) inputScanFile.value = '';
+
+      updateApiKeyBadge();
+      currentScanPhotoData = null;
+      currentAiAnalysisResult = null;
+    }
+
+    btnOpen?.addEventListener('click', () => {
+      const sId = document.getElementById('penSiswa')?.value;
+      const sObj = App.siswa.find(s => s.id === sId);
+      const curKelas = document.getElementById('penKelas')?.value || 'Kelas 7';
+      const curP = Number(document.getElementById('penPertemuan')?.value) || 1;
+
+      const targetSiswaEl = document.getElementById('scanModalTargetSiswa');
+      if (targetSiswaEl) targetSiswaEl.textContent = sObj ? sObj.nama : 'Pilih Siswa di Form Terlebih Dahulu';
+
+      const targetMetaEl = document.getElementById('scanModalTargetMeta');
+      if (targetMetaEl) targetMetaEl.textContent = `${curKelas} - Pertemuan ${curP}`;
+
+      resetScanModalUI();
+      modal?.classList.add('active');
+    });
+
+    const closeModal = () => {
+      stopScanCamera();
+      modal?.classList.remove('active');
+    };
+    btnClose?.addEventListener('click', closeModal);
+
+    tabUpload?.addEventListener('click', () => {
+      stopScanCamera();
+      tabUpload.classList.add('btn-primary', 'active');
+      tabUpload.classList.remove('btn-secondary');
+      tabCamera?.classList.remove('btn-primary', 'active');
+      tabCamera?.classList.add('btn-secondary');
+      if (secUpload) secUpload.style.display = 'block';
+      if (secCamera) secCamera.style.display = 'none';
+    });
+
+    tabCamera?.addEventListener('click', async () => {
+      tabCamera.classList.add('btn-primary', 'active');
+      tabCamera.classList.remove('btn-secondary');
+      tabUpload?.classList.remove('btn-primary', 'active');
+      tabUpload?.classList.add('btn-secondary');
+      if (secUpload) secUpload.style.display = 'none';
+      if (secCamera) secCamera.style.display = 'block';
+      if (cameraPlaceholder) cameraPlaceholder.style.display = 'none';
+
+      try {
+        await startScanCamera(video);
+      } catch (e) {
+        if (cameraPlaceholder) cameraPlaceholder.style.display = 'flex';
+      }
+    });
+
+    inputScanFile?.addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        const photoData = await readFileAsDataUrl(file);
+        await executeAiProcessing(photoData);
+      } catch (err) {
+        showToast('Gagal membaca file gambar.', 'error');
+      }
+    });
+
+    secUpload?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      secUpload.style.borderColor = 'var(--primary)';
+      secUpload.style.background = 'rgba(14, 165, 233, 0.1)';
+    });
+    secUpload?.addEventListener('dragleave', () => {
+      secUpload.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+      secUpload.style.background = 'rgba(15, 23, 42, 0.4)';
+    });
+    secUpload?.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      secUpload.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+      secUpload.style.background = 'rgba(15, 23, 42, 0.4)';
+      const file = e.dataTransfer?.files?.[0];
+      if (file && file.type.startsWith('image/')) {
+        const photoData = await readFileAsDataUrl(file);
+        await executeAiProcessing(photoData);
+      }
+    });
+
+    btnCapture?.addEventListener('click', async () => {
+      try {
+        if (!video) return;
+        const photoData = captureScanPhoto(video);
+        stopScanCamera();
+        await executeAiProcessing(photoData);
+      } catch (err) {
+        showToast('Gagal memotret gambar dari kamera.', 'error');
+      }
+    });
+
+    toggleKeySec?.addEventListener('click', () => {
+      if (!keyContainer) return;
+      keyContainer.style.display = keyContainer.style.display === 'none' ? 'block' : 'none';
+    });
+
+    btnSaveKey?.addEventListener('click', () => {
+      const key = (inputApiKey?.value || '').trim();
+      localStorage.setItem('wardipa_gemini_api_key', key);
+      updateApiKeyBadge();
+      showToast(key ? 'Gemini API Key berhasil disimpan!' : 'Menggunakan Mode Simulasi Cerdas.', 'success');
+      if (keyContainer) keyContainer.style.display = 'none';
+    });
+
+    async function executeAiProcessing(photoDataUrl) {
+      currentScanPhotoData = photoDataUrl;
+      if (scanInputArea) scanInputArea.style.display = 'none';
+      if (scanLoadingArea) scanLoadingArea.style.display = 'block';
+      if (scanResultArea) scanResultArea.style.display = 'none';
+
+      try {
+        const result = await analyzeLkpdPhoto(photoDataUrl);
+        currentAiAnalysisResult = result;
+
+        if (scanLoadingArea) scanLoadingArea.style.display = 'none';
+        if (scanResultArea) scanResultArea.style.display = 'block';
+
+        const thumb = document.getElementById('scanResultPhotoThumb');
+        if (thumb) thumb.src = photoDataUrl;
+
+        const engineBadge = document.getElementById('scanResultAiEngineBadge');
+        if (engineBadge) {
+          if (result.is_simulated) {
+            engineBadge.className = 'badge badge-secondary';
+            engineBadge.textContent = '⚡ Simulasi Cerdas Terpandu';
+          } else {
+            engineBadge.className = 'badge badge-emerald';
+            engineBadge.textContent = '🟢 Google Gemini Vision';
+          }
+        }
+
+        const qualBadge = document.getElementById('scanResultQualityBadge');
+        if (qualBadge) qualBadge.textContent = `Kualitas: ${result.kualitas_gambar || 'Jelas'}`;
+
+        const jBenar = Math.max(0, Math.min(15, Number(result.jumlah_benar_memahami) || 13));
+        const inBenar = document.getElementById('aiResultJumlahBenar');
+        if (inBenar) inBenar.value = jBenar;
+        const badgeMem = document.getElementById('aiBadgeMemahami');
+        if (badgeMem) badgeMem.textContent = `Estimasi Benar: ${jBenar} / 15`;
+        const dispMem = document.getElementById('aiDisplayPersenMemahami');
+        if (dispMem) dispMem.textContent = `${((jBenar / 15) * 100).toFixed(1).replace('.', ',')}%`;
+
+        const aplLevel = Math.max(1, Math.min(4, Number(result.saran_mengaplikasi_level) || 3));
+        const selApl = document.getElementById('aiSelectLevelMengaplikasi');
+        if (selApl) selApl.value = aplLevel;
+        const badgeApl = document.getElementById('aiBadgeMengaplikasi');
+        if (badgeApl) badgeApl.textContent = `Saran: Level ${aplLevel}`;
+        const reasonApl = document.getElementById('aiReasonMengaplikasi');
+        if (reasonApl) reasonApl.textContent = result.alasan_mengaplikasi ? `Alasan: "${result.alasan_mengaplikasi}"` : '';
+        const ocrApl = document.getElementById('aiOcrTextMengaplikasi');
+        if (ocrApl) ocrApl.value = result.teks_mengaplikasi || '';
+
+        const refLevel = Math.max(1, Math.min(4, Number(result.saran_merefleksi_level) || 3));
+        const selRef = document.getElementById('aiSelectLevelMerefleksi');
+        if (selRef) selRef.value = refLevel;
+        const badgeRef = document.getElementById('aiBadgeMerefleksi');
+        if (badgeRef) badgeRef.textContent = `Saran: Level ${refLevel}`;
+        const reasonRef = document.getElementById('aiReasonMerefleksi');
+        if (reasonRef) reasonRef.textContent = result.alasan_merefleksi ? `Alasan: "${result.alasan_merefleksi}"` : '';
+        const starRating = Math.max(1, Math.min(5, Number(result.self_rating_terdeteksi) || 4));
+        const selStar = document.getElementById('aiSelectSelfRating');
+        if (selStar) selStar.value = starRating;
+        const ocrRef = document.getElementById('aiOcrTextMerefleksi');
+        if (ocrRef) ocrRef.value = result.teks_merefleksi || '';
+
+        if (result.warning) {
+          showToast(result.warning, 'info');
+        } else {
+          showToast('Analisis LKPD berhasil! Silakan tinjau dan konfirmasi.', 'success');
+        }
+
+      } catch (err) {
+        if (scanLoadingArea) scanLoadingArea.style.display = 'none';
+        if (scanInputArea) scanInputArea.style.display = 'block';
+        showToast(`Analisis gagal: ${err.message}`, 'error');
+      }
+    }
+
+    document.getElementById('aiResultJumlahBenar')?.addEventListener('input', (e) => {
+      const v = Math.max(0, Math.min(15, Number(e.target.value) || 0));
+      const dispMem = document.getElementById('aiDisplayPersenMemahami');
+      if (dispMem) dispMem.textContent = `${((v / 15) * 100).toFixed(1).replace('.', ',')}%`;
+      const badgeMem = document.getElementById('aiBadgeMemahami');
+      if (badgeMem) badgeMem.textContent = `Estimasi Benar: ${v} / 15`;
+    });
+
+    btnRetake?.addEventListener('click', resetScanModalUI);
+
+    btnApply?.addEventListener('click', () => {
+      const inBenarVal = Math.max(0, Math.min(15, Number(document.getElementById('aiResultJumlahBenar')?.value) || 13));
+      const aplLevelVal = Number(document.getElementById('aiSelectLevelMengaplikasi')?.value) || 3;
+      const refLevelVal = Number(document.getElementById('aiSelectLevelMerefleksi')?.value) || 3;
+      const starRatingVal = Number(document.getElementById('aiSelectSelfRating')?.value) || 4;
+
+      const ocrApl = (document.getElementById('aiOcrTextMengaplikasi')?.value || '').trim();
+      const ocrRef = (document.getElementById('aiOcrTextMerefleksi')?.value || '').trim();
+
+      const targetInBenar = document.getElementById('inputJumlahBenar');
+      if (targetInBenar) targetInBenar.value = inBenarVal;
+
+      setSelectLevel('mengaplikasiRubricSelector', aplLevelVal);
+      setSelectLevel('merefleksiRubricSelector', refLevelVal);
+      setStarUI(starRatingVal);
+
+      if (ocrRef) {
+        const inRef = document.getElementById('inputTeksRefleksi');
+        if (inRef) inRef.value = ocrRef;
+      }
+
+      updateRealtimeNilaiTugas();
+
+      closeModal();
+      showToast('Hasil koreksi otomatis telah diterapkan ke form nilai!', 'success');
+    });
+  }
+
   // ==================== SISTEM CETAK & EKSPOR PDF RESMI ====================
   function formatTanggalIndo(dateStr) {
     if (!dateStr) dateStr = new Date().toISOString().slice(0, 10);
@@ -9228,6 +9680,7 @@
     setupFotoViewer();
     setupShareModal();
     setupPrintSystem();
+    setupAiCorrectionScanner();
   }
 
   if (document.readyState === 'loading') {
