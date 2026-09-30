@@ -6834,7 +6834,7 @@
     renderLeaderboardSection(filtered, kFilter, pFilter);
 
     if (filtered.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="10" style="padding: 2.5rem; text-align: center; color: var(--text-muted);">Belum ada data penilaian untuk kriteria ini.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="11" style="padding: 2.5rem; text-align: center; color: var(--text-muted);">Belum ada data penilaian untuk kriteria ini.</td></tr>';
       return;
     }
 
@@ -6868,10 +6868,15 @@
         
         <!-- Nilai Tugas Pertemuan (Skala 0-100) -->
         <td style="padding: 0.75rem 1rem; background: rgba(251, 191, 36, 0.05); border-left: 2px solid rgba(251, 191, 36, 0.35); border-right: 2px solid rgba(251, 191, 36, 0.35); text-align: center;">
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
-            <strong style="font-size: 1.35rem; color: #fbbf24; font-weight: 800; line-height: 1;">${formatIndoDecimal(nt.nilai_akhir)}</strong>
-            <span class="badge ${nt.predikat_class}" style="font-size: 0.72rem; padding: 2px 7px;">${nt.predikat}</span>
-          </div>
+          <strong style="font-size: 1.35rem; color: #fbbf24; font-weight: 800; line-height: 1;">${formatIndoDecimal(nt.nilai_akhir)}</strong>
+        </td>
+
+        <!-- Keterangan (Tuntas / Remedial & Predikat) -->
+        <td style="padding: 0.75rem 1rem; text-align: center;">
+          <span class="badge ${nt.nilai_akhir >= 70 ? 'badge-emerald' : 'badge-amber'}" style="font-size: 0.78rem; font-weight: 700; padding: 3px 8px; display: inline-flex; align-items: center; gap: 0.3rem;">
+            ${nt.nilai_akhir >= 70 ? '✅ Tuntas' : '⚠️ Remedial'}
+          </span>
+          <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 3px;">${nt.predikat}</span>
         </td>
 
         <!-- 1. Rincian 3 Dimensi (0-100) -->
@@ -10528,7 +10533,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       guru = '',
       nipGuru = '',
       optKelompok = false,
-      optPredikat = false,
+      optPredikat = true,
       optStatistik = true,
       optTtd = true,
       isForWord = false
@@ -10730,7 +10735,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     const nipGuru = document.getElementById('printInputNipGuru')?.value.trim() || '';
 
     const optKelompok = document.getElementById('printOptKelompok')?.checked ?? false;
-    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? false;
+    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? true;
     const optStatistik = document.getElementById('printOptStatistik')?.checked ?? true;
     const optTtd = document.getElementById('printOptTtd')?.checked ?? true;
 
@@ -10866,7 +10871,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     const nipGuru = document.getElementById('printInputNipGuru')?.value.trim() || '';
 
     const optKelompok = document.getElementById('printOptKelompok')?.checked ?? false;
-    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? false;
+    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? true;
     const optStatistik = document.getElementById('printOptStatistik')?.checked ?? true;
     const optTtd = document.getElementById('printOptTtd')?.checked ?? true;
 
@@ -10948,7 +10953,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     const nipGuru = document.getElementById('printInputNipGuru')?.value.trim() || '';
 
     const optKelompok = document.getElementById('printOptKelompok')?.checked ?? false;
-    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? false;
+    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? true;
     const optStatistik = document.getElementById('printOptStatistik')?.checked ?? true;
     const optTtd = document.getElementById('printOptTtd')?.checked ?? true;
 
