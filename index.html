@@ -450,6 +450,7 @@
                 <th style="padding: 0.75rem 1rem;">Kelas</th>
                 <th style="padding: 0.75rem 1rem;">Kelompok</th>
                 <th style="padding: 0.75rem 1rem; color: #fbbf24; font-weight: 700; background: rgba(251, 191, 36, 0.08); border-left: 2px solid #fbbf24; border-right: 2px solid #fbbf24;">🎯 Nilai Tugas (0–100)</th>
+                <th style="padding: 0.75rem 1rem; text-align: center; color: #34d399;">Keterangan</th>
                 <th style="padding: 0.75rem 1rem; color: #38bdf8;">1. Rincian 3 Dimensi (0–100)</th>
                 <th style="padding: 0.75rem 1rem; color: #34d399;">2. Keterampilan</th>
                 <th style="padding: 0.75rem 1rem; color: #a78bfa;">3. Sikap</th>
@@ -603,6 +604,12 @@
           <button id="btnExportGrafikPng" class="btn btn-secondary btn-sm" title="Simpan Grafik sebagai Gambar PNG">
             <span>📷</span> Unduh Grafik (PNG)
           </button>
+          <button type="button" id="btnOpenModalAnalisisPdf" class="btn btn-primary btn-sm" title="Pratinjau &amp; Cetak/Unduh PDF Analisis Penilaian Capaian Belajar">
+            <span>📄</span> Unduh PDF Analisis Penilaian
+          </button>
+          <button type="button" id="btnOpenModalRubrikWord" class="btn btn-secondary btn-sm" style="background: #1d4ed8; color: #fff; border-color: #2563eb;" title="Pratinjau &amp; Unduh Panduan Rubrik Penilaian Lengkap dalam Bentuk Word (.doc)">
+            <span>📝</span> Unduh Rubrik Penilaian (Word)
+          </button>
         </div>
       </div>
 
@@ -704,7 +711,13 @@
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="button" id="btnCopyPenjelasan" class="btn btn-secondary btn-sm" title="Salin teks analisis naratif ke clipboard">
-                <span>📋</span> Salin Narasi Penjelasan
+                <span>📋</span> Salin Narasi
+              </button>
+              <button type="button" id="btnQuickAnalisisPdf" class="btn btn-secondary btn-sm" title="Pratinjau &amp; Cetak/Unduh PDF Analisis Penilaian">
+                <span>📄</span> PDF Analisis
+              </button>
+              <button type="button" id="btnQuickRubrikWord" class="btn btn-secondary btn-sm" style="background: rgba(37, 99, 235, 0.2); border-color: #2563eb; color: #93c5fd;" title="Pratinjau &amp; Unduh Dokumen Word Rubrik Penilaian">
+                <span>📝</span> Word Rubrik
               </button>
             </div>
           </div>
@@ -1131,175 +1144,472 @@
     </div>
   </div>
 
-  <!-- ==================== MODAL: OPSI CETAK & EKSPOR PDF ==================== -->
+  <!-- ==================== MODAL: OPSI CETAK & EKSPOR PDF / WORD REKAP NILAI ==================== -->
   <div id="modalPrintConfig" class="modal-overlay">
-    <div class="modal-box" style="max-width: 620px; max-height: 90vh; overflow-y: auto;">
-      <div class="modal-header">
-        <h3 style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
-          <span>🖨️</span> Opsi Cetak Dokumen Rekap Nilai (PDF)
-        </h3>
-        <button type="button" id="btnCloseModalPrint" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 30px; height: 30px; padding: 0;">✕</button>
+    <div class="modal-box modal-box-preview">
+      <div class="modal-header" style="margin-bottom: 0.6rem; padding-bottom: 0.5rem;">
+        <div>
+          <h3 style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+            <span>🖨️</span> Pratinjau &amp; Cetak Rekapitulasi Nilai LKPD (PDF / Word)
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.78rem; margin: 0.2rem 0 0 0;">
+            Atur ukuran kertas (A4/F4), orientasi (Potrait/Lanskap), ukuran font, dan periksa pratinjau sebelum mencetak atau mengunduh.
+          </p>
+        </div>
+        <button type="button" id="btnCloseModalPrint" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 32px; height: 32px; padding: 0;" title="Tutup Modal">✕</button>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 1.1rem;">
+      <div style="display: grid; grid-template-columns: 340px 1fr; gap: 1rem; flex: 1; min-height: 0; overflow: hidden;" id="modalRekapPrintGrid">
         
-        <!-- BAGIAN 1: UKURAN KERTAS & ORIENTASI -->
-        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
-          <strong style="color: #38bdf8; font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">
-            📄 1. Format Halaman &amp; Kertas
-          </strong>
+        <!-- KOLOM KIRI: PANEL PENGATURAN -->
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; overflow-y: auto; padding-right: 0.4rem; max-height: calc(94vh - 160px);">
+          
+          <!-- BAGIAN 1: UKURAN KERTAS, ORIENTASI & FONT -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #38bdf8; font-size: 0.84rem; display: block; margin-bottom: 0.6rem;">
+              📄 1. Format Halaman, Kertas &amp; Font
+            </strong>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <!-- Pilihan Ukuran Kertas: A4 atau FOLIO -->
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.4rem;">Ukuran Kertas:</label>
-              <div style="display: flex; gap: 0.5rem;">
-                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
-                  <input type="radio" name="printPaperSize" value="A4" checked id="printPaperA4" />
-                  <span>A4</span>
-                </label>
-                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
-                  <input type="radio" name="printPaperSize" value="FOLIO" id="printPaperFolio" />
-                  <span>FOLIO (F4)</span>
-                </label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.65rem;">
+              <!-- Pilihan Ukuran Kertas: A4 atau FOLIO -->
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.3rem;">Ukuran Kertas:</label>
+                <div style="display: flex; gap: 0.4rem;">
+                  <label style="flex: 1; display: flex; align-items: center; gap: 0.35rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.5rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                    <input type="radio" name="printPaperSize" value="A4" checked id="printPaperA4" />
+                    <span>A4</span>
+                  </label>
+                  <label style="flex: 1; display: flex; align-items: center; gap: 0.35rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.5rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                    <input type="radio" name="printPaperSize" value="FOLIO" id="printPaperFolio" />
+                    <span>F4</span>
+                  </label>
+                </div>
               </div>
-              <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">
-                A4 (210×297 mm) / Folio F4 (215×330 mm)
-              </span>
+
+              <!-- Pilihan Orientasi: POTRAIT atau LANSCAP -->
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.3rem;">Orientasi:</label>
+                <div style="display: flex; gap: 0.4rem;">
+                  <label style="flex: 1; display: flex; align-items: center; gap: 0.35rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.5rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                    <input type="radio" name="printOrientation" value="portrait" checked id="printOrientPortrait" />
+                    <span>📄 Potrait</span>
+                  </label>
+                  <label style="flex: 1; display: flex; align-items: center; gap: 0.35rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.5rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                    <input type="radio" name="printOrientation" value="landscape" id="printOrientLandscape" />
+                    <span>📜 Lanskap</span>
+                  </label>
+                </div>
+              </div>
             </div>
 
-            <!-- Pilihan Orientasi: POTRAIT atau LANSCAP -->
+            <!-- Ukuran Font Dokumen -->
             <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.4rem;">Orientasi Halaman:</label>
-              <div style="display: flex; gap: 0.5rem;">
-                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
-                  <input type="radio" name="printOrientation" value="portrait" checked id="printOrientPortrait" />
-                  <span>📄 Potrait</span>
-                </label>
-                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600;">
-                  <input type="radio" name="printOrientation" value="landscape" id="printOrientLandscape" />
-                  <span>📜 Lanskap</span>
-                </label>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+                <label class="filter-label">Ukuran Font Tabel:</label>
+                <span id="printFontSizeBadge" style="font-size: 0.75rem; color: #38bdf8; font-weight: 700;">10 pt</span>
               </div>
-              <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">
-                Tegak (Potrait) atau Mendatar (Lanskap)
-              </span>
+              <select id="printSelectFontSize" class="select-control" style="width: 100%; font-size: 0.82rem;">
+                <option value="8.5">8.5 pt — Ekstra Kompak (Muat Banyak)</option>
+                <option value="9.5">9.5 pt — Kompak &amp; Rapi</option>
+                <option value="10" selected>10 pt — Standar Rekomendasi</option>
+                <option value="11">11 pt — Sedang (Terbaca Jelas)</option>
+                <option value="12">12 pt — Besar (Nyaman Dibaca)</option>
+              </select>
             </div>
           </div>
-        </div>
 
-        <!-- BAGIAN 2: FILTER KELAS & PERTEMUAN -->
-        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
-          <strong style="color: #34d399; font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">
-            🎯 2. Data yang Dicetak &amp; Pengurutan
-          </strong>
+          <!-- BAGIAN 2: FILTER KELAS, PERTEMUAN & PENGURUTAN -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #34d399; font-size: 0.84rem; display: block; margin-bottom: 0.6rem;">
+              🎯 2. Data yang Dicetak &amp; Pengurutan
+            </strong>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 0.75rem;">
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.35rem;">Kelas:</label>
-              <select id="printSelectKelas" class="select-control" style="width: 100%;">
-                <option value="all">Semua Kelas</option>
-              </select>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Kelas:</label>
+                <select id="printSelectKelas" class="select-control" style="width: 100%; font-size: 0.82rem;">
+                  <option value="all">Semua Kelas</option>
+                </select>
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Pertemuan:</label>
+                <select id="printSelectPertemuan" class="select-control" style="width: 100%; font-size: 0.82rem;">
+                  <option value="all">Semua Pertemuan</option>
+                </select>
+              </div>
             </div>
+
             <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.35rem;">Pertemuan:</label>
-              <select id="printSelectPertemuan" class="select-control" style="width: 100%;">
-                <option value="all">Semua Pertemuan</option>
-              </select>
-            </div>
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.35rem;">Urutan Nilai:</label>
-              <select id="printSelectUrutan" class="select-control" style="width: 100%;">
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Urutan Nilai:</label>
+              <select id="printSelectUrutan" class="select-control" style="width: 100%; font-size: 0.82rem;">
                 <option value="nilai_desc">🏆 Tertinggi ➔ Terendah (Peringkat)</option>
                 <option value="nama_asc">🔤 Nama Siswa (A – Z)</option>
                 <option value="nilai_asc">📉 Terendah ➔ Tertinggi</option>
               </select>
             </div>
           </div>
-        </div>
 
-        <!-- BAGIAN 3: IDENTITAS PENILAIAN DI ATAS TABEL -->
-        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-            <strong style="color: #fbbf24; font-size: 0.9rem;">
-              📋 3. Identitas Penilaian (Kop di Atas Tabel)
+          <!-- BAGIAN 3: IDENTITAS PENILAIAN DI ATAS TABEL -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #fbbf24; font-size: 0.84rem; display: block; margin-bottom: 0.6rem;">
+              📋 3. Identitas Penilaian (Kop Dokumen)
             </strong>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Dapat diedit bebas oleh guru</span>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Mata Pelajaran:</label>
+                <input type="text" id="printInputMapel" class="input-control" value="IPA" style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Pertemuan ke:</label>
+                <input type="text" id="printInputPertemuanKe" class="input-control" value="1" style="width: 100%; font-size: 0.82rem;" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">BAB:</label>
+                <input type="text" id="printInputBab" class="input-control" value="BAB 1. Besaran dan pengukuran" style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Materi:</label>
+                <input type="text" id="printInputMateri" class="input-control" value="Besaran dan satuan" style="width: 100%; font-size: 0.82rem;" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Sekolah:</label>
+                <input type="text" id="printInputSekolah" class="input-control" placeholder="SMP / MTs..." style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Tanggal Asesmen:</label>
+                <input type="date" id="printInputTanggal" class="input-control" style="width: 100%; font-size: 0.82rem;" />
+              </div>
+            </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Mata Pelajaran:</label>
-              <input type="text" id="printInputMapel" class="input-control" value="IPA" style="width: 100%;" />
+          <!-- BAGIAN 4: PENGESAHAN (KEPALA SEKOLAH & GURU) -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #a78bfa; font-size: 0.84rem; display: block; margin-bottom: 0.6rem;">
+              ✍️ 4. Pengesahan (Kepala Sekolah &amp; Guru)
+            </strong>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Kepala Sekolah:</label>
+                <input type="text" id="printInputKepsek" class="input-control" placeholder="Nama Kepala Sekolah, M.Pd." style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">NIP Kepala Sekolah:</label>
+                <input type="text" id="printInputNipKepsek" class="input-control" placeholder="NIP. ...................................." style="width: 100%; font-size: 0.82rem;" />
+              </div>
             </div>
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Pertemuan ke:</label>
-              <input type="text" id="printInputPertemuanKe" class="input-control" value="1" style="width: 100%;" />
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Guru Mata Pelajaran:</label>
+                <input type="text" id="printInputGuru" class="input-control" placeholder="Nama Guru IPA, S.Pd." style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">NIP Guru (Opsional):</label>
+                <input type="text" id="printInputNipGuru" class="input-control" placeholder="NIP. ...................................." style="width: 100%; font-size: 0.82rem;" />
+              </div>
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">BAB:</label>
-              <input type="text" id="printInputBab" class="input-control" value="BAB 1. Besaran dan pengukuran" style="width: 100%;" />
-            </div>
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Materi:</label>
-              <input type="text" id="printInputMateri" class="input-control" value="Besaran dan satuan" style="width: 100%;" />
+          <!-- BAGIAN 5: OPSI KOLOM TABEL & LAMPIRAN -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #cbd5e1; font-size: 0.84rem; display: block; margin-bottom: 0.5rem;">
+              ⚙️ 5. Opsi Kolom Tabel &amp; Ringkasan:
+            </strong>
+            <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem;">
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+                <input type="checkbox" id="printOptTtd" checked />
+                <span>Sertakan Kolom Tanda Tangan Guru &amp; KS</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+                <input type="checkbox" id="printOptStatistik" checked />
+                <span>Sertakan Ringkasan Statistik Nilai Kelas</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #94a3b8;">
+                <input type="checkbox" id="printOptKelompok" />
+                <span>Sertakan Kolom Kelompok Siswa</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+                <input type="checkbox" id="printOptPredikat" checked />
+                <span>Sertakan Kolom Keterangan / Predikat</span>
+              </label>
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;">
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Sekolah (Opsional):</label>
-              <input type="text" id="printInputSekolah" class="input-control" placeholder="SMP / MTs..." style="width: 100%; font-size: 0.82rem;" />
-            </div>
-            <div>
-              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Tanggal Cetak / Asesmen:</label>
-              <input type="date" id="printInputTanggal" class="input-control" style="width: 100%; font-size: 0.82rem;" />
-            </div>
+          <!-- TOMBOL AKSI UTAMA DI PANEL KIRI -->
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.25rem;">
+            <button type="button" id="btnExecutePrint" class="btn btn-primary" style="font-weight: 700; padding: 0.65rem 1rem; width: 100%; justify-content: center;">
+              <span>🖨️</span> Cetak / Simpan PDF
+            </button>
+            <button type="button" id="btnDownloadWordRekap" class="btn btn-secondary" style="background: #1d4ed8; color: #fff; border-color: #2563eb; font-weight: 700; padding: 0.65rem 1rem; width: 100%; justify-content: center;">
+              <span>📝</span> Unduh Dokumen Word (.doc)
+            </button>
+            <span style="font-size: 0.72rem; color: #38bdf8; line-height: 1.35; text-align: center; display: block;">
+              💡 <em>Pada jendela cetak browser, pilih <strong>"Save as PDF"</strong> untuk mengunduh PDF.</em>
+            </span>
           </div>
+
         </div>
 
-        <!-- BAGIAN 4: OPSI KOLOM TABEL & PENGESAHAN -->
-        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem;">
-          <strong style="color: #cbd5e1; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">
-            ⚙️ 4. Opsi Kolom Tabel &amp; Pengesahan:
-          </strong>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; font-size: 0.82rem;">
-            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
-              <input type="checkbox" id="printOptTtd" checked />
-              <span>Sertakan Kolom Tanda Tangan Guru &amp; KS</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
-              <input type="checkbox" id="printOptStatistik" checked />
-              <span>Sertakan Ringkasan Statistik Nilai Kelas</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #94a3b8;">
-              <input type="checkbox" id="printOptKelompok" />
-              <span>Sertakan Kolom Kelompok Siswa</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #94a3b8;">
-              <input type="checkbox" id="printOptPredikat" />
-              <span>Sertakan Kolom Predikat / Keterangan</span>
-            </label>
+        <!-- KOLOM KANAN: PRATINJAU DOKUMEN REKAP REAL-TIME -->
+        <div style="display: flex; flex-direction: column; background: #0f172a; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+          
+          <!-- BAR INFORMASI PREVIEW -->
+          <div style="padding: 0.55rem 0.85rem; background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #94a3b8; flex-wrap: wrap; gap: 0.4rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="color: #38bdf8; font-weight: 600;">👁️ Pratinjau Tampilan (Live Preview)</span>
+              <span style="color: #64748b;">•</span>
+              <span id="printPaperInfoText">Kertas A4 (210×297 mm) — Potrait — Font 10pt</span>
+            </div>
+            <div style="display: flex; gap: 0.4rem;">
+              <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">✓ Otomatis terupdate</span>
+            </div>
           </div>
+
+          <!-- MEJA PRATINJAU LEMBAR KERTAS (SCROLLABLE VIEWPORT) -->
+          <div id="rekapPreviewDeskViewport" class="preview-desk-viewport">
+            <!-- LEMBAR KERTAS PUTIH REALISTIK -->
+            <div id="rekapPreviewPaperSheet" class="preview-paper-sheet">
+              <!-- Konten rekap akan diisi secara dinamis oleh JavaScript -->
+            </div>
+          </div>
+
         </div>
 
       </div>
 
-      <!-- FOOTER MODAL & TOMBOL AKSI -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; padding-top: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap; gap: 0.5rem;">
-        <span style="font-size: 0.78rem; color: #38bdf8;">
-          💡 Di jendela cetak browser, pilih <strong>"Save as PDF"</strong> untuk mengunduh PDF.
+      <!-- FOOTER MODAL -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.78rem; color: var(--text-muted);">
+          Format terstandarisasi untuk administrasi asesmen guru IPA (A4 &amp; F4 Folio, Potrait &amp; Lanskap).
         </span>
-        <div style="display: flex; gap: 0.5rem;">
-          <button type="button" id="btnCancelModalPrint" class="btn btn-secondary">Batal</button>
-          <button type="button" id="btnExecutePrint" class="btn btn-primary" style="font-weight: 700; padding: 0.6rem 1.25rem;">
-            <span>🖨️</span> Cetak / Simpan PDF
-          </button>
-        </div>
+        <button type="button" id="btnCancelModalPrint" class="btn btn-secondary">Tutup</button>
       </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PREVIEW & EKSPOR CAPAIAN / RUBRIK (PDF & WORD) ==================== -->
+  <div id="modalPreviewCapaian" class="modal-overlay">
+    <div class="modal-box modal-box-preview">
+      
+      <!-- HEADER MODAL -->
+      <div class="modal-header" style="margin-bottom: 0.6rem; padding-bottom: 0.5rem;">
+        <div>
+          <h3 style="color: #fff; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+            <span id="modalPreviewTitleIcon">📄</span>
+            <span id="modalPreviewTitleText">Pratinjau &amp; Ekspor Dokumen Capaian Belajar IPA</span>
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.78rem; margin: 0.2rem 0 0 0;">
+            Atur ukuran kertas (A4/F4), orientasi (Potrait/Lanskap), ukuran font, dan periksa pratinjau sebelum mencetak atau mengunduh.
+          </p>
+        </div>
+        <button type="button" id="btnCloseModalPreviewCapaian" class="btn btn-secondary btn-sm" style="border-radius: 50%; width: 32px; height: 32px; padding: 0;" title="Tutup Modal">✕</button>
+      </div>
+
+      <!-- TABS PILIHAN DOKUMEN -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.6rem; flex-wrap: wrap;">
+        <button type="button" id="tabDocAnalisis" class="doc-tab-btn active">
+          <span>📊</span> Laporan Analisis Penilaian Capaian Belajar (PDF)
+        </button>
+        <button type="button" id="tabDocRubrik" class="doc-tab-btn">
+          <span>📝</span> Panduan &amp; Rubrik Penilaian Lengkap LKPD (Word)
+        </button>
+      </div>
+
+      <!-- ISI UTAMA: GRID 2 KOLOM (PENGATURAN & LIVE PREVIEW) -->
+      <div style="display: grid; grid-template-columns: 330px 1fr; gap: 1rem; flex: 1; min-height: 0; overflow: hidden;" id="modalPreviewGrid">
+        
+        <!-- KOLOM KIRI: PANEL PENGATURAN -->
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; overflow-y: auto; padding-right: 0.4rem; max-height: calc(94vh - 200px);">
+          
+          <!-- PENGATURAN 1: FORMAT KERTAS, ORIENTASI & FONT -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #38bdf8; font-size: 0.84rem; display: block; margin-bottom: 0.6rem;">
+              📄 1. Format Kertas &amp; Orientasi
+            </strong>
+
+            <!-- Ukuran Kertas: A4 vs F4 -->
+            <div style="margin-bottom: 0.65rem;">
+              <label class="filter-label" style="display: block; margin-bottom: 0.3rem;">Ukuran Kertas:</label>
+              <div style="display: flex; gap: 0.45rem;">
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.6rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                  <input type="radio" name="previewPaperSize" value="A4" checked id="prevPaperA4" />
+                  <span>A4</span>
+                </label>
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.6rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                  <input type="radio" name="previewPaperSize" value="FOLIO" id="prevPaperFolio" />
+                  <span>FOLIO (F4)</span>
+                </label>
+              </div>
+              <span style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-top: 0.2rem;">
+                A4 (210×297 mm) / Folio F4 (215×330 mm)
+              </span>
+            </div>
+
+            <!-- Orientasi: Potrait vs Lanskap -->
+            <div style="margin-bottom: 0.65rem;">
+              <label class="filter-label" style="display: block; margin-bottom: 0.3rem;">Orientasi Halaman:</label>
+              <div style="display: flex; gap: 0.45rem;">
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.6rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                  <input type="radio" name="previewOrientation" value="portrait" checked id="prevOrientPortrait" />
+                  <span>📄 Potrait</span>
+                </label>
+                <label style="flex: 1; display: flex; align-items: center; gap: 0.4rem; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 0.45rem 0.6rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+                  <input type="radio" name="previewOrientation" value="landscape" id="prevOrientLandscape" />
+                  <span>📜 Lanskap</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Ukuran Font Dokumen -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+                <label class="filter-label">Ukuran Font Dokumen:</label>
+                <span id="prevFontSizeBadge" style="font-size: 0.75rem; color: #38bdf8; font-weight: 700;">10 pt</span>
+              </div>
+              <select id="prevSelectFontSize" class="select-control" style="width: 100%; font-size: 0.82rem;">
+                <option value="8.5">8.5 pt — Ekstra Kompak (Muat Banyak)</option>
+                <option value="9.5">9.5 pt — Kompak &amp; Rapi</option>
+                <option value="10" selected>10 pt — Standar Rekomendasi</option>
+                <option value="11">11 pt — Sedang (Terbaca Jelas)</option>
+                <option value="12">12 pt — Besar (Nyaman Dibaca)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- PENGATURAN 2: IDENTITAS & FILTER LAPORAN -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #34d399; font-size: 0.84rem; display: block; margin-bottom: 0.6rem;">
+              🎯 2. Identitas Dokumen &amp; Filter Data
+            </strong>
+
+            <div style="margin-bottom: 0.5rem;" id="prevSelectKelasWrapper">
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Filter Kelas:</label>
+              <select id="prevSelectKelas" class="select-control" style="width: 100%; font-size: 0.82rem;">
+                <option value="all">Semua Kelas</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 0.5rem;">
+              <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Sekolah:</label>
+              <input type="text" id="prevInputSekolah" class="input-control" placeholder="SMP / MTs..." style="width: 100%; font-size: 0.82rem;" />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Mata Pelajaran:</label>
+                <input type="text" id="prevInputMapel" class="input-control" value="IPA" style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Tanggal Dokumen:</label>
+                <input type="date" id="prevInputTanggal" class="input-control" style="width: 100%; font-size: 0.82rem;" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Kepala Sekolah:</label>
+                <input type="text" id="prevInputKepsek" class="input-control" placeholder="Nama Kepala Sekolah, M.Pd." style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">NIP Kepala Sekolah:</label>
+                <input type="text" id="prevInputNipKepsek" class="input-control" placeholder="NIP. ...................................." style="width: 100%; font-size: 0.82rem;" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">Nama Guru Mata Pelajaran:</label>
+                <input type="text" id="prevInputGuru" class="input-control" placeholder="Nama Guru IPA, S.Pd." style="width: 100%; font-size: 0.82rem;" />
+              </div>
+              <div>
+                <label class="filter-label" style="display: block; margin-bottom: 0.25rem;">NIP Guru (Opsional):</label>
+                <input type="text" id="prevInputNip" class="input-control" placeholder="NIP. ...................................." style="width: 100%; font-size: 0.82rem;" />
+              </div>
+            </div>
+          </div>
+
+          <!-- PENGATURAN 3: KELENGKAPAN LAMPIRAN -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+            <strong style="color: #fbbf24; font-size: 0.84rem; display: block; margin-bottom: 0.5rem;">
+              ⚙️ 3. Opsi Lampiran Dokumen
+            </strong>
+            <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem;">
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+                <input type="checkbox" id="prevOptTtd" checked />
+                <span>Sertakan Kolom Tanda Tangan (KS &amp; Guru)</span>
+              </label>
+              <label id="prevOptChartWrapper" style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+                <input type="checkbox" id="prevOptChart" checked />
+                <span>Sertakan Gambar Grafik Kurva Capaian</span>
+              </label>
+              <label id="prevOptNarasiWrapper" style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: #cbd5e1;">
+                <input type="checkbox" id="prevOptNarasi" checked />
+                <span>Sertakan Narasi Analisis &amp; Rangkuman</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TOMBOL AKSI UTAMA DI PANEL KIRI -->
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.25rem;">
+            <button type="button" id="btnPrevExecutePrint" class="btn btn-primary" style="font-weight: 700; padding: 0.65rem 1rem; width: 100%; justify-content: center;">
+              <span>🖨️</span> Cetak / Simpan PDF
+            </button>
+            <button type="button" id="btnPrevDownloadWord" class="btn btn-secondary" style="background: #1d4ed8; color: #fff; border-color: #2563eb; font-weight: 700; padding: 0.65rem 1rem; width: 100%; justify-content: center;">
+              <span>📝</span> Unduh Dokumen Word (.doc)
+            </button>
+            <span style="font-size: 0.72rem; color: #38bdf8; line-height: 1.35; text-align: center; display: block;">
+              💡 <em>Pada jendela cetak browser, pilih <strong>"Save as PDF"</strong> untuk mengunduh PDF.</em>
+            </span>
+          </div>
+
+        </div>
+
+        <!-- KOLOM KANAN: PRATINJAU DOKUMEN REAL-TIME (WYSIWYG SHEET) -->
+        <div style="display: flex; flex-direction: column; background: #0f172a; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+          
+          <!-- BAR INFORMASI PREVIEW -->
+          <div style="padding: 0.55rem 0.85rem; background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #94a3b8; flex-wrap: wrap; gap: 0.4rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="color: #38bdf8; font-weight: 600;">👁️ Pratinjau Tampilan (Live Preview)</span>
+              <span style="color: #64748b;">•</span>
+              <span id="prevPaperInfoText">Kertas A4 (210×297 mm) — Potrait — Font 10pt</span>
+            </div>
+            <div style="display: flex; gap: 0.4rem;">
+              <span style="font-size: 0.72rem; color: #34d399; font-weight: 600;">✓ Otomatis terupdate</span>
+            </div>
+          </div>
+
+          <!-- MEJA PRATINJAU LEMBAR KERTAS (SCROLLABLE VIEWPORT) -->
+          <div id="previewDeskViewport" class="preview-desk-viewport">
+            
+            <!-- LEMBAR KERTAS PUTIH REALISTIK -->
+            <div id="previewPaperSheet" class="preview-paper-sheet">
+              <!-- Konten akan diisi secara dinamis oleh JavaScript -->
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER MODAL -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.78rem; color: var(--text-muted);">
+          Format terstandarisasi untuk administrasi asesmen guru IPA (A4 &amp; F4 Folio, Potrait &amp; Lanskap).
+        </span>
+        <button type="button" id="btnCancelModalPreviewCapaian" class="btn btn-secondary">Tutup</button>
+      </div>
+
     </div>
   </div>
 
