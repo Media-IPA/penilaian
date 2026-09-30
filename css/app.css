@@ -1101,7 +1101,8 @@ canvas {
 }
 
 @media (max-width: 920px) {
-  #modalPreviewGrid {
+  #modalPreviewGrid,
+  #modalRekapPrintGrid {
     grid-template-columns: 1fr !important;
     overflow-y: auto !important;
   }

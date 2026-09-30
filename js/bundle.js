@@ -6084,7 +6084,8 @@
     SISWA: 'wardipa_simple_siswa',
     KELOMPOK: 'wardipa_simple_kelompok',
     TOPIK: 'wardipa_simple_topik',
-    PENILAIAN: 'wardipa_simple_penilaian'
+    PENILAIAN: 'wardipa_simple_penilaian',
+    PROFILE: 'wardipa_teacher_profile'
   };
 
   const DATA_VERSION_KEY = 'wardipa_data_ver';
@@ -6129,6 +6130,29 @@
     } catch (e) {
       console.warn(e);
     }
+  }
+
+  function loadTeacherProfile() {
+    return getData(KEYS.PROFILE, {
+      sekolah: '',
+      kepsek: '',
+      nipKepsek: '',
+      guru: '',
+      nipGuru: ''
+    });
+  }
+
+  function saveTeacherProfile(partial) {
+    if (!partial || typeof partial !== 'object') return;
+    const cur = loadTeacherProfile();
+    const updated = { ...cur };
+    Object.keys(partial).forEach(k => {
+      if (partial[k] !== undefined && partial[k] !== null) {
+        updated[k] = partial[k];
+      }
+    });
+    setData(KEYS.PROFILE, updated);
+    return updated;
   }
 
   // ==================== STATE APLIKASI ====================
@@ -8067,6 +8091,8 @@
       sekolah = '',
       mapel = 'IPA',
       tanggal = new Date().toISOString().slice(0, 10),
+      kepsek = '',
+      nipKepsek = '',
       guru = '',
       nip = '',
       optTtd = true,
@@ -8194,19 +8220,23 @@
     // Tanda Tangan
     let ttdHtml = '';
     if (optTtd) {
+      const kepsekDisplay = kepsek || '_________________________';
+      const nipKepsekDisplay = nipKepsek ? `NIP. ${nipKepsek}` : 'NIP. .................................................';
+      const nipGuruDisplay = nip ? `NIP. ${nip}` : 'NIP. .................................................';
+
       ttdHtml = `
         <div class="print-ttd-container" style="width: 100%; margin-top: 22px; page-break-inside: avoid; break-inside: avoid;">
           <table class="print-ttd-table" style="width: 100%; border-collapse: collapse; border: none !important;">
             <tr>
               <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
                 <p style="margin: 0 0 52px 0;">Mengetahui,<br/><strong>Kepala Sekolah</strong></p>
-                <p style="font-weight: 700; text-decoration: underline; margin: 0;">_________________________</p>
-                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">NIP. .................................................</p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;">${kepsekDisplay}</p>
+                <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipKepsekDisplay}</p>
               </td>
               <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
                 <p style="margin: 0 0 52px 0;">....................., ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
                 <p style="font-weight: 700; text-decoration: underline; margin: 0;"><strong>${guruDisplay}</strong></p>
-                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">${nip ? 'NIP. ' + nip : 'NIP. .................................................'}</p>
+                <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipGuruDisplay}</p>
               </td>
             </tr>
           </table>
@@ -8358,6 +8388,8 @@
       sekolah = '',
       mapel = 'IPA',
       tanggal = new Date().toISOString().slice(0, 10),
+      kepsek = '',
+      nipKepsek = '',
       guru = '',
       nip = '',
       optTtd = true,
@@ -8370,19 +8402,23 @@
     // Tanda Tangan
     let ttdHtml = '';
     if (optTtd) {
+      const kepsekDisplay = kepsek || '_________________________';
+      const nipKepsekDisplay = nipKepsek ? `NIP. ${nipKepsek}` : 'NIP. .................................................';
+      const nipGuruDisplay = nip ? `NIP. ${nip}` : 'NIP. .................................................';
+
       ttdHtml = `
         <div class="print-ttd-container" style="width: 100%; margin-top: 24px; page-break-inside: avoid; break-inside: avoid;">
           <table class="print-ttd-table" style="width: 100%; border-collapse: collapse; border: none !important;">
             <tr>
               <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
                 <p style="margin: 0 0 52px 0;">Mengetahui,<br/><strong>Kepala Sekolah</strong></p>
-                <p style="font-weight: 700; text-decoration: underline; margin: 0;">_________________________</p>
-                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">NIP. .................................................</p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;">${kepsekDisplay}</p>
+                <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipKepsekDisplay}</p>
               </td>
               <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
                 <p style="margin: 0 0 52px 0;">....................., ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
                 <p style="font-weight: 700; text-decoration: underline; margin: 0;"><strong>${guruDisplay}</strong></p>
-                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">${nip ? 'NIP. ' + nip : 'NIP. .................................................'}</p>
+                <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipGuruDisplay}</p>
               </td>
             </tr>
           </table>
@@ -8662,6 +8698,8 @@
     const sekolah = document.getElementById('prevInputSekolah')?.value.trim() || '';
     const mapel = document.getElementById('prevInputMapel')?.value.trim() || 'IPA';
     const tanggal = document.getElementById('prevInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+    const kepsek = document.getElementById('prevInputKepsek')?.value.trim() || '';
+    const nipKepsek = document.getElementById('prevInputNipKepsek')?.value.trim() || '';
     const guru = document.getElementById('prevInputGuru')?.value.trim() || '';
     const nip = document.getElementById('prevInputNip')?.value.trim() || '';
 
@@ -8712,13 +8750,16 @@
       const stats = computeMeetingStatsData(kFilter);
       const chartUrl = generatePrintableChartDataUrl(stats);
       sheet.innerHTML = buildAnalisisPenilaianHtml({
-        kFilter, sekolah, mapel, tanggal, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: false
+        kFilter, sekolah, mapel, tanggal, kepsek, nipKepsek, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: false
       }, chartUrl);
     } else {
       sheet.innerHTML = buildRubrikPenilaianHtml({
-        sekolah, mapel, tanggal, guru, nip, optTtd, fontSize, isForWord: false
+        sekolah, mapel, tanggal, kepsek, nipKepsek, guru, nip, optTtd, fontSize, isForWord: false
       });
     }
+
+    // Simpan profil otomatis
+    saveTeacherProfile({ sekolah, kepsek, nipKepsek, guru, nipGuru: nip });
   }
 
   // Buka Modal Pratinjau Capaian Belajar / Rubrik
@@ -8765,6 +8806,20 @@
       inTgl.value = new Date().toISOString().slice(0, 10);
     }
 
+    // Muat Profil Guru & Kepala Sekolah yang Tersimpan
+    const prof = loadTeacherProfile();
+    const inSekolah = document.getElementById('prevInputSekolah');
+    const inKepsek = document.getElementById('prevInputKepsek');
+    const inNipKepsek = document.getElementById('prevInputNipKepsek');
+    const inGuru = document.getElementById('prevInputGuru');
+    const inNip = document.getElementById('prevInputNip');
+
+    if (inSekolah && !inSekolah.value) inSekolah.value = prof.sekolah || '';
+    if (inKepsek && !inKepsek.value) inKepsek.value = prof.kepsek || '';
+    if (inNipKepsek && !inNipKepsek.value) inNipKepsek.value = prof.nipKepsek || '';
+    if (inGuru && !inGuru.value) inGuru.value = prof.guru || '';
+    if (inNip && !inNip.value) inNip.value = prof.nipGuru || '';
+
     // Tampilkan Modal
     modal.classList.add('active');
 
@@ -8784,12 +8839,16 @@
     const sekolah = document.getElementById('prevInputSekolah')?.value.trim() || '';
     const mapel = document.getElementById('prevInputMapel')?.value.trim() || 'IPA';
     const tanggal = document.getElementById('prevInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+    const kepsek = document.getElementById('prevInputKepsek')?.value.trim() || '';
+    const nipKepsek = document.getElementById('prevInputNipKepsek')?.value.trim() || '';
     const guru = document.getElementById('prevInputGuru')?.value.trim() || '';
     const nip = document.getElementById('prevInputNip')?.value.trim() || '';
 
     const optTtd = document.getElementById('prevOptTtd')?.checked ?? true;
     const optChart = document.getElementById('prevOptChart')?.checked ?? true;
     const optNarasi = document.getElementById('prevOptNarasi')?.checked ?? true;
+
+    saveTeacherProfile({ sekolah, kepsek, nipKepsek, guru, nipGuru: nip });
 
     // Pasang Ukuran Kertas & Orientasi Dinamis via @page
     let dynamicStyleEl = document.getElementById('dynamicPrintPageStyle');
@@ -8835,11 +8894,11 @@
       const stats = computeMeetingStatsData(kFilter);
       const chartUrl = generatePrintableChartDataUrl(stats);
       contentHtml = buildAnalisisPenilaianHtml({
-        kFilter, sekolah, mapel, tanggal, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: false
+        kFilter, sekolah, mapel, tanggal, kepsek, nipKepsek, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: false
       }, chartUrl);
     } else {
       contentHtml = buildRubrikPenilaianHtml({
-        sekolah, mapel, tanggal, guru, nip, optTtd, fontSize, isForWord: false
+        sekolah, mapel, tanggal, kepsek, nipKepsek, guru, nip, optTtd, fontSize, isForWord: false
       });
     }
 
@@ -8862,12 +8921,16 @@
     const sekolah = document.getElementById('prevInputSekolah')?.value.trim() || '';
     const mapel = document.getElementById('prevInputMapel')?.value.trim() || 'IPA';
     const tanggal = document.getElementById('prevInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+    const kepsek = document.getElementById('prevInputKepsek')?.value.trim() || '';
+    const nipKepsek = document.getElementById('prevInputNipKepsek')?.value.trim() || '';
     const guru = document.getElementById('prevInputGuru')?.value.trim() || '';
     const nip = document.getElementById('prevInputNip')?.value.trim() || '';
 
     const optTtd = document.getElementById('prevOptTtd')?.checked ?? true;
     const optChart = document.getElementById('prevOptChart')?.checked ?? true;
     const optNarasi = document.getElementById('prevOptNarasi')?.checked ?? true;
+
+    saveTeacherProfile({ sekolah, kepsek, nipKepsek, guru, nipGuru: nip });
 
     // Dimensi Kertas dalam Milimeter
     let pageWidthMm = 210;
@@ -8890,12 +8953,12 @@
       const stats = computeMeetingStatsData(kFilter);
       const chartUrl = optChart ? generatePrintableChartDataUrl(stats) : '';
       docBodyHtml = buildAnalisisPenilaianHtml({
-        kFilter, sekolah, mapel, tanggal, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: true
+        kFilter, sekolah, mapel, tanggal, kepsek, nipKepsek, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: true
       }, chartUrl);
     } else {
       docTitle = `Rubrik_Penilaian_Lengkap_LKPD_IPA_${paperSize}_${orientation}`;
       docBodyHtml = buildRubrikPenilaianHtml({
-        sekolah, mapel, tanggal, guru, nip, optTtd, fontSize, isForWord: true
+        sekolah, mapel, tanggal, kepsek, nipKepsek, guru, nip, optTtd, fontSize, isForWord: true
       });
     }
 
@@ -9034,8 +9097,8 @@
     // Filter Kelas di Modal
     document.getElementById('prevSelectKelas')?.addEventListener('change', updateCapaianPreview);
 
-    // Identitas Teks (Sekolah, Mapel, Tanggal, Guru, NIP)
-    ['prevInputSekolah', 'prevInputMapel', 'prevInputTanggal', 'prevInputGuru', 'prevInputNip'].forEach(id => {
+    // Identitas Teks (Sekolah, Mapel, Tanggal, Kepsek, NIP Kepsek, Guru, NIP)
+    ['prevInputSekolah', 'prevInputMapel', 'prevInputTanggal', 'prevInputKepsek', 'prevInputNipKepsek', 'prevInputGuru', 'prevInputNip'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('input', updateCapaianPreview);
@@ -10445,6 +10508,266 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     }
   }
 
+  // Bangun Dokumen Rekapitulasi Nilai LKPD (HTML & Word)
+  function buildRekapNilaiHtml(options) {
+    const {
+      paperSize = 'A4',
+      orientation = 'portrait',
+      fontSize = 10,
+      mapel = 'IPA',
+      bab = 'BAB 1. Besaran dan pengukuran',
+      pertemuanKe = '1',
+      materi = 'Besaran dan satuan',
+      sekolah = '',
+      tanggal = new Date().toISOString().slice(0, 10),
+      kFilter = 'all',
+      pFilter = 'all',
+      uFilter = 'nilai_desc',
+      kepsek = '',
+      nipKepsek = '',
+      guru = '',
+      nipGuru = '',
+      optKelompok = false,
+      optPredikat = false,
+      optStatistik = true,
+      optTtd = true,
+      isForWord = false
+    } = options;
+
+    // Filter Data Penilaian
+    let list = [...App.penilaian];
+    if (kFilter !== 'all') {
+      const normK = kFilter.trim().toLowerCase();
+      list = list.filter(p => (p.kelas || '').trim().toLowerCase() === normK);
+    }
+    if (pFilter !== 'all') {
+      const pNum = Number(pFilter);
+      list = list.filter(p => (Number(p.pertemuan_ke) || 1) === pNum);
+    }
+
+    // Hitung Nilai Tugas
+    list = list.map(p => {
+      const nt = p.nilai_tugas || calcNilaiTugas(
+        p.pengetahuan?.memahami?.jumlah_benar,
+        p.pengetahuan?.mengaplikasi?.level,
+        p.pengetahuan?.merefleksi?.level
+      );
+      return { ...p, _nt: nt };
+    });
+
+    // Pengurutan
+    if (uFilter === 'nilai_desc') {
+      list.sort((a, b) => (b._nt.nilai_akhir - a._nt.nilai_akhir) || ((b.pengetahuan?.memahami?.skor_persen || 0) - (a.pengetahuan?.memahami?.skor_persen || 0)) || (a.nama_siswa || '').localeCompare(b.nama_siswa || ''));
+    } else if (uFilter === 'nilai_asc') {
+      list.sort((a, b) => (a._nt.nilai_akhir - b._nt.nilai_akhir) || (a.nama_siswa || '').localeCompare(b.nama_siswa || ''));
+    } else if (uFilter === 'nama_asc') {
+      list.sort((a, b) => (a.nama_siswa || '').localeCompare(b.nama_siswa || ''));
+    }
+
+    const kelasDisplay = kFilter !== 'all' ? kFilter : (list[0]?.kelas || 'Semua Kelas');
+    const kepsekDisplay = kepsek || '_________________________';
+    const nipKepsekDisplay = nipKepsek ? `NIP. ${nipKepsek}` : 'NIP. .................................................';
+    const guruDisplay = guru || 'Guru Mata Pelajaran IPA';
+    const nipGuruDisplay = nipGuru ? `NIP. ${nipGuru}` : 'NIP. .................................................';
+
+    // Baris Tabel Nilai
+    let rowsHtml = '';
+    if (list.length === 0) {
+      const colSpan = 3 + (optKelompok ? 1 : 0) + (optPredikat ? 1 : 0);
+      rowsHtml = `<tr><td colspan="${colSpan}" style="text-align: center; padding: 16px; border: 1px solid #1e293b; color: #64748b;">Belum ada data nilai untuk kriteria filter kelas/pertemuan ini.</td></tr>`;
+    } else {
+      list.forEach((p, idx) => {
+        const nt = p._nt;
+        const tuntasLabel = nt.nilai_akhir >= 70 ? 'Tuntas' : 'Remedial';
+        const bg = idx % 2 === 0 ? '#ffffff' : '#f8fafc';
+        rowsHtml += `
+          <tr style="background-color: ${bg};">
+            <td style="text-align: center; font-weight: 600; border: 1px solid #1e293b; padding: 5px 6px;">${idx + 1}</td>
+            <td style="font-weight: 600; text-align: left; border: 1px solid #1e293b; padding: 5px 8px;">${p.nama_siswa}</td>
+            ${optKelompok ? `<td style="text-align: center; border: 1px solid #1e293b; padding: 5px 6px;">${p.nama_kelompok || '-'}</td>` : ''}
+            <td style="text-align: center; font-weight: 800; border: 1px solid #1e293b; padding: 5px 6px; background-color: #fef3c7; color: #b45309;">${formatIndoDecimal(nt.nilai_akhir)}</td>
+            ${optPredikat ? `<td style="text-align: center; border: 1px solid #1e293b; padding: 5px 6px; font-size: ${fontSize - 0.5}pt;">${nt.predikat} (${tuntasLabel})</td>` : ''}
+          </tr>
+        `;
+      });
+    }
+
+    // Statistik Ringkasan
+    let statsHtml = '';
+    if (optStatistik && list.length > 0) {
+      const sumAll = list.reduce((acc, c) => acc + c._nt.nilai_akhir, 0);
+      const avgScore = Number((sumAll / list.length).toFixed(1));
+      const maxScore = Math.max(...list.map(c => c._nt.nilai_akhir));
+      const minScore = Math.min(...list.map(c => c._nt.nilai_akhir));
+      const tuntasCount = list.filter(c => c._nt.nilai_akhir >= 70).length;
+      const tuntasPercent = Math.round((tuntasCount / list.length) * 100);
+
+      statsHtml = `
+        <div class="print-stats-box" style="border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 8px 12px; margin-top: 10px; margin-bottom: 12px; font-size: ${fontSize}pt;">
+          <table style="width: 100%; border-collapse: collapse; border: none !important;">
+            <tr>
+              <td style="border: none !important; padding: 3px 6px; text-align: center;"><strong>Jumlah Peserta Didik:</strong><br/>${list.length} Siswa</td>
+              <td style="border: none !important; padding: 3px 6px; text-align: center;"><strong>Rata-Rata Nilai:</strong><br/><span style="color: #0284c7; font-weight: 800;">${formatIndoDecimal(avgScore)}</span> / 100</td>
+              <td style="border: none !important; padding: 3px 6px; text-align: center;"><strong>Nilai Tertinggi:</strong><br/><span style="color: #059669; font-weight: 800;">${formatIndoDecimal(maxScore)}</span></td>
+              <td style="border: none !important; padding: 3px 6px; text-align: center;"><strong>Nilai Terendah:</strong><br/><span style="color: #dc2626; font-weight: 800;">${formatIndoDecimal(minScore)}</span></td>
+              <td style="border: none !important; padding: 3px 6px; text-align: center;"><strong>Ketuntasan Belajar:</strong><br/><span style="font-weight: 800;">${tuntasCount} Siswa (${tuntasPercent}%)</span></td>
+            </tr>
+          </table>
+        </div>
+      `;
+    }
+
+    // Tanda Tangan
+    let ttdHtml = '';
+    if (optTtd) {
+      ttdHtml = `
+        <div class="print-ttd-container" style="width: 100%; margin-top: 22px; page-break-inside: avoid; break-inside: avoid;">
+          <table class="print-ttd-table" style="width: 100%; border-collapse: collapse; border: none !important;">
+            <tr>
+              <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
+                <p style="margin: 0 0 52px 0;">Mengetahui,<br/><strong>Kepala Sekolah</strong></p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;">${kepsekDisplay}</p>
+                <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipKepsekDisplay}</p>
+              </td>
+              <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
+                <p style="margin: 0 0 52px 0;">....................., ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;"><strong>${guruDisplay}</strong></p>
+                <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipGuruDisplay}</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="print-document" style="font-size: ${fontSize}pt; line-height: 1.4;">
+        <!-- KOP DOKUMEN -->
+        <div class="print-header" style="text-align: center; margin-bottom: 10px;">
+          <h2 class="print-main-title" style="font-size: ${fontSize + 3.5}pt; font-weight: 800; text-transform: uppercase; margin: 0; color: #000; letter-spacing: 0.5px;">REKAPITULASI PENILAIAN LEMBAR KERJA PESERTA DIDIK (LKPD)</h2>
+          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">MATA PELAJARAN ILMU PENGETAHUAN ALAM (IPA)${sekolah ? ' • ' + sekolah : ''}</h3>
+          <div class="print-divider" style="border-bottom: 2px solid #000; border-top: 1px solid #000; height: 2px; margin: 8px 0 10px 0;"></div>
+        </div>
+
+        <!-- IDENTITAS PENILAIAN DI ATAS TABEL -->
+        <div class="print-identitas-box" style="margin-bottom: 10px; border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 6px 10px;">
+          <table class="table-identitas" style="width: 100%; border-collapse: collapse; font-size: ${fontSize}pt; border: none;">
+            <tr>
+              <td style="width: 120px; font-weight: 700; border: none; padding: 2px 4px;">Mata Pelajaran</td>
+              <td style="width: 10px; text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${mapel}</strong></td>
+              <td style="width: 120px; font-weight: 700; border: none; padding: 2px 4px;">Kelas</td>
+              <td style="width: 10px; text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${kelasDisplay}</strong></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">BAB</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;">${bab}</td>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Pertemuan ke</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${pertemuanKe}</strong></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Materi</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${materi}</strong></td>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Tanggal Asesmen</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;">${formatTanggalIndo(tanggal)}</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- TABEL REKAPAN NILAI -->
+        <table class="print-table" style="width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="width: 45px; text-align: center; border: 1px solid #1e293b; padding: 6px 8px;">No</th>
+              <th style="text-align: left; border: 1px solid #1e293b; padding: 6px 8px;">Nama Peserta Didik</th>
+              ${optKelompok ? '<th style="width: 110px; text-align: center; border: 1px solid #1e293b; padding: 6px 8px;">Kelompok</th>' : ''}
+              <th style="width: 85px; text-align: center; border: 1px solid #1e293b; padding: 6px 8px; background-color: #fef3c7;">Nilai Akhir</th>
+              ${optPredikat ? '<th style="width: 140px; text-align: center; border: 1px solid #1e293b; padding: 6px 8px;">Keterangan</th>' : ''}
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+
+        <!-- STATISTIK RINGKAS -->
+        ${statsHtml}
+
+        <!-- TANDA TANGAN -->
+        ${ttdHtml}
+      </div>
+    `;
+  }
+
+  // Update Live Preview Lembar Kertas Rekap di Modal Print
+  function updateRekapPrintPreview() {
+    const sheet = document.getElementById('rekapPreviewPaperSheet');
+    if (!sheet) return;
+
+    const paperSize = document.querySelector('input[name="printPaperSize"]:checked')?.value || 'A4';
+    const orientation = document.querySelector('input[name="printOrientation"]:checked')?.value || 'portrait';
+    const fontSize = parseFloat(document.getElementById('printSelectFontSize')?.value) || 10;
+
+    const mapel = document.getElementById('printInputMapel')?.value.trim() || 'IPA';
+    const bab = document.getElementById('printInputBab')?.value.trim() || 'BAB 1. Besaran dan pengukuran';
+    const pertemuanKe = document.getElementById('printInputPertemuanKe')?.value.trim() || '1';
+    const materi = document.getElementById('printInputMateri')?.value.trim() || 'Besaran dan satuan';
+    const sekolah = document.getElementById('printInputSekolah')?.value.trim() || '';
+    const tanggal = document.getElementById('printInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+
+    const kFilter = document.getElementById('printSelectKelas')?.value || 'all';
+    const pFilter = document.getElementById('printSelectPertemuan')?.value || 'all';
+    const uFilter = document.getElementById('printSelectUrutan')?.value || 'nilai_desc';
+
+    const kepsek = document.getElementById('printInputKepsek')?.value.trim() || '';
+    const nipKepsek = document.getElementById('printInputNipKepsek')?.value.trim() || '';
+    const guru = document.getElementById('printInputGuru')?.value.trim() || '';
+    const nipGuru = document.getElementById('printInputNipGuru')?.value.trim() || '';
+
+    const optKelompok = document.getElementById('printOptKelompok')?.checked ?? false;
+    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? false;
+    const optStatistik = document.getElementById('printOptStatistik')?.checked ?? true;
+    const optTtd = document.getElementById('printOptTtd')?.checked ?? true;
+
+    // Perbarui teks info & badge font
+    const paperName = paperSize === 'A4' ? 'A4 (210×297 mm)' : 'FOLIO / F4 (215×330 mm)';
+    const orientName = orientation === 'portrait' ? '📄 Potrait' : '📜 Lanskap';
+    const infoText = document.getElementById('printPaperInfoText');
+    if (infoText) {
+      infoText.textContent = `Kertas ${paperName} — ${orientName} — Font ${fontSize} pt`;
+    }
+
+    const badgeFont = document.getElementById('printFontSizeBadge');
+    if (badgeFont) badgeFont.textContent = `${fontSize} pt`;
+
+    // Perbarui dimensi lembar kertas preview
+    sheet.style.fontSize = `${fontSize}pt`;
+    if (orientation === 'portrait') {
+      sheet.style.maxWidth = '680px';
+      sheet.style.minHeight = paperSize === 'A4' ? '960px' : '1040px';
+      sheet.style.padding = '28px 34px';
+    } else {
+      sheet.style.maxWidth = paperSize === 'A4' ? '960px' : '1040px';
+      sheet.style.minHeight = '680px';
+      sheet.style.padding = '24px 30px';
+    }
+
+    // Render Dokumen Rekap ke Lembar Kertas
+    sheet.innerHTML = buildRekapNilaiHtml({
+      paperSize, orientation, fontSize, mapel, bab, pertemuanKe, materi, sekolah, tanggal,
+      kFilter, pFilter, uFilter, kepsek, nipKepsek, guru, nipGuru,
+      optKelompok, optPredikat, optStatistik, optTtd, isForWord: false
+    });
+
+    // Simpan profil guru & kepala sekolah otomatis
+    saveTeacherProfile({ sekolah, kepsek, nipKepsek, guru, nipGuru });
+  }
+
   function openModalPrintConfig() {
     const modal = document.getElementById('modalPrintConfig');
     if (!modal) {
@@ -10495,16 +10818,36 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       inTgl.value = new Date().toISOString().slice(0, 10);
     }
 
-    // 5. Sinkronisasi Identitas (Mata Pelajaran, BAB, Pertemuan ke, Materi)
+    // 5. Muat Profil Guru & Kepala Sekolah yang Tersimpan
+    const prof = loadTeacherProfile();
+    const inSekolah = document.getElementById('printInputSekolah');
+    const inKepsek = document.getElementById('printInputKepsek');
+    const inNipKepsek = document.getElementById('printInputNipKepsek');
+    const inGuru = document.getElementById('printInputGuru');
+    const inNipGuru = document.getElementById('printInputNipGuru');
+
+    if (inSekolah && !inSekolah.value) inSekolah.value = prof.sekolah || '';
+    if (inKepsek && !inKepsek.value) inKepsek.value = prof.kepsek || '';
+    if (inNipKepsek && !inNipKepsek.value) inNipKepsek.value = prof.nipKepsek || '';
+    if (inGuru && !inGuru.value) inGuru.value = prof.guru || '';
+    if (inNipGuru && !inNipGuru.value) inNipGuru.value = prof.nipGuru || '';
+
+    // 6. Sinkronisasi Identitas (Mata Pelajaran, BAB, Pertemuan ke, Materi)
     const activeP = selP?.value || '1';
     syncPrintIdentityFromMeeting(activeP);
 
     modal.classList.add('active');
+
+    // Render Live Preview Lembar Kertas Rekap
+    setTimeout(() => {
+      updateRekapPrintPreview();
+    }, 50);
   }
 
   function executePrintPDF() {
     const paperSize = document.querySelector('input[name="printPaperSize"]:checked')?.value || 'A4';
     const orientation = document.querySelector('input[name="printOrientation"]:checked')?.value || 'portrait';
+    const fontSize = parseFloat(document.getElementById('printSelectFontSize')?.value) || 10;
 
     const mapel = document.getElementById('printInputMapel')?.value.trim() || 'IPA';
     const bab = document.getElementById('printInputBab')?.value.trim() || 'BAB 1. Besaran dan pengukuran';
@@ -10517,176 +10860,18 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     const pFilter = document.getElementById('printSelectPertemuan')?.value || 'all';
     const uFilter = document.getElementById('printSelectUrutan')?.value || 'nilai_desc';
 
+    const kepsek = document.getElementById('printInputKepsek')?.value.trim() || '';
+    const nipKepsek = document.getElementById('printInputNipKepsek')?.value.trim() || '';
+    const guru = document.getElementById('printInputGuru')?.value.trim() || '';
+    const nipGuru = document.getElementById('printInputNipGuru')?.value.trim() || '';
+
     const optKelompok = document.getElementById('printOptKelompok')?.checked ?? false;
     const optPredikat = document.getElementById('printOptPredikat')?.checked ?? false;
     const optStatistik = document.getElementById('printOptStatistik')?.checked ?? true;
     const optTtd = document.getElementById('printOptTtd')?.checked ?? true;
 
-    // Filter Data Penilaian
-    let list = [...App.penilaian];
-    if (kFilter !== 'all') {
-      const normK = kFilter.trim().toLowerCase();
-      list = list.filter(p => (p.kelas || '').trim().toLowerCase() === normK);
-    }
-    if (pFilter !== 'all') {
-      const pNum = Number(pFilter);
-      list = list.filter(p => (Number(p.pertemuan_ke) || 1) === pNum);
-    }
-
-    // Hitung Nilai Tugas
-    list = list.map(p => {
-      const nt = p.nilai_tugas || calcNilaiTugas(
-        p.pengetahuan?.memahami?.jumlah_benar,
-        p.pengetahuan?.mengaplikasi?.level,
-        p.pengetahuan?.merefleksi?.level
-      );
-      return { ...p, _nt: nt };
-    });
-
-    // Pengurutan
-    if (uFilter === 'nilai_desc') {
-      list.sort((a, b) => (b._nt.nilai_akhir - a._nt.nilai_akhir) || ((b.pengetahuan?.memahami?.skor_persen || 0) - (a.pengetahuan?.memahami?.skor_persen || 0)) || (a.nama_siswa || '').localeCompare(b.nama_siswa || ''));
-    } else if (uFilter === 'nilai_asc') {
-      list.sort((a, b) => (a._nt.nilai_akhir - b._nt.nilai_akhir) || (a.nama_siswa || '').localeCompare(b.nama_siswa || ''));
-    } else if (uFilter === 'nama_asc') {
-      list.sort((a, b) => (a.nama_siswa || '').localeCompare(b.nama_siswa || ''));
-    }
-
-    if (list.length === 0) {
-      showToast('Tidak ada data nilai untuk kriteria filter yang dipilih!', 'error');
-      return;
-    }
-
-    // Render Baris Tabel Nilai
-    let rowsHtml = '';
-    list.forEach((p, idx) => {
-      const nt = p._nt;
-      const tuntasLabel = nt.nilai_akhir >= 70 ? 'Tuntas' : 'Remedial';
-      rowsHtml += `
-        <tr style="background-color: ${idx % 2 === 0 ? '#ffffff' : '#f8fafc'};">
-          <td style="text-align: center; font-weight: 600;">${idx + 1}</td>
-          <td style="font-weight: 600; text-align: left;">${p.nama_siswa}</td>
-          ${optKelompok ? `<td style="text-align: center;">${p.nama_kelompok}</td>` : ''}
-          <td class="print-score-cell">${formatIndoDecimal(nt.nilai_akhir)}</td>
-          ${optPredikat ? `<td style="text-align: center; font-size: 9pt;">${nt.predikat} (${tuntasLabel})</td>` : ''}
-        </tr>
-      `;
-    });
-
-    // Render Ringkasan Statistik Kelas
-    let statsHtml = '';
-    if (optStatistik && list.length > 0) {
-      const sumAll = list.reduce((acc, c) => acc + c._nt.nilai_akhir, 0);
-      const avgScore = Number((sumAll / list.length).toFixed(1));
-      const maxScore = Math.max(...list.map(c => c._nt.nilai_akhir));
-      const minScore = Math.min(...list.map(c => c._nt.nilai_akhir));
-      const tuntasCount = list.filter(c => c._nt.nilai_akhir >= 70).length;
-      const tuntasPercent = Math.round((tuntasCount / list.length) * 100);
-
-      statsHtml = `
-        <div class="print-stats-box">
-          <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 8px; text-align: center;">
-            <div><strong>Jumlah Peserta Didik:</strong> ${list.length} Siswa</div>
-            <div><strong>Rata-Rata Nilai:</strong> ${formatIndoDecimal(avgScore)} / 100</div>
-            <div><strong>Nilai Tertinggi:</strong> ${formatIndoDecimal(maxScore)}</div>
-            <div><strong>Nilai Terendah:</strong> ${formatIndoDecimal(minScore)}</div>
-            <div><strong>Ketuntasan Belajar (≥ 70):</strong> ${tuntasCount} Siswa (${tuntasPercent}%)</div>
-          </div>
-        </div>
-      `;
-    }
-
-    // Render Kolom Tanda Tangan Pengesahan
-    let ttdHtml = '';
-    if (optTtd) {
-      ttdHtml = `
-        <div class="print-ttd-container">
-          <table class="print-ttd-table">
-            <tr>
-              <td>
-                <p style="margin: 0 0 55px 0;">Mengetahui,<br/><strong>Kepala Sekolah</strong></p>
-                <p style="font-weight: 700; text-decoration: underline; margin: 0;">_________________________</p>
-                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">NIP. .................................................</p>
-              </td>
-              <td>
-                <p style="margin: 0 0 55px 0;">....................., ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
-                <p style="font-weight: 700; text-decoration: underline; margin: 0;">_________________________</p>
-                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">NIP. .................................................</p>
-              </td>
-            </tr>
-          </table>
-        </div>
-      `;
-    }
-
-    const kelasDisplay = kFilter !== 'all' ? kFilter : (list[0]?.kelas || 'Semua Kelas');
-
-    // Masukkan ke dalam #printArea
-    const printArea = document.getElementById('printArea');
-    if (!printArea) return;
-
-    printArea.innerHTML = `
-      <div class="print-document">
-        <!-- KOP DOKUMEN -->
-        <div class="print-header">
-          <h2 class="print-main-title">REKAPITULASI PENILAIAN LEMBAR KERJA PESERTA DIDIK (LKPD)</h2>
-          <h3 class="print-sub-title">MATA PELAJARAN ILMU PENGETAHUAN ALAM (IPA)${sekolah ? ' • ' + sekolah : ''}</h3>
-          <div class="print-divider"></div>
-        </div>
-
-        <!-- IDENTITAS PENILAIAN DI ATAS TABEL -->
-        <div class="print-identitas-box">
-          <table class="table-identitas">
-            <tr>
-              <td class="id-label">Mata Pelajaran</td>
-              <td class="id-sep">:</td>
-              <td class="id-val"><strong>${mapel}</strong></td>
-              <td class="id-label">Kelas</td>
-              <td class="id-sep">:</td>
-              <td class="id-val"><strong>${kelasDisplay}</strong></td>
-            </tr>
-            <tr>
-              <td class="id-label">BAB</td>
-              <td class="id-sep">:</td>
-              <td class="id-val">${bab}</td>
-              <td class="id-label">Pertemuan ke</td>
-              <td class="id-sep">:</td>
-              <td class="id-val"><strong>${pertemuanKe}</strong></td>
-            </tr>
-            <tr>
-              <td class="id-label">Materi</td>
-              <td class="id-sep">:</td>
-              <td class="id-val"><strong>${materi}</strong></td>
-              <td class="id-label">Tanggal Asesmen</td>
-              <td class="id-sep">:</td>
-              <td class="id-val">${formatTanggalIndo(tanggal)}</td>
-            </tr>
-          </table>
-        </div>
-
-        <!-- TABEL REKAPAN NILAI -->
-        <table class="print-table">
-          <thead>
-            <tr>
-              <th style="width: 45px; text-align: center;">No</th>
-              <th style="text-align: left;">Nama Siswa</th>
-              ${optKelompok ? '<th style="width: 110px; text-align: center;">Kelompok</th>' : ''}
-              <th style="width: 85px; text-align: center;">Nilai</th>
-              ${optPredikat ? '<th style="width: 140px; text-align: center;">Keterangan</th>' : ''}
-            </tr>
-          </thead>
-          <tbody>
-            ${rowsHtml}
-          </tbody>
-        </table>
-
-        <!-- STATISTIK RINGKAS (JIKA DICENTANG) -->
-        ${statsHtml}
-
-        <!-- TANDA TANGAN (JIKA DICENTANG) -->
-        ${ttdHtml}
-      </div>
-    `;
+    // Simpan profil
+    saveTeacherProfile({ sekolah, kepsek, nipKepsek, guru, nipGuru });
 
     // Pasang Ukuran Kertas & Orientasi Dinamis via @page
     let dynamicStyleEl = document.getElementById('dynamicPrintPageStyle');
@@ -10705,13 +10890,160 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       pageSizeCss = orientation === 'landscape' ? '330mm 215mm landscape' : '215mm 330mm portrait';
     }
 
-    dynamicStyleEl.textContent = `@page { size: ${pageSizeCss}; margin: 12mm 14mm; }`;
+    dynamicStyleEl.textContent = `
+      @page {
+        size: ${pageSizeCss};
+        margin: 10mm 12mm;
+      }
+      @media print {
+        html, body {
+          font-size: ${fontSize}pt !important;
+        }
+        .print-document {
+          font-size: ${fontSize}pt !important;
+        }
+        .print-table th, .print-table td, .table-identitas td, .print-ttd-table td {
+          font-size: ${fontSize}pt !important;
+        }
+      }
+    `;
+
+    // Isi konten ke dalam #printArea
+    const printArea = document.getElementById('printArea');
+    if (!printArea) return;
+
+    printArea.innerHTML = buildRekapNilaiHtml({
+      paperSize, orientation, fontSize, mapel, bab, pertemuanKe, materi, sekolah, tanggal,
+      kFilter, pFilter, uFilter, kepsek, nipKepsek, guru, nipGuru,
+      optKelompok, optPredikat, optStatistik, optTtd, isForWord: false
+    });
 
     // Tutup Modal & Trigger Cetak
     document.getElementById('modalPrintConfig')?.classList.remove('active');
     setTimeout(() => {
       window.print();
     }, 150);
+  }
+
+  // Eksekusi Unduh Dokumen Word (.doc) Rekapitulasi Nilai
+  function executeDownloadWordRekap() {
+    const paperSize = document.querySelector('input[name="printPaperSize"]:checked')?.value || 'A4';
+    const orientation = document.querySelector('input[name="printOrientation"]:checked')?.value || 'portrait';
+    const fontSize = parseFloat(document.getElementById('printSelectFontSize')?.value) || 10;
+
+    const mapel = document.getElementById('printInputMapel')?.value.trim() || 'IPA';
+    const bab = document.getElementById('printInputBab')?.value.trim() || 'BAB 1. Besaran dan pengukuran';
+    const pertemuanKe = document.getElementById('printInputPertemuanKe')?.value.trim() || '1';
+    const materi = document.getElementById('printInputMateri')?.value.trim() || 'Besaran dan satuan';
+    const sekolah = document.getElementById('printInputSekolah')?.value.trim() || '';
+    const tanggal = document.getElementById('printInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+
+    const kFilter = document.getElementById('printSelectKelas')?.value || 'all';
+    const pFilter = document.getElementById('printSelectPertemuan')?.value || 'all';
+    const uFilter = document.getElementById('printSelectUrutan')?.value || 'nilai_desc';
+
+    const kepsek = document.getElementById('printInputKepsek')?.value.trim() || '';
+    const nipKepsek = document.getElementById('printInputNipKepsek')?.value.trim() || '';
+    const guru = document.getElementById('printInputGuru')?.value.trim() || '';
+    const nipGuru = document.getElementById('printInputNipGuru')?.value.trim() || '';
+
+    const optKelompok = document.getElementById('printOptKelompok')?.checked ?? false;
+    const optPredikat = document.getElementById('printOptPredikat')?.checked ?? false;
+    const optStatistik = document.getElementById('printOptStatistik')?.checked ?? true;
+    const optTtd = document.getElementById('printOptTtd')?.checked ?? true;
+
+    // Simpan profil
+    saveTeacherProfile({ sekolah, kepsek, nipKepsek, guru, nipGuru });
+
+    // Dimensi Kertas dalam Milimeter
+    let pageWidthMm = 210;
+    let pageHeightMm = 297;
+    if (paperSize === 'FOLIO') {
+      pageWidthMm = 215;
+      pageHeightMm = 330;
+    }
+    if (orientation === 'landscape') {
+      const temp = pageWidthMm;
+      pageWidthMm = pageHeightMm;
+      pageHeightMm = temp;
+    }
+
+    const docTitle = `Rekap_Nilai_LKPD_IPA_${kFilter !== 'all' ? kFilter.replace(/\s+/g, '_') : 'SemuaKelas'}_P${pFilter}`;
+    const docBodyHtml = buildRekapNilaiHtml({
+      paperSize, orientation, fontSize, mapel, bab, pertemuanKe, materi, sekolah, tanggal,
+      kFilter, pFilter, uFilter, kepsek, nipKepsek, guru, nipGuru,
+      optKelompok, optPredikat, optStatistik, optTtd, isForWord: true
+    });
+
+    const wordHtml = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office'
+            xmlns:w='urn:schemas-microsoft-com:office:word'
+            xmlns='http://www.w3.org/TR/REC-html40'>
+      <head>
+      <meta charset='utf-8'>
+      <title>${docTitle}</title>
+      <!--[if gte mso 9]>
+      <xml>
+        <w:WordDocument>
+          <w:View>Print</w:View>
+          <w:Zoom>100</w:Zoom>
+          <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+      </xml>
+      <![endif]-->
+      <style>
+        @page Section1 {
+          size: ${pageWidthMm}mm ${pageHeightMm}mm;
+          margin: 18mm 18mm 18mm 18mm;
+          mso-page-orientation: ${orientation};
+          mso-header-margin: 10mm;
+          mso-footer-margin: 10mm;
+          mso-paper-source: 0;
+        }
+        div.Section1 {
+          page: Section1;
+        }
+        body {
+          font-family: 'Calibri', 'Times New Roman', Arial, sans-serif;
+          font-size: ${fontSize}pt;
+          line-height: 1.35;
+          color: #000000;
+        }
+        h2 { font-size: ${fontSize + 3.5}pt; font-weight: bold; text-align: center; margin: 3pt 0; text-transform: uppercase; }
+        h3 { font-size: ${fontSize + 0.5}pt; font-weight: bold; text-align: center; margin: 2pt 0; color: #1e293b; }
+        table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt 0; }
+        th, td { border: 1pt solid #000000; padding: 4pt 6pt; font-size: ${fontSize}pt; vertical-align: middle; }
+        th { background-color: #f1f5f9; font-weight: bold; text-align: center; }
+        .table-identitas td { border: none !important; padding: 2pt 4pt; }
+        .print-ttd-table td { border: none !important; text-align: center; }
+        .print-stats-box table td { border: none !important; }
+      </style>
+      </head>
+      <body>
+      <div class="Section1">
+        ${docBodyHtml}
+      </div>
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8' });
+    const filename = `${docTitle}_${paperSize}_${orientation}_${fontSize}pt.doc`;
+
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    showToast(`Dokumen Word Rekap berhasil diunduh (${filename})!`, 'success');
   }
 
   function setupPrintSystem() {
@@ -10732,11 +11064,52 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       }
     });
 
-    document.getElementById('printSelectPertemuan')?.addEventListener('change', (e) => {
-      syncPrintIdentityFromMeeting(e.target.value);
+    // Pilihan Format Kertas (A4 vs FOLIO)
+    document.querySelectorAll('input[name="printPaperSize"]').forEach(r => {
+      r.addEventListener('change', updateRekapPrintPreview);
     });
 
+    // Pilihan Orientasi (Potrait vs Lanskap)
+    document.querySelectorAll('input[name="printOrientation"]').forEach(r => {
+      r.addEventListener('change', updateRekapPrintPreview);
+    });
+
+    // Pilihan Ukuran Font
+    document.getElementById('printSelectFontSize')?.addEventListener('change', updateRekapPrintPreview);
+
+    // Filter Kelas & Urutan
+    document.getElementById('printSelectKelas')?.addEventListener('change', updateRekapPrintPreview);
+    document.getElementById('printSelectUrutan')?.addEventListener('change', updateRekapPrintPreview);
+
+    // Pertemuan ke -> sinkronisasi identitas & update preview
+    document.getElementById('printSelectPertemuan')?.addEventListener('change', (e) => {
+      syncPrintIdentityFromMeeting(e.target.value);
+      updateRekapPrintPreview();
+    });
+
+    // Input Teks Identitas & Pengesahan
+    [
+      'printInputMapel', 'printInputPertemuanKe', 'printInputBab', 'printInputMateri',
+      'printInputSekolah', 'printInputTanggal', 'printInputKepsek', 'printInputNipKepsek',
+      'printInputGuru', 'printInputNipGuru'
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', updateRekapPrintPreview);
+        el.addEventListener('change', updateRekapPrintPreview);
+      }
+    });
+
+    // Checkbox Opsi Kolom & Ringkasan
+    ['printOptKelompok', 'printOptPredikat', 'printOptStatistik', 'printOptTtd'].forEach(id => {
+      document.getElementById(id)?.addEventListener('change', updateRekapPrintPreview);
+    });
+
+    // Tombol Cetak / PDF
     document.getElementById('btnExecutePrint')?.addEventListener('click', executePrintPDF);
+
+    // Tombol Unduh Dokumen Word (.doc)
+    document.getElementById('btnDownloadWordRekap')?.addEventListener('click', executeDownloadWordRekap);
   }
 
   // ==================== INISIALISASI ====================
@@ -10960,6 +11333,8 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
 
   // Ekspos fungsi ke global window agar dapat dipanggil inline atau via console
   window.openModalPrintConfig = openModalPrintConfig;
+  window.updateRekapPrintPreview = updateRekapPrintPreview;
+  window.executeDownloadWordRekap = executeDownloadWordRekap;
   window.openModalPreviewCapaian = openModalPreviewCapaian;
   window.executePrintCapaianPDF = executePrintCapaianPDF;
   window.executeDownloadWord = executeDownloadWord;
