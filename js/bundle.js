@@ -6871,10 +6871,10 @@
           <strong style="font-size: 1.35rem; color: #fbbf24; font-weight: 800; line-height: 1;">${formatIndoDecimal(nt.nilai_akhir)}</strong>
         </td>
 
-        <!-- Keterangan (Tuntas / Remedial & Predikat) -->
+        <!-- Keterangan (Tuntas / Belum Tuntas & Predikat) -->
         <td style="padding: 0.75rem 1rem; text-align: center;">
           <span class="badge ${nt.nilai_akhir >= 70 ? 'badge-emerald' : 'badge-amber'}" style="font-size: 0.78rem; font-weight: 700; padding: 3px 8px; display: inline-flex; align-items: center; gap: 0.3rem;">
-            ${nt.nilai_akhir >= 70 ? '✅ Tuntas' : '⚠️ Remedial'}
+            ${nt.nilai_akhir >= 70 ? '✅ Tuntas' : 'Belum Tuntas'}
           </span>
           <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 3px;">${nt.predikat}</span>
         </td>
@@ -7066,7 +7066,7 @@
       const isPass = s._nt.nilai_akhir >= 70;
       const statusBadge = isPass
         ? '<span class="badge badge-emerald" style="display: inline-flex; align-items: center; gap: 0.3rem;"><span>✅</span> Tuntas</span>'
-        : '<span class="badge badge-amber" style="display: inline-flex; align-items: center; gap: 0.3rem;"><span>⚠️</span> Remedial</span>';
+        : '<span class="badge badge-amber" style="display: inline-flex; align-items: center; gap: 0.3rem;">Belum Tuntas</span>';
 
       const barColor = s._nt.nilai_akhir >= 85 ? '#34d399' : s._nt.nilai_akhir >= 70 ? '#38bdf8' : s._nt.nilai_akhir >= 55 ? '#a78bfa' : '#f87171';
 
@@ -7159,7 +7159,7 @@
 
       list.forEach((p, idx) => {
         const nt = p._nt;
-        const statusKetuntasan = nt.nilai_akhir >= 70 ? 'Tuntas' : 'Perlu Remedial';
+        const statusKetuntasan = nt.nilai_akhir >= 70 ? 'Tuntas' : 'Belum Tuntas';
 
         rows.push([
           idx + 1,
@@ -7362,7 +7362,7 @@
         avgRef: Number(avgRef.toFixed(1)),
         avgNilaiTugas: avgNilaiTugas,
         countTuntas: countTuntas,
-        countRemedial: n - countTuntas,
+        countBelumTuntas: n - countTuntas,
         persentaseTuntas: persentaseTuntas
       };
     }).filter(Boolean);
@@ -7875,7 +7875,7 @@
         avgRef: Number(avgRef.toFixed(1)),
         avgNilaiTugas: avgNilaiTugas,
         countTuntas: countTuntas,
-        countRemedial: n - countTuntas,
+        countBelumTuntas: n - countTuntas,
         persentaseTuntas: persentaseTuntas
       };
     }).filter(Boolean);
@@ -8349,8 +8349,8 @@
               <td style="border: none; padding: 1px 4px; width: 33%; vertical-align: top;">
                 <strong>1. Memahami (0–100%):</strong><br/>
                 • ≥85%: Sangat Baik (Konsep dasar sangat dikuasai)<br/>
-                • 70–84%: Baik (Konsep dikuasai secara tepat) [Tuntas]<br/>
-                • 55–69%: Cukup (Perlu sedikit penguatan) [Remedial]<br/>
+                • 70–84%: Baik (Konsep dikuasai secara tepat)<br/>
+                • 55–69%: Cukup (Perlu sedikit penguatan)<br/>
                 • &lt;55%: Perlu Bimbingan (Belum tuntas)
               </td>
               <td style="border: none; padding: 1px 4px; width: 33%; vertical-align: top;">
@@ -8541,12 +8541,12 @@
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">70% – 84%</td>
-              <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Baik (B) [TUNTAS]</td>
+              <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Baik (B)</td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">Konsep dikuasai secara tepat (11–12 butir benar). Memenuhi target capaian pembelajaran minimum.</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">55% – 69%</td>
-              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Cukup (C) [REMEDIAL]</td>
+              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Cukup (C)</td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">Perlu sedikit penguatan (8–10 butir benar). Memahami sebagian konsep dasar namun masih terdapat kekeliruan.</td>
             </tr>
             <tr>
@@ -8746,7 +8746,7 @@
             • <strong>Skor Memahami:</strong> Dihitung langsung dari (Jumlah Benar ÷ 15 Soal) × 100%<br/>
             • <strong>Skor Mengaplikasi:</strong> Dikonversi ke skala 0–100 dengan rumus (Level Mengaplikasi ÷ 4) × 100<br/>
             • <strong>Skor Merefleksi:</strong> Dikonversi ke skala 0–100 dengan rumus (Level Merefleksi ÷ 4) × 100<br/>
-            • <strong>Kriteria Ketuntasan Minimal (KKM / KKTP):</strong> Nilai Akhir &ge; 70 dinyatakan <strong>TUNTAS</strong>, dan Nilai Akhir &lt; 70 dinyatakan <strong>REMEDIAL</strong>.
+            • <strong>Kriteria Ketuntasan Minimal (KKM / KKTP):</strong> Nilai Akhir &ge; 70 dinyatakan <strong>TUNTAS</strong>, dan Nilai Akhir &lt; 70 dinyatakan <strong>BELUM TUNTAS</strong>.
           </div>
         </div>
 
@@ -10649,7 +10649,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     } else {
       list.forEach((p, idx) => {
         const nt = p._nt;
-        const tuntasLabel = nt.nilai_akhir >= 70 ? 'Tuntas' : 'Remedial';
+        const tuntasLabel = nt.nilai_akhir >= 70 ? 'Tuntas' : 'Belum Tuntas';
         const bg = idx % 2 === 0 ? '#ffffff' : '#f8fafc';
         rowsHtml += `
           <tr style="background-color: ${bg};">
