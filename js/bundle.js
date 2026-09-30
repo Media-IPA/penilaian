@@ -1,8 +1,8 @@
-/**
+﻿/**
  * js/bundle.js
  * WARDIPA LKPD Manager - Versi Disederhanakan & Terstruktur
  * 3 Aspek Penilaian:
- * 1. Pengetahuan (Kognitif): Memahami (15 Soal), Mengaplikasi (1-4), Merefleksi (1-4 & 1-5★)
+ * 1. Pengetahuan (Kognitif): Memahami (15 Soal), Mengaplikasi (1-4), Merefleksi (1-4 & 1-5â˜…)
  * 2. Keterampilan (Psikomotorik): Keaktifan, Kerapian, Prosedur Praktikum (1-4)
  * 3. Sikap (Afektif): Kerjasama, Disiplin, Tanggung Jawab (1-4)
  */
@@ -215,9 +215,9 @@
         "id":  "pen-p1-kelas7-k7-3",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Reflektif",
+                                               "label":  "Kurang Reflektif",
                                                "teks":  "Masih beradaptasi dengan pembagian tugas kelompok dan langkah kerja LKPD.",
-                                               "level":  3,
+                                               "level":  2,
                                                "self_rating":  3
                                            },
                             "mengaplikasi":  {
@@ -240,8 +240,8 @@
                             "skor_memahami_100":  66.7,
                             "predikat":  "Cukup (C)",
                             "skor_mengaplikasi_100":  50,
-                            "nilai_akhir":  63.9,
-                            "skor_merefleksi_100":  75,
+                            "nilai_akhir":  55.6,
+                            "skor_merefleksi_100":  50,
                             "predikat_class":  "badge-purple"
                         },
         "kelompokId":  "kel-k7-1",
@@ -470,9 +470,9 @@
         "id":  "pen-p1-kelas7-k7-8",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Reflektif",
+                                               "label":  "Kurang Reflektif",
                                                "teks":  "Kerjasama kelompok berjalan baik walau masih canggung menggunakan jangka sorong.",
-                                               "level":  3,
+                                               "level":  2,
                                                "self_rating":  3
                                            },
                             "mengaplikasi":  {
@@ -495,8 +495,8 @@
                             "skor_memahami_100":  73.3,
                             "predikat":  "Cukup (C)",
                             "skor_mengaplikasi_100":  50,
-                            "nilai_akhir":  66.1,
-                            "skor_merefleksi_100":  75,
+                            "nilai_akhir":  57.8,
+                            "skor_merefleksi_100":  50,
                             "predikat_class":  "badge-purple"
                         },
         "kelompokId":  "kel-k7-2",
@@ -725,9 +725,9 @@
         "id":  "pen-p1-kelas7-k7-13",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Reflektif",
+                                               "label":  "Kurang Reflektif",
                                                "teks":  "Masih canggung bekerja sama dan membaca skala alat ukur, butuh adaptasi lebih lanjut.",
-                                               "level":  3,
+                                               "level":  2,
                                                "self_rating":  3
                                            },
                             "mengaplikasi":  {
@@ -748,11 +748,11 @@
                          },
         "nilai_tugas":  {
                             "skor_memahami_100":  60,
-                            "predikat":  "Cukup (C)",
+                            "predikat":  "Perlu Bimbingan (D)",
                             "skor_mengaplikasi_100":  50,
-                            "nilai_akhir":  61.7,
-                            "skor_merefleksi_100":  75,
-                            "predikat_class":  "badge-purple"
+                            "nilai_akhir":  53.3,
+                            "skor_merefleksi_100":  50,
+                            "predikat_class":  "badge-amber"
                         },
         "kelompokId":  "kel-k7-3",
         "catatan_siswa":  "",
@@ -827,9 +827,9 @@
         "id":  "pen-p1-kelas7-k7-15",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Reflektif",
+                                               "label":  "Kurang Reflektif",
                                                "teks":  "Perlu bimbingan guru dan adaptasi membaca alat ukur serta melakukan refleksi diri.",
-                                               "level":  3,
+                                               "level":  2,
                                                "self_rating":  2
                                            },
                             "mengaplikasi":  {
@@ -850,11 +850,11 @@
                          },
         "nilai_tugas":  {
                             "skor_memahami_100":  60,
-                            "predikat":  "Cukup (C)",
+                            "predikat":  "Perlu Bimbingan (D)",
                             "skor_mengaplikasi_100":  50,
-                            "nilai_akhir":  61.7,
-                            "skor_merefleksi_100":  75,
-                            "predikat_class":  "badge-purple"
+                            "nilai_akhir":  53.3,
+                            "skor_merefleksi_100":  50,
+                            "predikat_class":  "badge-amber"
                         },
         "kelompokId":  "kel-k7-3",
         "catatan_siswa":  "",
@@ -980,9 +980,9 @@
         "id":  "pen-p1-kelas7-k7-18",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Reflektif",
+                                               "label":  "Kurang Reflektif",
                                                "teks":  "Masih beradaptasi dengan pembagian tugas kelompok dan langkah kerja LKPD.",
-                                               "level":  3,
+                                               "level":  2,
                                                "self_rating":  3
                                            },
                             "mengaplikasi":  {
@@ -1005,8 +1005,8 @@
                             "skor_memahami_100":  66.7,
                             "predikat":  "Cukup (C)",
                             "skor_mengaplikasi_100":  50,
-                            "nilai_akhir":  63.9,
-                            "skor_merefleksi_100":  75,
+                            "nilai_akhir":  55.6,
+                            "skor_merefleksi_100":  50,
                             "predikat_class":  "badge-purple"
                         },
         "kelompokId":  "kel-k7-4",
@@ -1235,9 +1235,9 @@
         "id":  "pen-p2-kelas7-k7-3",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Kurang Reflektif",
+                                               "label":  "Reflektif",
                                                "teks":  "Mulai terampil menggunakan neraca dan stopwatch, catatan hasil ukur sesuai petunjuk.",
-                                               "level":  2,
+                                               "level":  3,
                                                "self_rating":  4
                                            },
                             "mengaplikasi":  {
@@ -1258,11 +1258,11 @@
                          },
         "nilai_tugas":  {
                             "skor_memahami_100":  80,
-                            "predikat":  "Baik (B)",
+                            "predikat":  "Sangat Baik (A)",
                             "skor_mengaplikasi_100":  100,
-                            "nilai_akhir":  76.7,
-                            "skor_merefleksi_100":  50,
-                            "predikat_class":  "badge-blue"
+                            "nilai_akhir":  85,
+                            "skor_merefleksi_100":  75,
+                            "predikat_class":  "badge-emerald"
                         },
         "kelompokId":  "kel-k7-1",
         "catatan_siswa":  "",
@@ -1490,9 +1490,9 @@
         "id":  "pen-p2-kelas7-k7-8",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Kurang Reflektif",
+                                               "label":  "Reflektif",
                                                "teks":  "Mulai terampil menggunakan neraca dan stopwatch, catatan hasil ukur sesuai petunjuk.",
-                                               "level":  2,
+                                               "level":  3,
                                                "self_rating":  4
                                            },
                             "mengaplikasi":  {
@@ -1513,11 +1513,11 @@
                          },
         "nilai_tugas":  {
                             "skor_memahami_100":  86.7,
-                            "predikat":  "Baik (B)",
+                            "predikat":  "Sangat Baik (A)",
                             "skor_mengaplikasi_100":  100,
-                            "nilai_akhir":  78.9,
-                            "skor_merefleksi_100":  50,
-                            "predikat_class":  "badge-blue"
+                            "nilai_akhir":  87.2,
+                            "skor_merefleksi_100":  75,
+                            "predikat_class":  "badge-emerald"
                         },
         "kelompokId":  "kel-k7-2",
         "catatan_siswa":  "",
@@ -1745,9 +1745,9 @@
         "id":  "pen-p2-kelas7-k7-13",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Kurang Reflektif",
+                                               "label":  "Reflektif",
                                                "teks":  "Mulai terampil menggunakan neraca dan stopwatch, catatan hasil ukur sesuai petunjuk.",
-                                               "level":  2,
+                                               "level":  3,
                                                "self_rating":  4
                                            },
                             "mengaplikasi":  {
@@ -1770,8 +1770,8 @@
                             "skor_memahami_100":  73.3,
                             "predikat":  "Baik (B)",
                             "skor_mengaplikasi_100":  100,
-                            "nilai_akhir":  74.4,
-                            "skor_merefleksi_100":  50,
+                            "nilai_akhir":  82.8,
+                            "skor_merefleksi_100":  75,
                             "predikat_class":  "badge-blue"
                         },
         "kelompokId":  "kel-k7-3",
@@ -2000,9 +2000,9 @@
         "id":  "pen-p2-kelas7-k7-18",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Kurang Reflektif",
+                                               "label":  "Reflektif",
                                                "teks":  "Mulai terampil menggunakan neraca dan stopwatch, catatan hasil ukur sesuai petunjuk.",
-                                               "level":  2,
+                                               "level":  3,
                                                "self_rating":  4
                                            },
                             "mengaplikasi":  {
@@ -2023,11 +2023,11 @@
                          },
         "nilai_tugas":  {
                             "skor_memahami_100":  80,
-                            "predikat":  "Baik (B)",
+                            "predikat":  "Sangat Baik (A)",
                             "skor_mengaplikasi_100":  100,
-                            "nilai_akhir":  76.7,
-                            "skor_merefleksi_100":  50,
-                            "predikat_class":  "badge-blue"
+                            "nilai_akhir":  85,
+                            "skor_merefleksi_100":  75,
+                            "predikat_class":  "badge-emerald"
                         },
         "kelompokId":  "kel-k7-4",
         "catatan_siswa":  "",
@@ -2867,9 +2867,9 @@
         "id":  "pen-p3-kelas7-k7-15",
         "pengetahuan":  {
                             "merefleksi":  {
-                                               "label":  "Kurang Reflektif",
+                                               "label":  "Reflektif",
                                                "teks":  "Sudah sepenuhnya beradaptasi dengan LKPD dan mampu menyelesaikan tugas praktikum dengan baik.",
-                                               "level":  2,
+                                               "level":  3,
                                                "self_rating":  4
                                            },
                             "mengaplikasi":  {
@@ -2892,8 +2892,8 @@
                             "skor_memahami_100":  86.7,
                             "predikat":  "Baik (B)",
                             "skor_mengaplikasi_100":  75,
-                            "nilai_akhir":  70.6,
-                            "skor_merefleksi_100":  50,
+                            "nilai_akhir":  78.9,
+                            "skor_merefleksi_100":  75,
                             "predikat_class":  "badge-blue"
                         },
         "kelompokId":  "kel-k7-3",
@@ -6089,7 +6089,7 @@
   };
 
   const DATA_VERSION_KEY = 'wardipa_data_ver';
-  const CURRENT_DATA_VERSION = 'v11_k7_adaptasi_p1_rendah_p2_sedang_p3_tinggi';
+  const CURRENT_DATA_VERSION = 'v12_k7_merefleksi_meningkat_p1_rendah_p2_sedang_p3_tinggi';
   const DEFAULT_GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyUbje5oXG3BzOSqqnCNzJDsUUIcVBkXDK2RCDTntPMwDdlsxgtCZod070oFUXUDQpxrw/exec';
 
   function initStorage() {
@@ -6171,7 +6171,7 @@
     if (!box) return;
     const t = document.createElement('div');
     t.className = `toast ${type}`;
-    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+    const icon = type === 'success' ? 'âœ…' : type === 'error' ? 'âŒ' : 'â„¹ï¸';
     t.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
     box.appendChild(t);
     setTimeout(() => {
@@ -6447,7 +6447,7 @@
       // Opsi cepat tambah kelompok langsung dari dropdown
       const optAdd = document.createElement('option');
       optAdd.value = '__add_new__';
-      optAdd.textContent = '➕ + Tambah Kelompok Baru...';
+      optAdd.textContent = 'âž• + Tambah Kelompok Baru...';
       penKelompok.appendChild(optAdd);
 
       if (prevKId && filteredKel.some(k => k.id === prevKId)) {
@@ -6595,14 +6595,14 @@
     if (elApl) {
       elApl.textContent = `${result.skor_mengaplikasi_100}`;
       const sub = elApl.nextElementSibling;
-      if (sub) sub.textContent = `(Level ${aplLvl} ÷ 4 × 100)`;
+      if (sub) sub.textContent = `(Level ${aplLvl} Ã· 4 Ã— 100)`;
     }
 
     const elRef = document.getElementById('displaySkorMerefleksi');
     if (elRef) {
       elRef.textContent = `${result.skor_merefleksi_100}`;
       const sub = elRef.nextElementSibling;
-      if (sub) sub.textContent = `(L${refLvl} ÷ 4 × 100)`;
+      if (sub) sub.textContent = `(L${refLvl} Ã· 4 Ã— 100)`;
     }
 
     const elAkhir = document.getElementById('displayNilaiTugasAkhir');
@@ -6616,7 +6616,7 @@
 
     const elRumus = document.getElementById('textRumusTugas');
     if (elRumus) {
-      elRumus.textContent = `(Memahami: ${formatIndoDecimal(result.skor_memahami_100)} + Mengaplikasi: ${result.skor_mengaplikasi_100} + Merefleksi: ${result.skor_merefleksi_100}) ÷ 3`;
+      elRumus.textContent = `(Memahami: ${formatIndoDecimal(result.skor_memahami_100)} + Mengaplikasi: ${result.skor_mengaplikasi_100} + Merefleksi: ${result.skor_merefleksi_100}) Ã· 3`;
     }
   }
 
@@ -6634,11 +6634,11 @@
   }
 
   const STAR_LABELS = {
-    1: '1★ - Belum Paham (Perlu Belajar Lagi)',
-    2: '2★ - Kurang Paham',
-    3: '3★ - Cukup Paham',
-    4: '4★ - Paham dengan Baik',
-    5: '5★ - Sangat Paham & Menguasai'
+    1: '1â˜… - Belum Paham (Perlu Belajar Lagi)',
+    2: '2â˜… - Kurang Paham',
+    3: '3â˜… - Cukup Paham',
+    4: '4â˜… - Paham dengan Baik',
+    5: '5â˜… - Sangat Paham & Menguasai'
   };
 
   function setStarUI(rating) {
@@ -6649,7 +6649,7 @@
     });
     const labelElem = document.getElementById('starRatingTextLabel');
     if (labelElem) {
-      labelElem.textContent = STAR_LABELS[r] || `${r}★`;
+      labelElem.textContent = STAR_LABELS[r] || `${r}â˜…`;
     }
   }
 
@@ -6818,7 +6818,7 @@
     if (lblTotal) {
       const pText = pFilter !== 'all' ? `Pertemuan ${pFilter}` : 'Semua Pertemuan';
       const kText = kFilter !== 'all' ? kFilter : 'Semua Kelas';
-      lblTotal.innerHTML = `Total data: <strong>${filtered.length}</strong> siswa (${kText} • ${pText})`;
+      lblTotal.innerHTML = `Total data: <strong>${filtered.length}</strong> siswa (${kText} â€¢ ${pText})`;
     }
 
     // Pengurutan (Sorting) Data
@@ -6851,17 +6851,17 @@
 
       let noDisplay = `${idx + 1}`;
       if (uFilter === 'nilai_desc') {
-        if (idx === 0) noDisplay = '<span style="font-size: 1.15rem; font-weight: 800; color: #fbbf24;" title="Peringkat 1 (Tertinggi)">🥇 1</span>';
-        else if (idx === 1) noDisplay = '<span style="font-size: 1.15rem; font-weight: 800; color: #94a3b8;" title="Peringkat 2">🥈 2</span>';
-        else if (idx === 2) noDisplay = '<span style="font-size: 1.15rem; font-weight: 800; color: #d97706;" title="Peringkat 3">🥉 3</span>';
+        if (idx === 0) noDisplay = '<span style="font-size: 1.15rem; font-weight: 800; color: #fbbf24;" title="Peringkat 1 (Tertinggi)">ðŸ¥‡ 1</span>';
+        else if (idx === 1) noDisplay = '<span style="font-size: 1.15rem; font-weight: 800; color: #94a3b8;" title="Peringkat 2">ðŸ¥ˆ 2</span>';
+        else if (idx === 2) noDisplay = '<span style="font-size: 1.15rem; font-weight: 800; color: #d97706;" title="Peringkat 3">ðŸ¥‰ 3</span>';
         else noDisplay = `<strong style="color: var(--text-dim);">#${idx + 1}</strong>`;
       }
 
       tr.innerHTML = `
         <td style="padding: 0.75rem 1rem; text-align: center;">${noDisplay}</td>
         <td style="padding: 0.75rem 1rem;">
-          <strong style="color: #38bdf8; font-size: 0.95rem;">👤 ${p.nama_siswa}</strong>
-          <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">P${p.pertemuan_ke} • ${p.tanggal}</span>
+          <strong style="color: #38bdf8; font-size: 0.95rem;">ðŸ‘¤ ${p.nama_siswa}</strong>
+          <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">P${p.pertemuan_ke} â€¢ ${p.tanggal}</span>
         </td>
         <td style="padding: 0.75rem 1rem;"><span class="badge badge-indigo">${p.kelas}</span></td>
         <td style="padding: 0.75rem 1rem;">${p.nama_kelompok}</td>
@@ -6874,7 +6874,7 @@
         <!-- Keterangan (Tuntas / Remedial & Predikat) -->
         <td style="padding: 0.75rem 1rem; text-align: center;">
           <span class="badge ${nt.nilai_akhir >= 70 ? 'badge-emerald' : 'badge-amber'}" style="font-size: 0.78rem; font-weight: 700; padding: 3px 8px; display: inline-flex; align-items: center; gap: 0.3rem;">
-            ${nt.nilai_akhir >= 70 ? '✅ Tuntas' : '⚠️ Remedial'}
+            ${nt.nilai_akhir >= 70 ? 'âœ… Tuntas' : 'âš ï¸ Remedial'}
           </span>
           <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 3px;">${nt.predikat}</span>
         </td>
@@ -6910,8 +6910,8 @@
         <!-- Aksi -->
         <td style="padding: 0.75rem 1rem; text-align: center;">
           <div style="display: flex; gap: 0.3rem; justify-content: center;">
-            <button class="btn btn-secondary btn-sm btn-edit-p">✏️</button>
-            <button class="btn btn-secondary btn-sm btn-del-p" style="color: #f87171;">🗑️</button>
+            <button class="btn btn-secondary btn-sm btn-edit-p">âœï¸</button>
+            <button class="btn btn-secondary btn-sm btn-del-p" style="color: #f87171;">ðŸ—‘ï¸</button>
           </div>
         </td>
       `;
@@ -6988,10 +6988,10 @@
     const passRate = Math.round((passedStudents.length / ranked.length) * 100);
 
     if (elMaxScore) elMaxScore.textContent = `${formatIndoDecimal(top1._nt.nilai_akhir)}`;
-    if (elMaxStudent) elMaxStudent.textContent = `👤 ${top1.nama_siswa} (${top1.kelas}, P${top1.pertemuan_ke})`;
+    if (elMaxStudent) elMaxStudent.textContent = `ðŸ‘¤ ${top1.nama_siswa} (${top1.kelas}, P${top1.pertemuan_ke})`;
 
     if (elMinScore) elMinScore.textContent = `${formatIndoDecimal(lowest._nt.nilai_akhir)}`;
-    if (elMinStudent) elMinStudent.textContent = `👤 ${lowest.nama_siswa} (${lowest.kelas}, P${lowest.pertemuan_ke})`;
+    if (elMinStudent) elMinStudent.textContent = `ðŸ‘¤ ${lowest.nama_siswa} (${lowest.kelas}, P${lowest.pertemuan_ke})`;
 
     if (elAvgScore) elAvgScore.textContent = `${formatIndoDecimal(avgScore)}`;
     if (elAvgPredikat) {
@@ -7003,15 +7003,15 @@
     }
 
     if (elPassPercent) elPassPercent.textContent = `${passRate}%`;
-    if (elPassCount) elPassCount.textContent = `${passedStudents.length} dari ${ranked.length} siswa tuntas (≥ 70)`;
+    if (elPassCount) elPassCount.textContent = `${passedStudents.length} dari ${ranked.length} siswa tuntas (â‰¥ 70)`;
 
     // 2. Podium Visual Top 3
     if (podiumCont) {
       const top3 = ranked.slice(0, 3);
       const podiumConfig = [
-        { rank: 1, medal: '🥇', title: 'Juara 1 (Tertinggi)', borderColor: '#fbbf24', bg: 'rgba(251, 191, 36, 0.08)', textColor: '#fbbf24', badgeClass: 'badge-amber' },
-        { rank: 2, medal: '🥈', title: 'Juara 2', borderColor: '#94a3b8', bg: 'rgba(148, 163, 184, 0.08)', textColor: '#cbd5e1', badgeClass: 'badge-slate' },
-        { rank: 3, medal: '🥉', title: 'Juara 3', borderColor: '#d97706', bg: 'rgba(217, 119, 6, 0.08)', textColor: '#f59e0b', badgeClass: 'badge-amber' }
+        { rank: 1, medal: 'ðŸ¥‡', title: 'Juara 1 (Tertinggi)', borderColor: '#fbbf24', bg: 'rgba(251, 191, 36, 0.08)', textColor: '#fbbf24', badgeClass: 'badge-amber' },
+        { rank: 2, medal: 'ðŸ¥ˆ', title: 'Juara 2', borderColor: '#94a3b8', bg: 'rgba(148, 163, 184, 0.08)', textColor: '#cbd5e1', badgeClass: 'badge-slate' },
+        { rank: 3, medal: 'ðŸ¥‰', title: 'Juara 3', borderColor: '#d97706', bg: 'rgba(217, 119, 6, 0.08)', textColor: '#f59e0b', badgeClass: 'badge-amber' }
       ];
 
       top3.forEach((s, i) => {
@@ -7034,7 +7034,7 @@
             ${s.nama_siswa}
           </h4>
           <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.75rem;">
-            ${s.kelas} • ${s.nama_kelompok} • Pertemuan ${s.pertemuan_ke}
+            ${s.kelas} â€¢ ${s.nama_kelompok} â€¢ Pertemuan ${s.pertemuan_ke}
           </span>
           <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.5rem;">
             <strong style="font-size: 2.2rem; color: #fbbf24; font-weight: 900; line-height: 1;">${formatIndoDecimal(s._nt.nilai_akhir)}</strong>
@@ -7058,15 +7058,15 @@
       tr.addEventListener('mouseleave', () => tr.style.background = 'transparent');
 
       let rankBadge = '';
-      if (idx === 0) rankBadge = '<span style="font-size: 1.25rem; font-weight: 800; color: #fbbf24;" title="Peringkat 1">🥇 1</span>';
-      else if (idx === 1) rankBadge = '<span style="font-size: 1.25rem; font-weight: 800; color: #94a3b8;" title="Peringkat 2">🥈 2</span>';
-      else if (idx === 2) rankBadge = '<span style="font-size: 1.25rem; font-weight: 800; color: #d97706;" title="Peringkat 3">🥉 3</span>';
+      if (idx === 0) rankBadge = '<span style="font-size: 1.25rem; font-weight: 800; color: #fbbf24;" title="Peringkat 1">ðŸ¥‡ 1</span>';
+      else if (idx === 1) rankBadge = '<span style="font-size: 1.25rem; font-weight: 800; color: #94a3b8;" title="Peringkat 2">ðŸ¥ˆ 2</span>';
+      else if (idx === 2) rankBadge = '<span style="font-size: 1.25rem; font-weight: 800; color: #d97706;" title="Peringkat 3">ðŸ¥‰ 3</span>';
       else rankBadge = `<strong style="font-size: 1rem; color: var(--text-dim);">#${idx + 1}</strong>`;
 
       const isPass = s._nt.nilai_akhir >= 70;
       const statusBadge = isPass
-        ? '<span class="badge badge-emerald" style="display: inline-flex; align-items: center; gap: 0.3rem;"><span>✅</span> Tuntas</span>'
-        : '<span class="badge badge-amber" style="display: inline-flex; align-items: center; gap: 0.3rem;"><span>⚠️</span> Remedial</span>';
+        ? '<span class="badge badge-emerald" style="display: inline-flex; align-items: center; gap: 0.3rem;"><span>âœ…</span> Tuntas</span>'
+        : '<span class="badge badge-amber" style="display: inline-flex; align-items: center; gap: 0.3rem;"><span>âš ï¸</span> Remedial</span>';
 
       const barColor = s._nt.nilai_akhir >= 85 ? '#34d399' : s._nt.nilai_akhir >= 70 ? '#38bdf8' : s._nt.nilai_akhir >= 55 ? '#a78bfa' : '#f87171';
 
@@ -7075,8 +7075,8 @@
           ${rankBadge}
         </td>
         <td style="padding: 0.85rem 1rem;">
-          <strong style="color: #fff; font-size: 0.95rem; display: block;">👤 ${s.nama_siswa}</strong>
-          <span style="font-size: 0.75rem; color: var(--text-muted);">P${s.pertemuan_ke} • ${s.tanggal}</span>
+          <strong style="color: #fff; font-size: 0.95rem; display: block;">ðŸ‘¤ ${s.nama_siswa}</strong>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">P${s.pertemuan_ke} â€¢ ${s.tanggal}</span>
         </td>
         <td style="padding: 0.85rem 1rem;"><span class="badge badge-indigo">${s.kelas}</span></td>
         <td style="padding: 0.85rem 1rem; color: var(--text-muted); font-size: 0.85rem;">${s.nama_kelompok}</td>
@@ -7150,7 +7150,7 @@
         'Skor Memahami (0-100)', 'Konversi Mengaplikasi (0-100)', 'Konversi Merefleksi (0-100)',
         'Pengetahuan: Memahami (Benar)', 'Pengetahuan: Memahami (%)',
         'Pengetahuan: Mengaplikasi (Level 1-4)',
-        'Pengetahuan: Merefleksi (Level 1-4)', 'Pengetahuan: Siswa Self-Rating (1-5★)',
+        'Pengetahuan: Merefleksi (Level 1-4)', 'Pengetahuan: Siswa Self-Rating (1-5â˜…)',
         'Keterampilan (Level 1-4)', 'Keterampilan (Predikat)', 'Keterampilan (Catatan)',
         'Sikap (Level 1-4)', 'Sikap (Predikat)', 'Sikap (Catatan)',
         'Jawaban Refleksi Siswa'
@@ -7179,7 +7179,7 @@
           `"${formatIndoDecimal(p.pengetahuan?.memahami?.skor_persen ?? 0)}%"`,
           p.pengetahuan?.mengaplikasi?.level ?? 1,
           p.pengetahuan?.merefleksi?.level ?? 1,
-          `${p.pengetahuan?.merefleksi?.self_rating ?? 1}★`,
+          `${p.pengetahuan?.merefleksi?.self_rating ?? 1}â˜…`,
           p.keterampilan?.level ?? 1,
           `"${(p.keterampilan?.label || '').replace(/"/g, '""')}"`,
           `"${(p.keterampilan?.catatan || '').replace(/"/g, '""')}"`,
@@ -7441,13 +7441,13 @@
     const titleElem = document.getElementById('grafikTitle');
     if (titleElem) {
       if (dimension === 'memahami') {
-        titleElem.innerHTML = '<span>🧠</span> Tren Capaian Aspek 1: Memahami (0–100%)';
+        titleElem.innerHTML = '<span>ðŸ§ </span> Tren Capaian Aspek 1: Memahami (0â€“100%)';
       } else if (dimension === 'mengaplikasi') {
-        titleElem.innerHTML = '<span>🔬</span> Tren Capaian Aspek 2: Mengaplikasi (Skala 1,0–4,0)';
+        titleElem.innerHTML = '<span>ðŸ”¬</span> Tren Capaian Aspek 2: Mengaplikasi (Skala 1,0â€“4,0)';
       } else if (dimension === 'merefleksi') {
-        titleElem.innerHTML = '<span>📝</span> Tren Capaian Aspek 3: Merefleksi (Rubrik Level L1–L4)';
+        titleElem.innerHTML = '<span>ðŸ“</span> Tren Capaian Aspek 3: Merefleksi (Rubrik Level L1â€“L4)';
       } else {
-        titleElem.innerHTML = '<span>📈</span> Kurva Capaian Belajar IPA per Pertemuan';
+        titleElem.innerHTML = '<span>ðŸ“ˆ</span> Kurva Capaian Belajar IPA per Pertemuan';
       }
     }
 
@@ -7542,7 +7542,7 @@
         data: meetingStats.map((m, idx) => ({ x: getX(idx), y: getY(m.avgMem), val: `${m.avgMem}%` }))
       });
       seriesList.push({
-        name: 'Mengaplikasi (Level 1–4)',
+        name: 'Mengaplikasi (Level 1â€“4)',
         color: '#34d399',
         fill: null,
         data: meetingStats.map((m, idx) => ({
@@ -7552,7 +7552,7 @@
         }))
       });
       seriesList.push({
-        name: 'Merefleksi (Level L1–L4)',
+        name: 'Merefleksi (Level L1â€“L4)',
         color: '#a78bfa',
         fill: null,
         data: meetingStats.map((m, idx) => ({
@@ -7570,14 +7570,14 @@
       });
     } else if (dimension === 'mengaplikasi') {
       seriesList.push({
-        name: 'Skor Mengaplikasi (1,0–4,0)',
+        name: 'Skor Mengaplikasi (1,0â€“4,0)',
         color: '#34d399',
         fill: 'rgba(52, 211, 153, 0.15)',
         data: meetingStats.map((m, idx) => ({ x: getX(idx), y: getY(m.avgApl), val: `Level ${formatIndoDecimal(m.avgApl)}` }))
       });
     } else if (dimension === 'merefleksi') {
       seriesList.push({
-        name: 'Skor Merefleksi (L1–L4)',
+        name: 'Skor Merefleksi (L1â€“L4)',
         color: '#a78bfa',
         fill: 'rgba(167, 139, 250, 0.15)',
         data: meetingStats.map((m, idx) => {
@@ -7671,7 +7671,7 @@
           ${strMerefleksi}
         </td>
         <td style="padding: 0.9rem 1.25rem; font-weight: 800; color: #fbbf24; font-size: 1.15rem; background: rgba(251, 191, 36, 0.05); border-left: 1px solid rgba(251, 191, 36, 0.25);">
-          🎯 ${formatIndoDecimal(m.avgNilaiTugas)} <span style="font-size: 0.8rem; font-weight: normal; color: #94a3b8;">/ 100</span>
+          ðŸŽ¯ ${formatIndoDecimal(m.avgNilaiTugas)} <span style="font-size: 0.8rem; font-weight: normal; color: #94a3b8;">/ 100</span>
           <div style="font-size: 0.75rem; font-weight: 500; color: ${m.persentaseTuntas >= 70 ? '#34d399' : (m.persentaseTuntas >= 50 ? '#60a5fa' : '#fbbf24')}; margin-top: 3px;">
             Ketuntasan: ${m.countTuntas}/${m.jumlahSiswa} Siswa (${formatIndoDecimal(m.persentaseTuntas)}%)
           </div>
@@ -7710,20 +7710,20 @@
       const rubRef = getRefleksiRubrikInfo(m.avgRef);
 
       const tuntasInfo = (m.countTuntas !== undefined) ?
-        `• <strong>🎯 Ketuntasan Belajar Siswa: ${m.countTuntas} dari ${m.jumlahSiswa} Siswa (${formatIndoDecimal(m.persentaseTuntas)}%)</strong> tuntas KKM (≥ 70).<br/>` : '';
+        `â€¢ <strong>ðŸŽ¯ Ketuntasan Belajar Siswa: ${m.countTuntas} dari ${m.jumlahSiswa} Siswa (${formatIndoDecimal(m.persentaseTuntas)}%)</strong> tuntas KKM (â‰¥ 70).<br/>` : '';
 
       if (idx === 0) {
         html += `
           <div style="background: rgba(255, 255, 255, 0.03); border-left: 3px solid #38bdf8; padding: 0.75rem 1rem; border-radius: 4px;">
-            <strong style="color: #38bdf8;">📌 Pertemuan 1 (${m.topik}):</strong>
+            <strong style="color: #38bdf8;">ðŸ“Œ Pertemuan 1 (${m.topik}):</strong>
             <div style="margin-top: 0.35rem; line-height: 1.6;">
-              • <strong>🎯 Rata-rata Nilai Tugas Pertemuan: ${strNilaiTugas} / 100</strong> (Konversi gabungan Memahami, Mengaplikasi, dan Merefleksi).<br/>
+              â€¢ <strong>ðŸŽ¯ Rata-rata Nilai Tugas Pertemuan: ${strNilaiTugas} / 100</strong> (Konversi gabungan Memahami, Mengaplikasi, dan Merefleksi).<br/>
               ${tuntasInfo}
-              • <strong>1. Skor Memahami ${strMem} (${katMem})</strong>: Rata-rata siswa menjawab benar sekitar ${Math.round((m.avgMem / 100) * 15)} dari 15 soal objektif. Penguasaan konsep awal berada pada kategori <em>${katMem}</em>.<br/>
-              • <strong>2. Skor Mengaplikasi ${strApl} / 4,0 (${rubApl.nama})</strong>: Siswa menunjukkan capaian <em>${rubApl.deskripsi}</em>.<br/>
-              • <strong>3. Skor Merefleksi ${strRef} / 4,0 (${rubRef.nama})</strong>: Kualitas refleksi siswa menunjukkan bahwa siswa <em>${rubRef.deskripsi}</em>.
+              â€¢ <strong>1. Skor Memahami ${strMem} (${katMem})</strong>: Rata-rata siswa menjawab benar sekitar ${Math.round((m.avgMem / 100) * 15)} dari 15 soal objektif. Penguasaan konsep awal berada pada kategori <em>${katMem}</em>.<br/>
+              â€¢ <strong>2. Skor Mengaplikasi ${strApl} / 4,0 (${rubApl.nama})</strong>: Siswa menunjukkan capaian <em>${rubApl.deskripsi}</em>.<br/>
+              â€¢ <strong>3. Skor Merefleksi ${strRef} / 4,0 (${rubRef.nama})</strong>: Kualitas refleksi siswa menunjukkan bahwa siswa <em>${rubRef.deskripsi}</em>.
               <div style="margin-top: 0.5rem; padding: 0.6rem 0.85rem; background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; border-radius: 4px; font-size: 0.85rem; color: #fde68a; line-height: 1.5;">
-                <strong>💡 Catatan Observasi Guru (Fase Adaptasi):</strong> Rata-rata capaian pertemuan pertama masih berada pada rentang rendah/cukup (${strNilaiTugas}) dengan hanya sebagian kecil peserta didik yang tuntas (${m.countTuntas ?? 4} dari ${m.jumlahSiswa} siswa). Hal ini wajar secara pedagogis karena peserta didik masih dalam tahap adaptasi terhadap ritme kerja kelompok, instrumen LKPD interaktif, pengenalan alat ukur IPA, dan pembiasaan refleksi metakognitif.
+                <strong>ðŸ’¡ Catatan Observasi Guru (Fase Adaptasi):</strong> Rata-rata capaian pertemuan pertama masih berada pada rentang rendah/cukup (${strNilaiTugas}) dengan hanya sebagian kecil peserta didik yang tuntas (${m.countTuntas ?? 4} dari ${m.jumlahSiswa} siswa). Hal ini wajar secara pedagogis karena peserta didik masih dalam tahap adaptasi terhadap ritme kerja kelompok, instrumen LKPD interaktif, pengenalan alat ukur IPA, dan pembiasaan refleksi metakognitif.
               </div>
             </div>
           </div>
@@ -7735,10 +7735,10 @@
         const deltaRef = Number((m.avgRef - prev.avgRef).toFixed(1));
         const deltaNilaiTugas = Number((m.avgNilaiTugas - prev.avgNilaiTugas).toFixed(1));
 
-        const iconMem = deltaMem >= 0 ? '📈' : '📉';
-        const iconApl = deltaApl >= 0 ? '📈' : '📉';
-        const iconRef = deltaRef >= 0 ? '📈' : '📉';
-        const iconNT = deltaNilaiTugas >= 0 ? '📈' : '📉';
+        const iconMem = deltaMem >= 0 ? 'ðŸ“ˆ' : 'ðŸ“‰';
+        const iconApl = deltaApl >= 0 ? 'ðŸ“ˆ' : 'ðŸ“‰';
+        const iconRef = deltaRef >= 0 ? 'ðŸ“ˆ' : 'ðŸ“‰';
+        const iconNT = deltaNilaiTugas >= 0 ? 'ðŸ“ˆ' : 'ðŸ“‰';
 
         const signMem = deltaMem >= 0 ? `+${deltaMem}%` : `${deltaMem}%`;
         const signApl = deltaApl >= 0 ? `+${formatIndoDecimal(deltaApl)}` : `${formatIndoDecimal(deltaApl)}`;
@@ -7747,21 +7747,21 @@
 
         const stageNote = (m.pertemuan === 2) ? `
               <div style="margin-top: 0.5rem; padding: 0.6rem 0.85rem; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; border-radius: 4px; font-size: 0.85rem; color: #bfdbfe; line-height: 1.5;">
-                <strong>💡 Catatan Observasi Guru (Fase Konsolidasi):</strong> Capaian belajar berkembang ke kategori <strong>Sedang</strong> (${strNilaiTugas}) dengan peningkatan ketuntasan menjadi ${m.countTuntas} siswa (${formatIndoDecimal(m.persentaseTuntas)}%). Peserta didik mulai terbiasa dengan metode praktikum dan pembagian tugas kelompok berjalan lebih teratur dan efektif.
+                <strong>ðŸ’¡ Catatan Observasi Guru (Fase Konsolidasi):</strong> Capaian belajar berkembang ke kategori <strong>Sedang</strong> (${strNilaiTugas}) dengan peningkatan ketuntasan menjadi ${m.countTuntas} siswa (${formatIndoDecimal(m.persentaseTuntas)}%). Peserta didik mulai terbiasa dengan metode praktikum dan pembagian tugas kelompok berjalan lebih teratur dan efektif.
               </div>` : (m.pertemuan === 3 ? `
               <div style="margin-top: 0.5rem; padding: 0.6rem 0.85rem; background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; border-radius: 4px; font-size: 0.85rem; color: #a7f3d0; line-height: 1.5;">
-                <strong>💡 Catatan Observasi Guru (Fase Penguasaan):</strong> Capaian belajar mencapai kategori <strong>Tinggi</strong> (${strNilaiTugas}) dengan tingkat ketuntasan optimal (${m.countTuntas} dari ${m.jumlahSiswa} siswa / ${formatIndoDecimal(m.persentaseTuntas)}%). Peserta didik telah mandiri, terampil menggunakan alat ukur, dan refleksi belajarnya menunjukkan kesadaran metakognitif yang mendalam.
+                <strong>ðŸ’¡ Catatan Observasi Guru (Fase Penguasaan):</strong> Capaian belajar mencapai kategori <strong>Tinggi</strong> (${strNilaiTugas}) dengan tingkat ketuntasan optimal (${m.countTuntas} dari ${m.jumlahSiswa} siswa / ${formatIndoDecimal(m.persentaseTuntas)}%). Peserta didik telah mandiri, terampil menggunakan alat ukur, dan refleksi belajarnya menunjukkan kesadaran metakognitif yang mendalam.
               </div>` : '');
 
         html += `
           <div style="background: rgba(255, 255, 255, 0.03); border-left: 3px solid #34d399; padding: 0.75rem 1rem; border-radius: 4px;">
-            <strong style="color: #34d399;">📌 Pertemuan ${m.pertemuan} (${m.topik}):</strong>
+            <strong style="color: #34d399;">ðŸ“Œ Pertemuan ${m.pertemuan} (${m.topik}):</strong>
             <div style="margin-top: 0.35rem; line-height: 1.6;">
-              • <strong>🎯 Rata-rata Nilai Tugas Pertemuan: ${strNilaiTugas} / 100</strong> (${iconNT} ${signNT} poin vs P${prev.pertemuan}: ${formatIndoDecimal(prev.avgNilaiTugas)} ➔ ${strNilaiTugas}).<br/>
+              â€¢ <strong>ðŸŽ¯ Rata-rata Nilai Tugas Pertemuan: ${strNilaiTugas} / 100</strong> (${iconNT} ${signNT} poin vs P${prev.pertemuan}: ${formatIndoDecimal(prev.avgNilaiTugas)} âž” ${strNilaiTugas}).<br/>
               ${tuntasInfo}
-              • <strong>1. Skor Memahami ${strMem} (${katMem})</strong>: Mengalami perkembangan ${iconMem} <strong>${signMem}</strong> dibanding Pertemuan ${prev.pertemuan} (${Math.round(prev.avgMem)}% ➔ ${strMem}). Ketepatan penguasaan materi konsep mengalami peningkatan.<br/>
-              • <strong>2. Skor Mengaplikasi ${strApl} / 4,0 (${rubApl.nama})</strong>: Kemampuan aplikasi materi meningkat ${iconApl} <strong>${signApl} poin</strong> (${formatIndoDecimal(prev.avgApl)} ➔ ${strApl}). Siswa ${rubApl.deskripsi.toLowerCase()}<br/>
-              • <strong>3. Skor Merefleksi ${strRef} / 4,0 (${rubRef.nama})</strong>: Refleksi metakognitif siswa meningkat ${iconRef} <strong>${signRef} poin</strong> (${formatIndoDecimal(prev.avgRef)} ➔ ${strRef}). Pada tingkat ini, siswa ${rubRef.deskripsi.toLowerCase()}
+              â€¢ <strong>1. Skor Memahami ${strMem} (${katMem})</strong>: Mengalami perkembangan ${iconMem} <strong>${signMem}</strong> dibanding Pertemuan ${prev.pertemuan} (${Math.round(prev.avgMem)}% âž” ${strMem}). Ketepatan penguasaan materi konsep mengalami peningkatan.<br/>
+              â€¢ <strong>2. Skor Mengaplikasi ${strApl} / 4,0 (${rubApl.nama})</strong>: Kemampuan aplikasi materi meningkat ${iconApl} <strong>${signApl} poin</strong> (${formatIndoDecimal(prev.avgApl)} âž” ${strApl}). Siswa ${rubApl.deskripsi.toLowerCase()}<br/>
+              â€¢ <strong>3. Skor Merefleksi ${strRef} / 4,0 (${rubRef.nama})</strong>: Refleksi metakognitif siswa meningkat ${iconRef} <strong>${signRef} poin</strong> (${formatIndoDecimal(prev.avgRef)} âž” ${strRef}). Pada tingkat ini, siswa ${rubRef.deskripsi.toLowerCase()}
               ${stageNote}
             </div>
           </div>
@@ -7783,19 +7783,19 @@
       if (badgeStatus) {
         if (totalKenaikanMem > 0 || totalKenaikanApl > 0 || totalKenaikanRef > 0) {
           badgeStatus.className = 'badge badge-emerald';
-          badgeStatus.textContent = `🟢 Capaian Meningkat (+${formatIndoDecimal(totalKenaikanNT)} Poin)`;
+          badgeStatus.textContent = `ðŸŸ¢ Capaian Meningkat (+${formatIndoDecimal(totalKenaikanNT)} Poin)`;
         } else if (totalKenaikanMem === 0 && totalKenaikanApl === 0 && totalKenaikanRef === 0) {
           badgeStatus.className = 'badge badge-blue';
-          badgeStatus.textContent = '🔵 Capaian Belajar Stabil';
+          badgeStatus.textContent = 'ðŸ”µ Capaian Belajar Stabil';
         } else {
           badgeStatus.className = 'badge badge-amber';
-          badgeStatus.textContent = '🟡 Perlu Penguatan Materi';
+          badgeStatus.textContent = 'ðŸŸ¡ Perlu Penguatan Materi';
         }
       }
 
       html += `
         <div style="background: rgba(56, 189, 248, 0.08); border: 1px dashed rgba(56, 189, 248, 0.35); padding: 0.85rem 1.1rem; border-radius: var(--radius-md); margin-top: 0.4rem;">
-          <strong style="color: #38bdf8; font-size: 0.95rem;">📊 Rangkuman Peningkatan Capaian Belajar Siswa:</strong>
+          <strong style="color: #38bdf8; font-size: 0.95rem;">ðŸ“Š Rangkuman Peningkatan Capaian Belajar Siswa:</strong>
           <p style="margin-top: 0.35rem; font-size: 0.85rem; line-height: 1.55;">
             Perjalanan belajar siswa menunjukkan kurva perkembangan yang sangat positif dan terstruktur: berawal dari tahap <strong>adaptasi awal</strong> pada Pertemuan 1 (rata-rata ${formatIndoDecimal(first.avgNilaiTugas)}, ${first.countTuntas ?? 4} siswa tuntas), berlanjut pada tahap <strong>konsolidasi pemahaman</strong> pada Pertemuan 2 (kategori Sedang), hingga mencapai tahap <strong>kemandirian dan penguasaan materi optimal</strong> pada Pertemuan ${latest.pertemuan} (kategori Tinggi, rata-rata ${formatIndoDecimal(latest.avgNilaiTugas)}, ${latest.countTuntas ?? latest.jumlahSiswa} siswa tuntas).
             Skor pemahaman konsep (Memahami) bertambah <strong>${totalKenaikanMem >= 0 ? '+' : ''}${totalKenaikanMem}%</strong>,
@@ -8176,7 +8176,7 @@
         if (idx === 0) {
           narasiHtml += `
             <div style="margin-bottom: 8px; border-left: 3px solid #0284c7; padding-left: 8px;">
-              <strong>• Pertemuan 1 (${m.topik}):</strong> Rata-rata Nilai Tugas awal <strong>${strNT} / 100</strong> (Ketuntasan: ${m.countTuntas}/${m.jumlahSiswa} siswa / ${m.persentaseTuntas}%).
+              <strong>â€¢ Pertemuan 1 (${m.topik}):</strong> Rata-rata Nilai Tugas awal <strong>${strNT} / 100</strong> (Ketuntasan: ${m.countTuntas}/${m.jumlahSiswa} siswa / ${m.persentaseTuntas}%).
               Pemahaman konsep berada pada kategori <em>${katMem} (${strMem})</em>, kemampuan aplikasi sains <em>${rubApl.nama} (${strApl})</em>, dan kesadaran refleksi belajar <em>${rubRef.nama} (${strRef})</em>.
               <div style="font-size: 9pt; color: #475569; margin-top: 2px;">
                 <em>Catatan Fase Adaptasi:</em> Peserta didik masih dalam tahap penyesuaian terhadap ritme eksperimen LKPD dan penggunaan alat ukur sains.
@@ -8198,7 +8198,7 @@
           const stageLabel = m.pertemuan === 2 ? 'Fase Konsolidasi' : 'Fase Kemandirian & Penguasaan';
           narasiHtml += `
             <div style="margin-bottom: 8px; border-left: 3px solid #059669; padding-left: 8px;">
-              <strong>• Pertemuan ${m.pertemuan} (${m.topik}):</strong> Nilai Tugas berkembang menjadi <strong>${strNT} / 100</strong> (${signNT} poin vs P${prev.pertemuan}).
+              <strong>â€¢ Pertemuan ${m.pertemuan} (${m.topik}):</strong> Nilai Tugas berkembang menjadi <strong>${strNT} / 100</strong> (${signNT} poin vs P${prev.pertemuan}).
               Tingkat ketuntasan meningkat menjadi <strong>${m.countTuntas} siswa (${m.persentaseTuntas}%)</strong>.
               Skor Memahami meningkat ${signMem}, kemampuan Mengaplikasi naik ${signApl} poin (${rubApl.nama}), dan kedalaman Merefleksi meningkat ${signRef} poin (${rubRef.nama}).
               <div style="font-size: 9pt; color: #475569; margin-top: 2px;">
@@ -8216,7 +8216,7 @@
         const totalGainMem = latest.avgMem - first.avgMem;
         narasiHtml += `
           <div style="margin-top: 8px; padding: 6px 10px; background-color: #f1f5f9; border-radius: 4px; font-weight: 600;">
-            📊 <strong>Kesimpulan Capaian Belajar:</strong> Secara akumulatif antar pertemuan, terjadi peningkatan rata-rata capaian sebesar <strong>+${formatIndoDecimal(totalGainNT)} Poin</strong>, dengan penguatan pemahaman konsep sebesar <strong>+${totalGainMem}%</strong>. Pembelajaran berdiferensiasi dan instrumen LKPD terbukti efektif meningkatkan ketuntasan belajar siswa.
+            ðŸ“Š <strong>Kesimpulan Capaian Belajar:</strong> Secara akumulatif antar pertemuan, terjadi peningkatan rata-rata capaian sebesar <strong>+${formatIndoDecimal(totalGainNT)} Poin</strong>, dengan penguatan pemahaman konsep sebesar <strong>+${totalGainMem}%</strong>. Pembelajaran berdiferensiasi dan instrumen LKPD terbukti efektif meningkatkan ketuntasan belajar siswa.
           </div>
         `;
       }
@@ -8254,7 +8254,7 @@
         <!-- KOP DOKUMEN -->
         <div class="print-header" style="text-align: center; margin-bottom: 10px;">
           <h2 class="print-main-title" style="font-size: ${fontSize + 3.5}pt; font-weight: 800; text-transform: uppercase; margin: 0; color: #000; letter-spacing: 0.5px;">LAPORAN ANALISIS CAPAIAN BELAJAR &amp; PENILAIAN LKPD IPA</h2>
-          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">PEMBELAJARAN BERBASIS INKUIRI &amp; REFLEKSI METAKOGNITIF (3 DIMENSI)${sekolah ? ' • ' + sekolah : ''}</h3>
+          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">PEMBELAJARAN BERBASIS INKUIRI &amp; REFLEKSI METAKOGNITIF (3 DIMENSI)${sekolah ? ' â€¢ ' + sekolah : ''}</h3>
           <div class="print-divider" style="border-bottom: 2px solid #000; border-top: 1px solid #000; height: 2px; margin: 8px 0 10px 0;"></div>
         </div>
 
@@ -8287,7 +8287,7 @@
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">1. Rata-Rata Memahami</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">2. Rata-Rata Mengaplikasi</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">3. Rata-Rata Merefleksi</th>
-              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">🎯 Rata-Rata Nilai Akhir</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">ðŸŽ¯ Rata-Rata Nilai Akhir</th>
             </tr>
           </thead>
           <tbody>
@@ -8332,7 +8332,7 @@
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 13%; text-align: center;">1. Memahami</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 15%; text-align: center;">2. Mengaplikasi</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 15%; text-align: center;">3. Merefleksi</th>
-              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center; background-color: #fef3c7;">🎯 Nilai Akhir</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center; background-color: #fef3c7;">ðŸŽ¯ Nilai Akhir</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Ketuntasan</th>
             </tr>
           </thead>
@@ -8347,25 +8347,25 @@
           <table style="width: 100%; border-collapse: collapse; margin-top: 4px; border: none;">
             <tr>
               <td style="border: none; padding: 1px 4px; width: 33%; vertical-align: top;">
-                <strong>1. Memahami (0–100%):</strong><br/>
-                • ≥85%: Sangat Baik (A)<br/>
-                • 70–84%: Baik (B)<br/>
-                • 55–69%: Cukup (C)<br/>
-                • &lt;55%: Perlu Bimbingan (D)
+                <strong>1. Memahami (0â€“100%):</strong><br/>
+                â€¢ â‰¥85%: Sangat Baik (A)<br/>
+                â€¢ 70â€“84%: Baik (B)<br/>
+                â€¢ 55â€“69%: Cukup (C)<br/>
+                â€¢ &lt;55%: Perlu Bimbingan (D)
               </td>
               <td style="border: none; padding: 1px 4px; width: 33%; vertical-align: top;">
-                <strong>2. Mengaplikasi (1,0–4,0):</strong><br/>
-                • Level 4: Sangat Baik (Tepat &amp; logis)<br/>
-                • Level 3: Baik (Tepat sebagian besar)<br/>
-                • Level 2: Cukup (Analisis terbatas)<br/>
-                • Level 1: Perlu Bimbingan (Kosong/keliru)
+                <strong>2. Mengaplikasi (1,0â€“4,0):</strong><br/>
+                â€¢ Level 4: Sangat Baik (Tepat &amp; logis)<br/>
+                â€¢ Level 3: Baik (Tepat sebagian besar)<br/>
+                â€¢ Level 2: Cukup (Analisis terbatas)<br/>
+                â€¢ Level 1: Perlu Bimbingan (Kosong/keliru)
               </td>
               <td style="border: none; padding: 1px 4px; width: 34%; vertical-align: top;">
-                <strong>3. Merefleksi (L1–L4):</strong><br/>
-                • L4: Sangat Reflektif (Spesifik &amp; jujur)<br/>
-                • L3: Reflektif (Cukup jelas &amp; relevan)<br/>
-                • L2: Kurang Reflektif (Singkat/normatif)<br/>
-                • L1: Belum Reflektif (Tidak menjawab)
+                <strong>3. Merefleksi (L1â€“L4):</strong><br/>
+                â€¢ L4: Sangat Reflektif (Spesifik &amp; jujur)<br/>
+                â€¢ L3: Reflektif (Cukup jelas &amp; relevan)<br/>
+                â€¢ L2: Kurang Reflektif (Singkat/normatif)<br/>
+                â€¢ L1: Belum Reflektif (Tidak menjawab)
               </td>
             </tr>
           </table>
@@ -8375,7 +8375,7 @@
         ${optNarasi && narasiHtml ? `
           <div class="print-narasi-box" style="border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 8px 12px; margin-bottom: 12px; font-size: ${fontSize - 0.5}pt; line-height: 1.5;">
             <strong style="display: block; margin-bottom: 6px; font-size: ${fontSize}pt; color: #0f172a; text-transform: uppercase;">
-              📝 Narasi Analisis Perkembangan Belajar Siswa Antar Pertemuan:
+              ðŸ“ Narasi Analisis Perkembangan Belajar Siswa Antar Pertemuan:
             </strong>
             ${narasiHtml}
           </div>
@@ -8436,7 +8436,7 @@
         <!-- KOP DOKUMEN -->
         <div class="print-header" style="text-align: center; margin-bottom: 12px;">
           <h2 class="print-main-title" style="font-size: ${fontSize + 3.5}pt; font-weight: 800; text-transform: uppercase; margin: 0; color: #000; letter-spacing: 0.5px;">INSTRUMEN &amp; PANDUAN RUBRIK PENILAIAN LEMBAR KERJA PESERTA DIDIK (LKPD) IPA</h2>
-          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">KURIKULUM MERDEKA — PEMBELAJARAN BERBASIS INKUIRI &amp; REFLEKSI METAKOGNITIF${sekolah ? ' • ' + sekolah : ''}</h3>
+          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">KURIKULUM MERDEKA â€” PEMBELAJARAN BERBASIS INKUIRI &amp; REFLEKSI METAKOGNITIF${sekolah ? ' â€¢ ' + sekolah : ''}</h3>
           <div class="print-divider" style="border-bottom: 2px solid #000; border-top: 1px solid #000; height: 2px; margin: 8px 0 12px 0;"></div>
         </div>
 
@@ -8492,28 +8492,28 @@
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">1</td>
               <td style="font-weight: 700; border: 1px solid #1e293b; padding: 5px 8px; color: #0284c7;">Dimensi 1: Memahami</td>
-              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">0 – 100%</td>
+              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">0 â€“ 100%</td>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">40%</td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">Penguasaan konsep esensial materi sains melalui 15 butir tes objektif LKPD.</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">2</td>
               <td style="font-weight: 700; border: 1px solid #1e293b; padding: 5px 8px; color: #059669;">Dimensi 2: Mengaplikasi</td>
-              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">Skala 1,0 – 4,0</td>
+              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">Skala 1,0 â€“ 4,0</td>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">40%</td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">Kemampuan bernalar dalam menerapkan konsep, rumus, dan analisis data eksperimen.</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">3</td>
               <td style="font-weight: 700; border: 1px solid #1e293b; padding: 5px 8px; color: #7c3aed;">Dimensi 3: Merefleksi</td>
-              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">Rubrik L1 – L4</td>
+              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">Rubrik L1 â€“ L4</td>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">20%</td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">Kedalaman metakognisi: evaluasi kesulitan belajar dan pemaknaan konsep.</td>
             </tr>
             <tr style="background-color: #fef3c7; font-weight: bold;">
               <td colspan="3" style="text-align: right; border: 1px solid #1e293b; padding: 5px 8px;">Total Pembobotan &amp; KKM:</td>
               <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">100%</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Kriteria Ketuntasan Minimal (KKM / KKTP): Nilai Akhir ≥ 70</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Kriteria Ketuntasan Minimal (KKM / KKTP): Nilai Akhir â‰¥ 70</td>
             </tr>
           </tbody>
         </table>
@@ -8523,7 +8523,7 @@
           II. Matriks Rubrik Dimensi 1: Pemahaman Konsep (Memahami)
         </h4>
         <p style="margin: 4px 0 6px 0; font-size: ${fontSize}pt;">
-          <strong>Formula Perhitungan:</strong> <code>Nilai Memahami = (Jumlah Jawaban Benar ÷ 15 Soal) × 100%</code>.
+          <strong>Formula Perhitungan:</strong> <code>Nilai Memahami = (Jumlah Jawaban Benar Ã· 15 Soal) Ã— 100%</code>.
         </p>
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
           <thead>
@@ -8535,19 +8535,19 @@
           </thead>
           <tbody>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">85% – 100%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">85% â€“ 100%</td>
               <td style="text-align: center; font-weight: 700; color: #059669; border: 1px solid #1e293b; padding: 5px 8px;">Sangat Baik (A)</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Menguasai konsep esensial materi secara mendalam, akurat, dan minim kekeliruan (13–15 butir benar).</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Menguasai konsep esensial materi secara mendalam, akurat, dan minim kekeliruan (13â€“15 butir benar).</td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">70% – 84%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">70% â€“ 84%</td>
               <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Baik (B) [TUNTAS]</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Menguasai konsep dasar materi sains secara tepat dan memenuhi target minimum kompetensi (11–12 butir benar).</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Menguasai konsep dasar materi sains secara tepat dan memenuhi target minimum kompetensi (11â€“12 butir benar).</td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">55% – 69%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">55% â€“ 69%</td>
               <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Cukup (C) [REMEDIAL]</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Memahami sebagian konsep dasar, namun masih membutuhkan penguatan pada materi tertentu (8–10 butir benar).</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Memahami sebagian konsep dasar, namun masih membutuhkan penguatan pada materi tertentu (8â€“10 butir benar).</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">&lt; 55%</td>
@@ -8647,7 +8647,7 @@
 
         <!-- PANDUAN BINTANG MANDIRI SISWA -->
         <p style="margin: 4px 0 6px 0; font-size: ${fontSize - 0.5}pt; color: #475569;">
-          <em>Catatan:</em> Skor refleksi dinilai berdasarkan kedalaman uraian teks refleksi siswa di rubrik L1–L4. Penilaian bintang mandiri (⭐ 1–5) berfungsi sebagai alat ukur persepsi diri siswa (Self-Rating Awareness).
+          <em>Catatan:</em> Skor refleksi dinilai berdasarkan kedalaman uraian teks refleksi siswa di rubrik L1â€“L4. Penilaian bintang mandiri (â­ 1â€“5) berfungsi sebagai alat ukur persepsi diri siswa (Self-Rating Awareness).
         </p>
 
         <!-- BAGIAN 5: OBSERVASI KETERAMPILAN & SIKAP -->
@@ -8658,26 +8658,26 @@
           <div>
             <strong>A. Keterampilan Praktikum (Psikomotorik):</strong>
             <ul style="margin: 4px 0; padding-left: 18px; font-size: ${fontSize - 0.5}pt;">
-              <li><strong>1. Keaktifan:</strong> Berpartisipasi aktif mengambil peran dalam percobaan (Skala 1–4).</li>
-              <li><strong>2. Kerapian:</strong> Menjaga kerapian LKPD dan merapikan alat ukur/bahan setelah praktikum (Skala 1–4).</li>
-              <li><strong>3. Prosedur:</strong> Mematuhi instruksi langkah kerja dan keselamatan kerja IPA (Skala 1–4).</li>
+              <li><strong>1. Keaktifan:</strong> Berpartisipasi aktif mengambil peran dalam percobaan (Skala 1â€“4).</li>
+              <li><strong>2. Kerapian:</strong> Menjaga kerapian LKPD dan merapikan alat ukur/bahan setelah praktikum (Skala 1â€“4).</li>
+              <li><strong>3. Prosedur:</strong> Mematuhi instruksi langkah kerja dan keselamatan kerja IPA (Skala 1â€“4).</li>
             </ul>
           </div>
           <div>
             <strong>B. Sikap Ilmiah Peserta Didik (Afektif):</strong>
             <ul style="margin: 4px 0; padding-left: 18px; font-size: ${fontSize - 0.5}pt;">
-              <li><strong>1. Kerjasama:</strong> Kolaboratif, saling membantu dan menghargai pendapat teman (Skala 1–4).</li>
-              <li><strong>2. Disiplin:</strong> Tepat waktu dalam memulai praktikum dan mengumpulkan LKPD (Skala 1–4).</li>
-              <li><strong>3. Tanggung Jawab:</strong> Menyelesaikan seluruh tugas kelompok secara tuntas dan jujur (Skala 1–4).</li>
+              <li><strong>1. Kerjasama:</strong> Kolaboratif, saling membantu dan menghargai pendapat teman (Skala 1â€“4).</li>
+              <li><strong>2. Disiplin:</strong> Tepat waktu dalam memulai praktikum dan mengumpulkan LKPD (Skala 1â€“4).</li>
+              <li><strong>3. Tanggung Jawab:</strong> Menyelesaikan seluruh tugas kelompok secara tuntas dan jujur (Skala 1â€“4).</li>
             </ul>
           </div>
         </div>
 
         <!-- BAGIAN 6: FORMULA KONVERSI NILAI AKHIR -->
         <div style="border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 8px 12px; margin-bottom: 14px; font-size: ${fontSize}pt;">
-          <strong>VI. Formula Konversi Nilai Akhir LKPD (Skala 0 – 100):</strong>
+          <strong>VI. Formula Konversi Nilai Akhir LKPD (Skala 0 â€“ 100):</strong>
           <div style="margin: 4px 0; font-family: monospace; font-weight: bold; color: #0f172a; background: #e2e8f0; padding: 5px 8px; border-radius: 3px;">
-            Nilai Akhir = (Skor Memahami × 40%) + ((Skor Mengaplikasi ÷ 4) × 100 × 40%) + ((Skor Merefleksi ÷ 4) × 100 × 20%)
+            Nilai Akhir = (Skor Memahami Ã— 40%) + ((Skor Mengaplikasi Ã· 4) Ã— 100 Ã— 40%) + ((Skor Merefleksi Ã· 4) Ã— 100 Ã— 20%)
           </div>
           <div style="font-size: 8.5pt; color: #475569; margin-top: 3px;">
             Kriteria Kelulusan: Nilai Akhir &ge; 70 dinyatakan <strong>TUNTAS</strong>, dan Nilai Akhir &lt; 70 dinyatakan <strong>REMEDIAL</strong>.
@@ -8713,11 +8713,11 @@
     const optNarasi = document.getElementById('prevOptNarasi')?.checked ?? true;
 
     // Perbarui teks informasi preview
-    const paperName = paperSize === 'A4' ? 'A4 (210×297 mm)' : 'FOLIO / F4 (215×330 mm)';
-    const orientName = orientation === 'portrait' ? '📄 Potrait (Tegak)' : '📜 Lanskap (Mendatar)';
+    const paperName = paperSize === 'A4' ? 'A4 (210Ã—297 mm)' : 'FOLIO / F4 (215Ã—330 mm)';
+    const orientName = orientation === 'portrait' ? 'ðŸ“„ Potrait (Tegak)' : 'ðŸ“œ Lanskap (Mendatar)';
     const infoText = document.getElementById('prevPaperInfoText');
     if (infoText) {
-      infoText.textContent = `Kertas ${paperName} — ${orientName} — Font ${fontSize} pt`;
+      infoText.textContent = `Kertas ${paperName} â€” ${orientName} â€” Font ${fontSize} pt`;
     }
 
     const badgeFont = document.getElementById('prevFontSizeBadge');
@@ -8781,12 +8781,12 @@
       if (currentDocType === 'analisis') {
         tabAnalisis.classList.add('active');
         tabRubrik.classList.remove('active');
-        document.getElementById('modalPreviewTitleIcon').textContent = '📄';
+        document.getElementById('modalPreviewTitleIcon').textContent = 'ðŸ“„';
         document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Cetak Laporan Analisis Capaian Belajar';
       } else {
         tabRubrik.classList.add('active');
         tabAnalisis.classList.remove('active');
-        document.getElementById('modalPreviewTitleIcon').textContent = '📝';
+        document.getElementById('modalPreviewTitleIcon').textContent = 'ðŸ“';
         document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Unduh Panduan Rubrik Penilaian LKPD';
       }
     }
@@ -8868,7 +8868,7 @@
     if (paperSize === 'A4') {
       pageSizeCss = orientation === 'landscape' ? 'A4 landscape' : 'A4 portrait';
     } else {
-      // FOLIO / F4: 215mm × 330mm
+      // FOLIO / F4: 215mm Ã— 330mm
       pageSizeCss = orientation === 'landscape' ? '330mm 215mm landscape' : '215mm 330mm portrait';
     }
 
@@ -9072,7 +9072,7 @@
       currentDocType = 'analisis';
       document.getElementById('tabDocAnalisis')?.classList.add('active');
       document.getElementById('tabDocRubrik')?.classList.remove('active');
-      document.getElementById('modalPreviewTitleIcon').textContent = '📄';
+      document.getElementById('modalPreviewTitleIcon').textContent = 'ðŸ“„';
       document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Cetak Laporan Analisis Capaian Belajar';
       updateCapaianPreview();
     });
@@ -9081,7 +9081,7 @@
       currentDocType = 'rubrik';
       document.getElementById('tabDocRubrik')?.classList.add('active');
       document.getElementById('tabDocAnalisis')?.classList.remove('active');
-      document.getElementById('modalPreviewTitleIcon').textContent = '📝';
+      document.getElementById('modalPreviewTitleIcon').textContent = 'ðŸ“';
       document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Unduh Panduan Rubrik Penilaian LKPD';
       updateCapaianPreview();
     });
@@ -9370,7 +9370,7 @@
     if (!sObj) {
       if (badgeStatus) {
         badgeStatus.className = 'badge badge-secondary';
-        badgeStatus.textContent = '📷 Foto LKPD: Belum Ada Siswa';
+        badgeStatus.textContent = 'ðŸ“· Foto LKPD: Belum Ada Siswa';
       }
       if (btnToggle) btnToggle.style.display = 'none';
       if (panel) panel.style.display = 'none';
@@ -9386,14 +9386,14 @@
     if (photos.length > 0) {
       if (badgeStatus) {
         badgeStatus.className = 'badge badge-emerald';
-        badgeStatus.textContent = `🟢 ${photos.length} Foto LKPD Tersedia`;
+        badgeStatus.textContent = `ðŸŸ¢ ${photos.length} Foto LKPD Tersedia`;
       }
       if (btnToggle) {
         btnToggle.style.display = 'inline-flex';
         btnToggle.className = 'btn btn-success btn-sm';
         btnToggle.innerHTML = panel && panel.style.display !== 'none'
-          ? '<span>👁️</span> Tutup Lembar LKPD'
-          : '<span>👁️</span> Buka Lembar LKPD Siswa';
+          ? '<span>ðŸ‘ï¸</span> Tutup Lembar LKPD'
+          : '<span>ðŸ‘ï¸</span> Buka Lembar LKPD Siswa';
       }
       if (catatanBox && catatanText) {
         if (exist.catatan_siswa) {
@@ -9407,14 +9407,14 @@
     } else {
       if (badgeStatus) {
         badgeStatus.className = 'badge badge-secondary';
-        badgeStatus.textContent = '📷 Foto LKPD: Belum Tersedia';
+        badgeStatus.textContent = 'ðŸ“· Foto LKPD: Belum Tersedia';
       }
       if (btnToggle) {
         btnToggle.style.display = 'inline-flex';
         btnToggle.className = 'btn btn-outline btn-sm';
         btnToggle.innerHTML = panel && panel.style.display !== 'none'
-          ? '<span>👁️</span> Tutup Lembar LKPD'
-          : '<span>👁️</span> Buka Lembar LKPD Siswa';
+          ? '<span>ðŸ‘ï¸</span> Tutup Lembar LKPD'
+          : '<span>ðŸ‘ï¸</span> Buka Lembar LKPD Siswa';
       }
       if (catatanBox) catatanBox.style.display = 'none';
       updateFotoDisplay([]);
@@ -9539,11 +9539,11 @@
           loadingElem.style.display = 'block';
           loadingElem.innerHTML = `
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;">
-              <span style="font-size: 2rem;">⚠️</span>
+              <span style="font-size: 2rem;">âš ï¸</span>
               <div style="color: #f87171; font-weight: 600; font-size: 0.9rem;">Foto belum dapat ditampilkan</div>
               <div style="font-size: 0.75rem; color: #94a3b8; max-width: 320px;">${err.message || 'Koneksi ke Google Drive terputus'}</div>
               <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; justify-content: center;">
-                <button type="button" class="btn btn-secondary btn-sm" onclick="App.retryLoadActivePhoto()">🔄 Coba Muat Ulang</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="App.retryLoadActivePhoto()">ðŸ”„ Coba Muat Ulang</button>
                 ${currentPhoto.view_url ? `<a href="${currentPhoto.view_url}" target="_blank" class="btn btn-outline btn-sm">Buka di Drive</a>` : ''}
               </div>
             </div>
@@ -9589,8 +9589,8 @@
       const isHidden = panel.style.display === 'none' || !panel.style.display;
       panel.style.display = isHidden ? 'block' : 'none';
       btnToggle.innerHTML = isHidden
-        ? '<span>👁️</span> Tutup Lembar LKPD'
-        : '<span>👁️</span> Buka Lembar LKPD Siswa';
+        ? '<span>ðŸ‘ï¸</span> Tutup Lembar LKPD'
+        : '<span>ðŸ‘ï¸</span> Buka Lembar LKPD Siswa';
       if (isHidden) {
         fotoViewerZoom = 1.0;
         fotoViewerRotate = 0;
@@ -9601,7 +9601,7 @@
 
     btnClose?.addEventListener('click', () => {
       if (panel) panel.style.display = 'none';
-      if (btnToggle) btnToggle.innerHTML = '<span>👁️</span> Buka Lembar LKPD Siswa';
+      if (btnToggle) btnToggle.innerHTML = '<span>ðŸ‘ï¸</span> Buka Lembar LKPD Siswa';
     });
 
     // Tab Lembar 1, 2, 3
@@ -9712,7 +9712,7 @@
 
         if (panel) {
           panel.style.display = 'block';
-          if (btnToggle) btnToggle.innerHTML = '<span>👁️</span> Tutup Lembar LKPD';
+          if (btnToggle) btnToggle.innerHTML = '<span>ðŸ‘ï¸</span> Tutup Lembar LKPD';
         }
       } catch (err) {
         console.error(err);
@@ -10008,9 +10008,9 @@
         const res = await fetch(`${val}?action=ping`);
         const json = await res.json();
         if (json.status === 'ready' || json.status === 'success') {
-          showToast('✅ Berhasil terhubung ke Google Apps Script!', 'success');
+          showToast('âœ… Berhasil terhubung ke Google Apps Script!', 'success');
         } else {
-          showToast('⚠️ Terhubung namun respon tidak sesuai.', 'warning');
+          showToast('âš ï¸ Terhubung namun respon tidak sesuai.', 'warning');
         }
       } catch (e) {
         console.warn('Ping error:', e);
@@ -10086,7 +10086,7 @@ Tugasmu:
      * Level 3: Relevan tapi agak umum/normatif
      * Level 2: Singkat / tidak mendalam
      * Level 1: Tidak dijawab
-   - Self-rating bintang: taksir bintang yang dilingkari/dicentang siswa (1-5★).
+   - Self-rating bintang: taksir bintang yang dilingkari/dicentang siswa (1-5â˜…).
 
 KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
 {
@@ -10379,10 +10379,10 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
         if (engineBadge) {
           if (result.is_simulated) {
             engineBadge.className = 'badge badge-secondary';
-            engineBadge.textContent = '⚡ Simulasi Cerdas Terpandu';
+            engineBadge.textContent = 'âš¡ Simulasi Cerdas Terpandu';
           } else {
             engineBadge.className = 'badge badge-emerald';
-            engineBadge.textContent = '🟢 Google Gemini Vision';
+            engineBadge.textContent = 'ðŸŸ¢ Google Gemini Vision';
           }
         }
 
@@ -10507,7 +10507,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
         if (elMateri) elMateri.value = `Materi IPA Pertemuan ${num}`;
       }
     } else {
-      if (elPertemuanKe) elPertemuanKe.value = '1 – 3 (Semua Pertemuan)';
+      if (elPertemuanKe) elPertemuanKe.value = '1 â€“ 3 (Semua Pertemuan)';
       if (elBab) elBab.value = 'BAB 1. Besaran dan pengukuran';
       if (elMateri) elMateri.value = 'Hakikat Ilmu Sains dan Pengukuran';
     }
@@ -10650,7 +10650,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
         <!-- KOP DOKUMEN -->
         <div class="print-header" style="text-align: center; margin-bottom: 10px;">
           <h2 class="print-main-title" style="font-size: ${fontSize + 3.5}pt; font-weight: 800; text-transform: uppercase; margin: 0; color: #000; letter-spacing: 0.5px;">REKAPITULASI PENILAIAN LEMBAR KERJA PESERTA DIDIK (LKPD)</h2>
-          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">MATA PELAJARAN ILMU PENGETAHUAN ALAM (IPA)${sekolah ? ' • ' + sekolah : ''}</h3>
+          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">MATA PELAJARAN ILMU PENGETAHUAN ALAM (IPA)${sekolah ? ' â€¢ ' + sekolah : ''}</h3>
           <div class="print-divider" style="border-bottom: 2px solid #000; border-top: 1px solid #000; height: 2px; margin: 8px 0 10px 0;"></div>
         </div>
 
@@ -10740,11 +10740,11 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     const optTtd = document.getElementById('printOptTtd')?.checked ?? true;
 
     // Perbarui teks info & badge font
-    const paperName = paperSize === 'A4' ? 'A4 (210×297 mm)' : 'FOLIO / F4 (215×330 mm)';
-    const orientName = orientation === 'portrait' ? '📄 Potrait' : '📜 Lanskap';
+    const paperName = paperSize === 'A4' ? 'A4 (210Ã—297 mm)' : 'FOLIO / F4 (215Ã—330 mm)';
+    const orientName = orientation === 'portrait' ? 'ðŸ“„ Potrait' : 'ðŸ“œ Lanskap';
     const infoText = document.getElementById('printPaperInfoText');
     if (infoText) {
-      infoText.textContent = `Kertas ${paperName} — ${orientName} — Font ${fontSize} pt`;
+      infoText.textContent = `Kertas ${paperName} â€” ${orientName} â€” Font ${fontSize} pt`;
     }
 
     const badgeFont = document.getElementById('printFontSizeBadge');
@@ -10797,7 +10797,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     // 2. Sinkronisasi Dropdown Pertemuan
     const selP = document.getElementById('printSelectPertemuan');
     if (selP) {
-      selP.innerHTML = '<option value="all">Semua Pertemuan (P1 – P3)</option>';
+      selP.innerHTML = '<option value="all">Semua Pertemuan (P1 â€“ P3)</option>';
       const existingP = Array.from(new Set(App.topik.map(t => Number(t.pertemuan_ke) || 0).filter(p => p > 0))).sort((a, b) => a - b);
       if (existingP.length === 0) existingP.push(1, 2, 3);
       existingP.forEach(p => {
@@ -10891,7 +10891,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     if (paperSize === 'A4') {
       pageSizeCss = orientation === 'landscape' ? 'A4 landscape' : 'A4 portrait';
     } else {
-      // FOLIO / F4: 215mm × 330mm
+      // FOLIO / F4: 215mm Ã— 330mm
       pageSizeCss = orientation === 'landscape' ? '330mm 215mm landscape' : '215mm 330mm portrait';
     }
 
@@ -11211,7 +11211,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       const val = document.getElementById('displayNilaiTugasAkhir')?.textContent?.trim();
       if (val) {
         navigator.clipboard.writeText(val).then(() => {
-          showToast(`🎯 Nilai tugas (${val}) berhasil disalin ke clipboard!`, 'success');
+          showToast(`ðŸŽ¯ Nilai tugas (${val}) berhasil disalin ke clipboard!`, 'success');
         }).catch(() => {
           showToast('Gagal menyalin nilai tugas ke clipboard.', 'error');
         });
@@ -11269,11 +11269,11 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       const pLabel = pFilter !== 'all' ? `Pertemuan ${pFilter}` : 'Semua Pertemuan';
       const kLabel = kFilter !== 'all' ? kFilter : 'Semua Kelas';
 
-      let text = `🏆 DAFTAR PERINGKAT NILAI SISWA LKPD IPA\n`;
+      let text = `ðŸ† DAFTAR PERINGKAT NILAI SISWA LKPD IPA\n`;
       text += `Kelas: ${kLabel} | ${pLabel}\n`;
       text += `=========================================================\n`;
       filtered.forEach((s, idx) => {
-        const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+        const medal = idx === 0 ? 'ðŸ¥‡' : idx === 1 ? 'ðŸ¥ˆ' : idx === 2 ? 'ðŸ¥‰' : `#${idx + 1}`;
         text += `${idx + 1}. [${medal}] ${s.nama_siswa} (${s.kelas}, ${s.nama_kelompok}) - Nilai: ${formatIndoDecimal(s._nt.nilai_akhir)} (${s._nt.predikat})\n`;
         text += `    Rincian: Memahami: ${formatIndoDecimal(s._nt.skor_memahami_100)}% | Mengaplikasi: ${s._nt.skor_mengaplikasi_100} | Merefleksi: ${s._nt.skor_merefleksi_100}\n`;
       });
@@ -11281,7 +11281,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       const sumAll = filtered.reduce((acc, c) => acc + c._nt.nilai_akhir, 0);
       const avgScore = Number((sumAll / filtered.length).toFixed(1));
       const passCount = filtered.filter(s => s._nt.nilai_akhir >= 70).length;
-      text += `Rata-rata Kelas: ${formatIndoDecimal(avgScore)} / 100 | Ketuntasan (≥70): ${passCount}/${filtered.length} siswa (${Math.round(passCount / filtered.length * 100)}%)\n`;
+      text += `Rata-rata Kelas: ${formatIndoDecimal(avgScore)} / 100 | Ketuntasan (â‰¥70): ${passCount}/${filtered.length} siswa (${Math.round(passCount / filtered.length * 100)}%)\n`;
 
       navigator.clipboard.writeText(text).then(() => {
         showToast('Daftar peringkat berhasil disalin ke clipboard!', 'success');
