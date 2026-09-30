@@ -7793,6 +7793,1274 @@
     showToast('Grafik capaian belajar berhasil diunduh sebagai gambar (PNG)!', 'success');
   }
 
+  // ==================== MODAL PREVIEW & EKSPOR PDF/WORD CAPAIAN & RUBRIK ====================
+  let currentDocType = 'analisis'; // 'analisis' | 'rubrik'
+
+  // Hitung Data Capaian Pertemuan untuk Kelas Terpilih
+  function computeMeetingStatsData(kFilter) {
+    let data = App.penilaian || [];
+    if (kFilter && kFilter !== 'all') {
+      const normK = kFilter.trim().toLowerCase();
+      data = data.filter(p => (p.kelas || '').trim().toLowerCase() === normK);
+    }
+
+    const pertemuanSet = new Set(data.map(p => Number(p.pertemuan_ke) || 1));
+    const pertemuanList = Array.from(pertemuanSet).sort((a, b) => a - b);
+    if (pertemuanList.length === 0) pertemuanList.push(1, 2, 3);
+
+    return pertemuanList.map(pKe => {
+      const pEntries = data.filter(p => (Number(p.pertemuan_ke) || 1) === pKe);
+      const n = pEntries.length;
+      if (n === 0) return null;
+
+      const sumMem = pEntries.reduce((acc, cur) => acc + (cur.pengetahuan?.memahami?.skor_persen ?? 0), 0);
+      const avgMem = sumMem / n;
+      const sumApl = pEntries.reduce((acc, cur) => acc + (cur.pengetahuan?.mengaplikasi?.level ?? 3), 0);
+      const avgApl = sumApl / n;
+      const sumRef = pEntries.reduce((acc, cur) => acc + (cur.pengetahuan?.merefleksi?.level ?? 3), 0);
+      const avgRef = sumRef / n;
+
+      let countTuntas = 0;
+      const sumNilaiTugas = pEntries.reduce((acc, cur) => {
+        const nt = cur.nilai_tugas || calcNilaiTugas(
+          cur.pengetahuan?.memahami?.jumlah_benar,
+          cur.pengetahuan?.mengaplikasi?.level,
+          cur.pengetahuan?.merefleksi?.level
+        );
+        const akhir = nt.nilai_akhir || 0;
+        if (akhir >= 70) countTuntas++;
+        return acc + akhir;
+      }, 0);
+      const avgNilaiTugas = Number((sumNilaiTugas / n).toFixed(1));
+      const persentaseTuntas = Number(((countTuntas / n) * 100).toFixed(1));
+
+      const matchingTopik = App.topik?.find(t => Number(t.pertemuan_ke) === pKe);
+      const topikNama = pEntries[0]?.topik_nama || matchingTopik?.nama || `Pertemuan ${pKe}`;
+
+      return {
+        pertemuan: pKe,
+        topik: topikNama,
+        jumlahSiswa: n,
+        avgMem: Math.round(avgMem),
+        avgApl: Number(avgApl.toFixed(1)),
+        avgRef: Number(avgRef.toFixed(1)),
+        avgNilaiTugas: avgNilaiTugas,
+        countTuntas: countTuntas,
+        countRemedial: n - countTuntas,
+        persentaseTuntas: persentaseTuntas
+      };
+    }).filter(Boolean);
+  }
+
+  // Generate Gambar Kurva Tren Capaian Belajar Resolusi Tinggi Khusus Cetak & Pratinjau
+  function generatePrintableChartDataUrl(meetingStats) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 860;
+    canvas.height = 360;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return '';
+
+    // Latar belakang putih bersih
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Bingkai luar halus
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, 0.5, canvas.width - 1, canvas.height - 1);
+
+    // Judul Grafik di Dokumen
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('KURVA TREN CAPAIAN BELAJAR IPA (3 DIMENSI)', 24, 28);
+
+    // Legend di kanan atas
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'left';
+
+    // 1. Memahami (Biru)
+    ctx.fillStyle = '#0284c7';
+    ctx.fillRect(510, 18, 12, 10);
+    ctx.fillStyle = '#334155';
+    ctx.fillText('1. Memahami (%)', 526, 27);
+
+    // 2. Mengaplikasi (Hijau)
+    ctx.fillStyle = '#059669';
+    ctx.fillRect(635, 18, 12, 10);
+    ctx.fillStyle = '#334155';
+    ctx.fillText('2. Mengaplikasi (1-4)', 651, 27);
+
+    // 3. Merefleksi (Ungu)
+    ctx.fillStyle = '#7c3aed';
+    ctx.fillRect(770, 18, 12, 10);
+    ctx.fillStyle = '#334155';
+    ctx.fillText('3. Merefleksi (L1-L4)', 786, 27);
+
+    if (!meetingStats || meetingStats.length === 0) {
+      ctx.fillStyle = '#64748b';
+      ctx.font = 'italic 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Belum ada data penilaian tersimpan untuk kelas ini.', canvas.width / 2, canvas.height / 2);
+      return canvas.toDataURL('image/png');
+    }
+
+    const padding = { top: 58, right: 45, bottom: 52, left: 65 };
+    const chartW = canvas.width - padding.left - padding.right;
+    const chartH = canvas.height - padding.top - padding.bottom;
+
+    // Grid garis mendatar & Y-Axis (0 - 100%)
+    const ySteps = 5;
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= ySteps; i++) {
+      const ratio = i / ySteps;
+      const yVal = Math.round(ratio * 100);
+      const yPos = padding.top + chartH - ratio * chartH;
+
+      ctx.strokeStyle = i === 0 ? '#94a3b8' : '#e2e8f0';
+      ctx.beginPath();
+      ctx.moveTo(padding.left, yPos);
+      ctx.lineTo(padding.left + chartW, yPos);
+      ctx.stroke();
+
+      // Label Y kiri (%)
+      ctx.fillStyle = '#475569';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`${yVal}%`, padding.left - 8, yPos);
+
+      // Label Y kanan (Skala 1,0-4,0)
+      const rubrikVal = (1.0 + ratio * 3.0).toFixed(1);
+      ctx.textAlign = 'left';
+      ctx.fillText(`L${rubrikVal}`, padding.left + chartW + 8, yPos);
+    }
+
+    const numPoints = meetingStats.length;
+    const getX = (idx) => {
+      if (numPoints === 1) return padding.left + chartW / 2;
+      return padding.left + (idx / (numPoints - 1)) * chartW;
+    };
+    const getYPercent = (val) => {
+      const clamped = Math.max(0, Math.min(100, val));
+      return padding.top + chartH - (clamped / 100) * chartH;
+    };
+    const getYRubrik = (val) => {
+      const clamped = Math.max(1.0, Math.min(4.0, val));
+      const ratio = (clamped - 1.0) / 3.0;
+      return padding.top + chartH - ratio * chartH;
+    };
+
+    // Label X-Axis
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    meetingStats.forEach((m, idx) => {
+      const x = getX(idx);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.beginPath();
+      ctx.moveTo(x, padding.top + chartH);
+      ctx.lineTo(x, padding.top + chartH + 5);
+      ctx.stroke();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillText(`Pertemuan ${m.pertemuan}`, x, padding.top + chartH + 8);
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '10px sans-serif';
+      ctx.fillText(`(${m.jumlahSiswa} Siswa)`, x, padding.top + chartH + 24);
+    });
+
+    // Garis 1: Memahami (%)
+    ctx.strokeStyle = '#0284c7';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    meetingStats.forEach((m, idx) => {
+      const x = getX(idx);
+      const y = getYPercent(m.avgMem);
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Garis 2: Mengaplikasi (1-4)
+    ctx.strokeStyle = '#059669';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    meetingStats.forEach((m, idx) => {
+      const x = getX(idx);
+      const y = getYRubrik(m.avgApl);
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Garis 3: Merefleksi (L1-L4)
+    ctx.strokeStyle = '#7c3aed';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    meetingStats.forEach((m, idx) => {
+      const x = getX(idx);
+      const y = getYRubrik(m.avgRef);
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Titik Bulat & Angka Nilai di Setiap Pertemuan
+    meetingStats.forEach((m, idx) => {
+      const x = getX(idx);
+
+      // Titik Memahami
+      const y1 = getYPercent(m.avgMem);
+      ctx.fillStyle = '#0284c7';
+      ctx.beginPath();
+      ctx.arc(x, y1, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#0284c7';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${m.avgMem}%`, x, y1 - 16);
+
+      // Titik Mengaplikasi
+      const y2 = getYRubrik(m.avgApl);
+      ctx.fillStyle = '#059669';
+      ctx.beginPath();
+      ctx.arc(x, y2, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#059669';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${formatIndoDecimal(m.avgApl)}`, x, y2 - 16);
+
+      // Titik Merefleksi
+      const y3 = getYRubrik(m.avgRef);
+      ctx.fillStyle = '#7c3aed';
+      ctx.beginPath();
+      ctx.arc(x, y3, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#7c3aed';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`L${formatIndoDecimal(m.avgRef)}`, x, y3 + 8);
+    });
+
+    return canvas.toDataURL('image/png');
+  }
+
+  // Bangun Dokumen Analisis Penilaian Capaian Belajar (HTML)
+  function buildAnalisisPenilaianHtml(options, chartDataUrl) {
+    const {
+      kFilter = 'all',
+      sekolah = '',
+      mapel = 'IPA',
+      tanggal = new Date().toISOString().slice(0, 10),
+      guru = '',
+      nip = '',
+      optTtd = true,
+      optChart = true,
+      optNarasi = true,
+      fontSize = 10,
+      isForWord = false
+    } = options;
+
+    const stats = computeMeetingStatsData(kFilter);
+    const kelasDisplay = kFilter !== 'all' ? kFilter : 'Semua Kelas (7, 8, 9)';
+    const guruDisplay = guru || 'Guru Mata Pelajaran IPA';
+
+    // Rata-rata keseluruhan
+    let avgMemTotal = 0;
+    let avgAplTotal = 0;
+    let avgRefTotal = 0;
+    let avgNilaiTugasTotal = 0;
+    let totalSiswa = 0;
+    let totalTuntas = 0;
+
+    if (stats.length > 0) {
+      const sumMem = stats.reduce((acc, c) => acc + c.avgMem, 0);
+      const sumApl = stats.reduce((acc, c) => acc + c.avgApl, 0);
+      const sumRef = stats.reduce((acc, c) => acc + c.avgRef, 0);
+      const sumNT = stats.reduce((acc, c) => acc + c.avgNilaiTugas, 0);
+      totalSiswa = stats[stats.length - 1].jumlahSiswa || 20;
+      totalTuntas = stats[stats.length - 1].countTuntas || 0;
+
+      avgMemTotal = Math.round(sumMem / stats.length);
+      avgAplTotal = Number((sumApl / stats.length).toFixed(1));
+      avgRefTotal = Number((sumRef / stats.length).toFixed(1));
+      avgNilaiTugasTotal = Number((sumNT / stats.length).toFixed(1));
+    }
+
+    const katMemTotal = getMemahamiKategori(avgMemTotal);
+    const rubAplTotal = getMengaplikasiRubrikInfo(avgAplTotal);
+    const rubRefTotal = getRefleksiRubrikInfo(avgRefTotal);
+    const persenTuntasTotal = totalSiswa > 0 ? Math.round((totalTuntas / totalSiswa) * 100) : 0;
+
+    // Baris Tabel Rekap
+    let rowsHtml = '';
+    stats.forEach((m) => {
+      const rubApl = getMengaplikasiRubrikInfo(m.avgApl);
+      const rubRef = getRefleksiRubrikInfo(m.avgRef);
+      rowsHtml += `
+        <tr>
+          <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 7px;">Pertemuan ${m.pertemuan}</td>
+          <td style="border: 1px solid #1e293b; padding: 5px 7px;">${m.topik}</td>
+          <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 7px;">${m.jumlahSiswa} Siswa</td>
+          <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 7px;">${m.avgMem}%</td>
+          <td style="text-align: center; font-weight: 700; color: #059669; border: 1px solid #1e293b; padding: 5px 7px;">${formatIndoDecimal(m.avgApl)} <span style="font-weight: normal; font-size: 8.5pt;">(${rubApl.kode})</span></td>
+          <td style="text-align: center; font-weight: 700; color: #7c3aed; border: 1px solid #1e293b; padding: 5px 7px;">${formatIndoDecimal(m.avgRef)} <span style="font-weight: normal; font-size: 8.5pt;">(${rubRef.kode})</span></td>
+          <td style="text-align: center; font-weight: 800; border: 1px solid #1e293b; padding: 5px 7px; background-color: #fef3c7;">${formatIndoDecimal(m.avgNilaiTugas)}</td>
+          <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 7px;">${m.countTuntas}/${m.jumlahSiswa} (${m.persentaseTuntas}%)</td>
+        </tr>
+      `;
+    });
+
+    if (stats.length === 0) {
+      rowsHtml = '<tr><td colspan="8" style="text-align: center; padding: 15px; border: 1px solid #1e293b;">Belum ada data capaian belajar tersimpan.</td></tr>';
+    }
+
+    // Narasi Analisis Pedagogis
+    let narasiHtml = '';
+    if (optNarasi && stats.length > 0) {
+      stats.forEach((m, idx) => {
+        const strMem = `${Math.round(m.avgMem)}%`;
+        const strApl = formatIndoDecimal(m.avgApl);
+        const strRef = formatIndoDecimal(m.avgRef);
+        const strNT = formatIndoDecimal(m.avgNilaiTugas);
+        const rubApl = getMengaplikasiRubrikInfo(m.avgApl);
+        const rubRef = getRefleksiRubrikInfo(m.avgRef);
+        const katMem = getMemahamiKategori(m.avgMem);
+
+        if (idx === 0) {
+          narasiHtml += `
+            <div style="margin-bottom: 8px; border-left: 3px solid #0284c7; padding-left: 8px;">
+              <strong>• Pertemuan 1 (${m.topik}):</strong> Rata-rata Nilai Tugas awal <strong>${strNT} / 100</strong> (Ketuntasan: ${m.countTuntas}/${m.jumlahSiswa} siswa / ${m.persentaseTuntas}%).
+              Pemahaman konsep berada pada kategori <em>${katMem} (${strMem})</em>, kemampuan aplikasi sains <em>${rubApl.nama} (${strApl})</em>, dan kesadaran refleksi belajar <em>${rubRef.nama} (${strRef})</em>.
+              <div style="font-size: 9pt; color: #475569; margin-top: 2px;">
+                <em>Catatan Fase Adaptasi:</em> Peserta didik masih dalam tahap penyesuaian terhadap ritme eksperimen LKPD dan penggunaan alat ukur sains.
+              </div>
+            </div>
+          `;
+        } else {
+          const prev = stats[idx - 1];
+          const deltaNT = Number((m.avgNilaiTugas - prev.avgNilaiTugas).toFixed(1));
+          const deltaMem = Math.round(m.avgMem - prev.avgMem);
+          const deltaApl = Number((m.avgApl - prev.avgApl).toFixed(1));
+          const deltaRef = Number((m.avgRef - prev.avgRef).toFixed(1));
+
+          const signNT = deltaNT >= 0 ? `+${formatIndoDecimal(deltaNT)}` : formatIndoDecimal(deltaNT);
+          const signMem = deltaMem >= 0 ? `+${deltaMem}%` : `${deltaMem}%`;
+          const signApl = deltaApl >= 0 ? `+${formatIndoDecimal(deltaApl)}` : formatIndoDecimal(deltaApl);
+          const signRef = deltaRef >= 0 ? `+${formatIndoDecimal(deltaRef)}` : formatIndoDecimal(deltaRef);
+
+          const stageLabel = m.pertemuan === 2 ? 'Fase Konsolidasi' : 'Fase Kemandirian & Penguasaan';
+          narasiHtml += `
+            <div style="margin-bottom: 8px; border-left: 3px solid #059669; padding-left: 8px;">
+              <strong>• Pertemuan ${m.pertemuan} (${m.topik}):</strong> Nilai Tugas berkembang menjadi <strong>${strNT} / 100</strong> (${signNT} poin vs P${prev.pertemuan}).
+              Tingkat ketuntasan meningkat menjadi <strong>${m.countTuntas} siswa (${m.persentaseTuntas}%)</strong>.
+              Skor Memahami meningkat ${signMem}, kemampuan Mengaplikasi naik ${signApl} poin (${rubApl.nama}), dan kedalaman Merefleksi meningkat ${signRef} poin (${rubRef.nama}).
+              <div style="font-size: 9pt; color: #475569; margin-top: 2px;">
+                <em>Catatan ${stageLabel}:</em> Partisipasi kelompok semakin terstruktur dan keterampilan penggunaan instrumen IPA terlaksana secara mandiri.
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      if (stats.length > 1) {
+        const first = stats[0];
+        const latest = stats[stats.length - 1];
+        const totalGainNT = Number((latest.avgNilaiTugas - first.avgNilaiTugas).toFixed(1));
+        const totalGainMem = latest.avgMem - first.avgMem;
+        narasiHtml += `
+          <div style="margin-top: 8px; padding: 6px 10px; background-color: #f1f5f9; border-radius: 4px; font-weight: 600;">
+            📊 <strong>Kesimpulan Capaian Belajar:</strong> Secara akumulatif antar pertemuan, terjadi peningkatan rata-rata capaian sebesar <strong>+${formatIndoDecimal(totalGainNT)} Poin</strong>, dengan penguatan pemahaman konsep sebesar <strong>+${totalGainMem}%</strong>. Pembelajaran berdiferensiasi dan instrumen LKPD terbukti efektif meningkatkan ketuntasan belajar siswa.
+          </div>
+        `;
+      }
+    }
+
+    // Tanda Tangan
+    let ttdHtml = '';
+    if (optTtd) {
+      ttdHtml = `
+        <div class="print-ttd-container" style="width: 100%; margin-top: 22px; page-break-inside: avoid; break-inside: avoid;">
+          <table class="print-ttd-table" style="width: 100%; border-collapse: collapse; border: none !important;">
+            <tr>
+              <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
+                <p style="margin: 0 0 52px 0;">Mengetahui,<br/><strong>Kepala Sekolah</strong></p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;">_________________________</p>
+                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">NIP. .................................................</p>
+              </td>
+              <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
+                <p style="margin: 0 0 52px 0;">....................., ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;"><strong>${guruDisplay}</strong></p>
+                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">${nip ? 'NIP. ' + nip : 'NIP. .................................................'}</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="print-document" style="font-size: ${fontSize}pt; line-height: 1.4;">
+        <!-- KOP DOKUMEN -->
+        <div class="print-header" style="text-align: center; margin-bottom: 10px;">
+          <h2 class="print-main-title" style="font-size: ${fontSize + 3.5}pt; font-weight: 800; text-transform: uppercase; margin: 0; color: #000; letter-spacing: 0.5px;">LAPORAN ANALISIS CAPAIAN BELAJAR &amp; PENILAIAN LKPD IPA</h2>
+          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">PEMBELAJARAN BERBASIS INKUIRI &amp; REFLEKSI METAKOGNITIF (3 DIMENSI)${sekolah ? ' • ' + sekolah : ''}</h3>
+          <div class="print-divider" style="border-bottom: 2px solid #000; border-top: 1px solid #000; height: 2px; margin: 8px 0 10px 0;"></div>
+        </div>
+
+        <!-- IDENTITAS PENILAIAN -->
+        <div class="print-identitas-box" style="margin-bottom: 10px; border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 6px 10px;">
+          <table class="table-identitas" style="width: 100%; border-collapse: collapse; font-size: ${fontSize}pt; border: none;">
+            <tr>
+              <td style="width: 130px; font-weight: 700; border: none; padding: 2px 4px;">Mata Pelajaran</td>
+              <td style="width: 10px; text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${mapel}</strong></td>
+              <td style="width: 130px; font-weight: 700; border: none; padding: 2px 4px;">Kelas</td>
+              <td style="width: 10px; text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${kelasDisplay}</strong></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Tanggal Asesmen</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;">${formatTanggalIndo(tanggal)}</td>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Guru Pengampu</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${guruDisplay}</strong></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- RINGKASAN INDIKATOR CAPAIAN 3 DIMENSI -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; border: 1px solid #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">1. Rata-Rata Memahami</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">2. Rata-Rata Mengaplikasi</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">3. Rata-Rata Merefleksi</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 25%; font-size: ${fontSize}pt;">🎯 Rata-Rata Nilai Akhir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; padding: 8px; border: 1px solid #1e293b;">
+                <strong style="font-size: ${fontSize + 3}pt; color: #0284c7;">${avgMemTotal}%</strong><br/>
+                <span style="font-size: 8.5pt; color: #475569;">Kategori: <strong>${katMemTotal}</strong></span>
+              </td>
+              <td style="text-align: center; padding: 8px; border: 1px solid #1e293b;">
+                <strong style="font-size: ${fontSize + 3}pt; color: #059669;">${formatIndoDecimal(avgAplTotal)}</strong><br/>
+                <span style="font-size: 8.5pt; color: #475569;">${rubAplTotal.nama}</span>
+              </td>
+              <td style="text-align: center; padding: 8px; border: 1px solid #1e293b;">
+                <strong style="font-size: ${fontSize + 3}pt; color: #7c3aed;">${formatIndoDecimal(avgRefTotal)}</strong><br/>
+                <span style="font-size: 8.5pt; color: #475569;">${rubRefTotal.nama}</span>
+              </td>
+              <td style="text-align: center; padding: 8px; border: 1px solid #1e293b; background-color: #fef3c7;">
+                <strong style="font-size: ${fontSize + 3}pt; color: #b45309;">${formatIndoDecimal(avgNilaiTugasTotal)}</strong><br/>
+                <span style="font-size: 8.5pt; color: #475569;">Ketuntasan: <strong>${totalTuntas}/${totalSiswa} Siswa (${persenTuntasTotal}%)</strong></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- GAMBAR GRAFIK KURVA CAPAIAN -->
+        ${optChart && chartDataUrl ? `
+          <div class="print-chart-container" style="text-align: center; margin: 8px 0 12px 0;">
+            <img src="${chartDataUrl}" class="print-chart-img" alt="Kurva Capaian Belajar IPA" style="max-width: 100%; height: auto; max-height: 270px; border: 1px solid #cbd5e1; border-radius: 4px;" />
+          </div>
+        ` : ''}
+
+        <!-- TABEL CAPAIAN PER PERTEMUAN -->
+        <h4 style="font-size: ${fontSize + 1}pt; font-weight: 700; margin: 12px 0 6px 0; color: #0f172a; text-transform: uppercase;">
+          Tabel Capaian Belajar per Pertemuan (3 Dimensi &amp; Nilai Tugas)
+        </h4>
+        <table class="print-table" style="width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 12%; text-align: center;">Pertemuan</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Topik Materi IPA</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 11%; text-align: center;">Jml Siswa</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 13%; text-align: center;">1. Memahami</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 15%; text-align: center;">2. Mengaplikasi</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 15%; text-align: center;">3. Merefleksi</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center; background-color: #fef3c7;">🎯 Nilai Akhir</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Ketuntasan</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+
+        <!-- PANDUAN KRITERIA CAPAIAN -->
+        <div style="border: 1px solid #64748b; border-radius: 4px; padding: 7px 10px; margin-bottom: 10px; background-color: #f8fafc; font-size: ${fontSize - 0.5}pt;">
+          <strong>Kriteria &amp; Rentang Predikat Capaian:</strong>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 4px; border: none;">
+            <tr>
+              <td style="border: none; padding: 1px 4px; width: 33%; vertical-align: top;">
+                <strong>1. Memahami (0–100%):</strong><br/>
+                • ≥85%: Sangat Baik (A)<br/>
+                • 70–84%: Baik (B)<br/>
+                • 55–69%: Cukup (C)<br/>
+                • &lt;55%: Perlu Bimbingan (D)
+              </td>
+              <td style="border: none; padding: 1px 4px; width: 33%; vertical-align: top;">
+                <strong>2. Mengaplikasi (1,0–4,0):</strong><br/>
+                • Level 4: Sangat Baik (Tepat &amp; logis)<br/>
+                • Level 3: Baik (Tepat sebagian besar)<br/>
+                • Level 2: Cukup (Analisis terbatas)<br/>
+                • Level 1: Perlu Bimbingan (Kosong/keliru)
+              </td>
+              <td style="border: none; padding: 1px 4px; width: 34%; vertical-align: top;">
+                <strong>3. Merefleksi (L1–L4):</strong><br/>
+                • L4: Sangat Reflektif (Spesifik &amp; jujur)<br/>
+                • L3: Reflektif (Cukup jelas &amp; relevan)<br/>
+                • L2: Kurang Reflektif (Singkat/normatif)<br/>
+                • L1: Belum Reflektif (Tidak menjawab)
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- NARASI ANALISIS GURU -->
+        ${optNarasi && narasiHtml ? `
+          <div class="print-narasi-box" style="border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 8px 12px; margin-bottom: 12px; font-size: ${fontSize - 0.5}pt; line-height: 1.5;">
+            <strong style="display: block; margin-bottom: 6px; font-size: ${fontSize}pt; color: #0f172a; text-transform: uppercase;">
+              📝 Narasi Analisis Perkembangan Belajar Siswa Antar Pertemuan:
+            </strong>
+            ${narasiHtml}
+          </div>
+        ` : ''}
+
+        <!-- PENGESAHAN TANDA TANGAN -->
+        ${ttdHtml}
+      </div>
+    `;
+  }
+
+  // Bangun Dokumen Panduan & Rubrik Penilaian Lengkap LKPD (HTML & Word)
+  function buildRubrikPenilaianHtml(options) {
+    const {
+      sekolah = '',
+      mapel = 'IPA',
+      tanggal = new Date().toISOString().slice(0, 10),
+      guru = '',
+      nip = '',
+      optTtd = true,
+      fontSize = 10,
+      isForWord = false
+    } = options;
+
+    const guruDisplay = guru || 'Guru Mata Pelajaran IPA';
+
+    // Tanda Tangan
+    let ttdHtml = '';
+    if (optTtd) {
+      ttdHtml = `
+        <div class="print-ttd-container" style="width: 100%; margin-top: 24px; page-break-inside: avoid; break-inside: avoid;">
+          <table class="print-ttd-table" style="width: 100%; border-collapse: collapse; border: none !important;">
+            <tr>
+              <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
+                <p style="margin: 0 0 52px 0;">Mengetahui,<br/><strong>Kepala Sekolah</strong></p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;">_________________________</p>
+                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">NIP. .................................................</p>
+              </td>
+              <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
+                <p style="margin: 0 0 52px 0;">....................., ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
+                <p style="font-weight: 700; text-decoration: underline; margin: 0;"><strong>${guruDisplay}</strong></p>
+                <p style="margin: 3px 0 0 0; font-size: 9pt; color: #475569;">${nip ? 'NIP. ' + nip : 'NIP. .................................................'}</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="print-document" style="font-size: ${fontSize}pt; line-height: 1.45;">
+        <!-- KOP DOKUMEN -->
+        <div class="print-header" style="text-align: center; margin-bottom: 12px;">
+          <h2 class="print-main-title" style="font-size: ${fontSize + 3.5}pt; font-weight: 800; text-transform: uppercase; margin: 0; color: #000; letter-spacing: 0.5px;">INSTRUMEN &amp; PANDUAN RUBRIK PENILAIAN LEMBAR KERJA PESERTA DIDIK (LKPD) IPA</h2>
+          <h3 class="print-sub-title" style="font-size: ${fontSize + 0.5}pt; font-weight: 600; margin: 4px 0 0 0; color: #1e293b;">KURIKULUM MERDEKA — PEMBELAJARAN BERBASIS INKUIRI &amp; REFLEKSI METAKOGNITIF${sekolah ? ' • ' + sekolah : ''}</h3>
+          <div class="print-divider" style="border-bottom: 2px solid #000; border-top: 1px solid #000; height: 2px; margin: 8px 0 12px 0;"></div>
+        </div>
+
+        <!-- IDENTITAS INSTRUMEN -->
+        <div class="print-identitas-box" style="margin-bottom: 12px; border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 6px 12px;">
+          <table class="table-identitas" style="width: 100%; border-collapse: collapse; font-size: ${fontSize}pt; border: none;">
+            <tr>
+              <td style="width: 140px; font-weight: 700; border: none; padding: 2px 4px;">Mata Pelajaran</td>
+              <td style="width: 10px; text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${mapel}</strong></td>
+              <td style="width: 140px; font-weight: 700; border: none; padding: 2px 4px;">Satuan Pendidikan</td>
+              <td style="width: 10px; text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${sekolah || 'SMP / MTs'}</strong></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Fase / Sasaran</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;">Fase D (Kelas 7, 8, 9 SMP)</td>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Penyusun / Pengampu</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;"><strong>${guruDisplay}</strong></td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Instrumen Penilaian</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;">Lembar Kerja Peserta Didik (LKPD) Interaktif</td>
+              <td style="font-weight: 700; border: none; padding: 2px 4px;">Tanggal Penetapan</td>
+              <td style="text-align: center; border: none; padding: 2px 4px;">:</td>
+              <td style="border: none; padding: 2px 4px;">${formatTanggalIndo(tanggal)}</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- BAGIAN 1: STRUKTUR & PEMBOBOTAN ASESMEN -->
+        <h4 style="font-size: ${fontSize + 1}pt; font-weight: 800; margin: 12px 0 6px 0; color: #0f172a; text-transform: uppercase; border-bottom: 1.5px solid #0f172a; padding-bottom: 2px;">
+          I. Struktur &amp; Komponen Pembobotan Nilai Tugas LKPD
+        </h4>
+        <p style="margin: 4px 0 8px 0; font-size: ${fontSize}pt;">
+          Penilaian LKPD WARDIPA memadukan 3 Aspek Terpadu: Pengetahuan Kognitif (Memahami), Keterampilan Penalaran &amp; Aplikasi Sains (Mengaplikasi), serta Kesadaran Metakognitif (Merefleksi), dilengkapi observasi Keterampilan Praktikum dan Sikap Ilmiah.
+        </p>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 6%; text-align: center;">No</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 26%; text-align: left;">Dimensi Penilaian</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Skala Asli</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Bobot Tugas</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Fokus Pengukuran</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">1</td>
+              <td style="font-weight: 700; border: 1px solid #1e293b; padding: 5px 8px; color: #0284c7;">Dimensi 1: Memahami</td>
+              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">0 – 100%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">40%</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Penguasaan konsep esensial materi sains melalui 15 butir tes objektif LKPD.</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">2</td>
+              <td style="font-weight: 700; border: 1px solid #1e293b; padding: 5px 8px; color: #059669;">Dimensi 2: Mengaplikasi</td>
+              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">Skala 1,0 – 4,0</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">40%</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Kemampuan bernalar dalam menerapkan konsep, rumus, dan analisis data eksperimen.</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">3</td>
+              <td style="font-weight: 700; border: 1px solid #1e293b; padding: 5px 8px; color: #7c3aed;">Dimensi 3: Merefleksi</td>
+              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">Rubrik L1 – L4</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">20%</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Kedalaman metakognisi: evaluasi kesulitan belajar dan pemaknaan konsep.</td>
+            </tr>
+            <tr style="background-color: #fef3c7; font-weight: bold;">
+              <td colspan="3" style="text-align: right; border: 1px solid #1e293b; padding: 5px 8px;">Total Pembobotan &amp; KKM:</td>
+              <td style="text-align: center; border: 1px solid #1e293b; padding: 5px 8px;">100%</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Kriteria Ketuntasan Minimal (KKM / KKTP): Nilai Akhir ≥ 70</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- BAGIAN 2: MATRIKS DIMENSI 1: MEMAHAMI -->
+        <h4 style="font-size: ${fontSize + 1}pt; font-weight: 800; margin: 14px 0 6px 0; color: #0284c7; text-transform: uppercase; border-bottom: 1.5px solid #0284c7; padding-bottom: 2px;">
+          II. Matriks Rubrik Dimensi 1: Pemahaman Konsep (Memahami)
+        </h4>
+        <p style="margin: 4px 0 6px 0; font-size: ${fontSize}pt;">
+          <strong>Formula Perhitungan:</strong> <code>Nilai Memahami = (Jumlah Jawaban Benar ÷ 15 Soal) × 100%</code>.
+        </p>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 18%; text-align: center;">Rentang Skor</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 22%; text-align: center;">Kategori Capaian</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Deskriptor Kualitatif Kemampuan Siswa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">85% – 100%</td>
+              <td style="text-align: center; font-weight: 700; color: #059669; border: 1px solid #1e293b; padding: 5px 8px;">Sangat Baik (A)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Menguasai konsep esensial materi secara mendalam, akurat, dan minim kekeliruan (13–15 butir benar).</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">70% – 84%</td>
+              <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Baik (B) [TUNTAS]</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Menguasai konsep dasar materi sains secara tepat dan memenuhi target minimum kompetensi (11–12 butir benar).</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">55% – 69%</td>
+              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Cukup (C) [REMEDIAL]</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Memahami sebagian konsep dasar, namun masih membutuhkan penguatan pada materi tertentu (8–10 butir benar).</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">&lt; 55%</td>
+              <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">Perlu Bimbingan (D)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Belum menguasai konsep dasar, memerlukan pendampingan intensif dan tutor sebaya (&le; 7 butir benar).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- BAGIAN 3: MATRIKS DIMENSI 2: MENGAPLIKASI -->
+        <h4 style="font-size: ${fontSize + 1}pt; font-weight: 800; margin: 14px 0 6px 0; color: #059669; text-transform: uppercase; border-bottom: 1.5px solid #059669; padding-bottom: 2px;">
+          III. Matriks Rubrik Dimensi 2: Aplikasi Konsep Sains (Mengaplikasi)
+        </h4>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Tingkat</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 18%; text-align: center;">Skor &amp; Predikat</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Indikator Capaian Operasional</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 4</td>
+              <td style="text-align: center; font-weight: 700; color: #059669; border: 1px solid #1e293b; padding: 5px 8px;">Skor 4 (Sangat Baik)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Identifikasi besaran/satuan/variabel praktikum tepat pada semua kegiatan; analisis fenomena mendalam; prosedur sistematis disertai alasan logis dan kesimpulan yang valid.
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 3</td>
+              <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Skor 3 (Baik)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Identifikasi konsep tepat pada sebagian besar kegiatan; prosedur benar; penjelasan cukup jelas meskipun ada kekurangan minor pada ketelitian analisis data.
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 2</td>
+              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Skor 2 (Cukup)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Identifikasi konsep masih sebagian tepat; terdapat kekeliruan analisis data eksperimen; jawaban dangkal atau hanya menyalin data tanpa penjelasan sebab-akibat.
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 1</td>
+              <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">Skor 1 (Perlu Bimbingan)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Belum mampu menerapkan konsep materi; prosedur tidak berurutan; kolom kegiatan banyak kosong atau jawaban tidak relevan dengan eksperimen.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- BAGIAN 4: MATRIKS DIMENSI 3: MEREFLEKSI -->
+        <h4 style="font-size: ${fontSize + 1}pt; font-weight: 800; margin: 14px 0 6px 0; color: #7c3aed; text-transform: uppercase; border-bottom: 1.5px solid #7c3aed; padding-bottom: 2px;">
+          IV. Matriks Rubrik Dimensi 3: Refleksi Metakognitif (Merefleksi)
+        </h4>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Level Rubrik</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 22%; text-align: center;">Kategori Kualitas</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Indikator Kedalaman Refleksi Metakognisi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L4</td>
+              <td style="text-align: center; font-weight: 700; color: #7c3aed; border: 1px solid #1e293b; padding: 5px 8px;">Sangat Reflektif (Skor 4)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Menguraikan pemahaman baru secara spesifik; jujur mengakui kendala belajar; mampu mengaitkan konsep sains ke pengalaman nyata dan merumuskan rencana tindak lanjut.
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L3</td>
+              <td style="text-align: center; font-weight: 700; color: #4338ca; border: 1px solid #1e293b; padding: 5px 8px;">Reflektif (Skor 3)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Menyampaikan pemahaman baru dan proses belajar secara relevan dan cukup jelas, meskipun uraian kendala atau perbaikan masih agak umum/normatif.
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L2</td>
+              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Kurang Reflektif (Skor 2)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Refleksi masih sangat singkat atau seragam (misal hanya menulis: "seru", "senang", "paham") tanpa menggali kendala nyata atau proses berpikirnya.
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L1</td>
+              <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">Belum Reflektif (Skor 1)</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">
+                Kolom refleksi tidak dijawab atau jawaban sama sekali tidak memiliki korelasi dengan materi pembelajaran pertemuan yang berlangsung.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- PANDUAN BINTANG MANDIRI SISWA -->
+        <p style="margin: 4px 0 6px 0; font-size: ${fontSize - 0.5}pt; color: #475569;">
+          <em>Catatan:</em> Skor refleksi dinilai berdasarkan kedalaman uraian teks refleksi siswa di rubrik L1–L4. Penilaian bintang mandiri (⭐ 1–5) berfungsi sebagai alat ukur persepsi diri siswa (Self-Rating Awareness).
+        </p>
+
+        <!-- BAGIAN 5: OBSERVASI KETERAMPILAN & SIKAP -->
+        <h4 style="font-size: ${fontSize + 1}pt; font-weight: 800; margin: 14px 0 6px 0; color: #0f172a; text-transform: uppercase; border-bottom: 1.5px solid #0f172a; padding-bottom: 2px;">
+          V. Rubrik Observasi Keterampilan Praktikum &amp; Sikap Ilmiah
+        </h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+          <div>
+            <strong>A. Keterampilan Praktikum (Psikomotorik):</strong>
+            <ul style="margin: 4px 0; padding-left: 18px; font-size: ${fontSize - 0.5}pt;">
+              <li><strong>1. Keaktifan:</strong> Berpartisipasi aktif mengambil peran dalam percobaan (Skala 1–4).</li>
+              <li><strong>2. Kerapian:</strong> Menjaga kerapian LKPD dan merapikan alat ukur/bahan setelah praktikum (Skala 1–4).</li>
+              <li><strong>3. Prosedur:</strong> Mematuhi instruksi langkah kerja dan keselamatan kerja IPA (Skala 1–4).</li>
+            </ul>
+          </div>
+          <div>
+            <strong>B. Sikap Ilmiah Peserta Didik (Afektif):</strong>
+            <ul style="margin: 4px 0; padding-left: 18px; font-size: ${fontSize - 0.5}pt;">
+              <li><strong>1. Kerjasama:</strong> Kolaboratif, saling membantu dan menghargai pendapat teman (Skala 1–4).</li>
+              <li><strong>2. Disiplin:</strong> Tepat waktu dalam memulai praktikum dan mengumpulkan LKPD (Skala 1–4).</li>
+              <li><strong>3. Tanggung Jawab:</strong> Menyelesaikan seluruh tugas kelompok secara tuntas dan jujur (Skala 1–4).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- BAGIAN 6: FORMULA KONVERSI NILAI AKHIR -->
+        <div style="border: 1px solid #475569; background-color: #f8fafc; border-radius: 4px; padding: 8px 12px; margin-bottom: 14px; font-size: ${fontSize}pt;">
+          <strong>VI. Formula Konversi Nilai Akhir LKPD (Skala 0 – 100):</strong>
+          <div style="margin: 4px 0; font-family: monospace; font-weight: bold; color: #0f172a; background: #e2e8f0; padding: 5px 8px; border-radius: 3px;">
+            Nilai Akhir = (Skor Memahami × 40%) + ((Skor Mengaplikasi ÷ 4) × 100 × 40%) + ((Skor Merefleksi ÷ 4) × 100 × 20%)
+          </div>
+          <div style="font-size: 8.5pt; color: #475569; margin-top: 3px;">
+            Kriteria Kelulusan: Nilai Akhir &ge; 70 dinyatakan <strong>TUNTAS</strong>, dan Nilai Akhir &lt; 70 dinyatakan <strong>REMEDIAL</strong>.
+          </div>
+        </div>
+
+        <!-- PENGESAHAN TANDA TANGAN -->
+        ${ttdHtml}
+      </div>
+    `;
+  }
+
+  // Update Live Preview Lembar Kertas di Modal
+  function updateCapaianPreview() {
+    const sheet = document.getElementById('previewPaperSheet');
+    if (!sheet) return;
+
+    const paperSize = document.querySelector('input[name="previewPaperSize"]:checked')?.value || 'A4';
+    const orientation = document.querySelector('input[name="previewOrientation"]:checked')?.value || 'portrait';
+    const fontSize = parseFloat(document.getElementById('prevSelectFontSize')?.value) || 10;
+    const kFilter = document.getElementById('prevSelectKelas')?.value || 'all';
+
+    const sekolah = document.getElementById('prevInputSekolah')?.value.trim() || '';
+    const mapel = document.getElementById('prevInputMapel')?.value.trim() || 'IPA';
+    const tanggal = document.getElementById('prevInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+    const guru = document.getElementById('prevInputGuru')?.value.trim() || '';
+    const nip = document.getElementById('prevInputNip')?.value.trim() || '';
+
+    const optTtd = document.getElementById('prevOptTtd')?.checked ?? true;
+    const optChart = document.getElementById('prevOptChart')?.checked ?? true;
+    const optNarasi = document.getElementById('prevOptNarasi')?.checked ?? true;
+
+    // Perbarui teks informasi preview
+    const paperName = paperSize === 'A4' ? 'A4 (210×297 mm)' : 'FOLIO / F4 (215×330 mm)';
+    const orientName = orientation === 'portrait' ? '📄 Potrait (Tegak)' : '📜 Lanskap (Mendatar)';
+    const infoText = document.getElementById('prevPaperInfoText');
+    if (infoText) {
+      infoText.textContent = `Kertas ${paperName} — ${orientName} — Font ${fontSize} pt`;
+    }
+
+    const badgeFont = document.getElementById('prevFontSizeBadge');
+    if (badgeFont) badgeFont.textContent = `${fontSize} pt`;
+
+    // Perbarui dimensi lembar kertas preview
+    sheet.style.fontSize = `${fontSize}pt`;
+    if (orientation === 'portrait') {
+      sheet.style.maxWidth = '680px';
+      sheet.style.minHeight = paperSize === 'A4' ? '960px' : '1040px';
+      sheet.style.padding = '28px 34px';
+    } else {
+      sheet.style.maxWidth = paperSize === 'A4' ? '960px' : '1040px';
+      sheet.style.minHeight = '680px';
+      sheet.style.padding = '24px 30px';
+    }
+
+    // Toggle tampilan opsi khusus analisis
+    const chartWrapper = document.getElementById('prevOptChartWrapper');
+    const narasiWrapper = document.getElementById('prevOptNarasiWrapper');
+    const kelasWrapper = document.getElementById('prevSelectKelasWrapper');
+
+    if (currentDocType === 'rubrik') {
+      if (chartWrapper) chartWrapper.style.display = 'none';
+      if (narasiWrapper) narasiWrapper.style.display = 'none';
+      if (kelasWrapper) kelasWrapper.style.display = 'none';
+    } else {
+      if (chartWrapper) chartWrapper.style.display = 'flex';
+      if (narasiWrapper) narasiWrapper.style.display = 'flex';
+      if (kelasWrapper) kelasWrapper.style.display = 'block';
+    }
+
+    // Render Dokumen
+    if (currentDocType === 'analisis') {
+      const stats = computeMeetingStatsData(kFilter);
+      const chartUrl = generatePrintableChartDataUrl(stats);
+      sheet.innerHTML = buildAnalisisPenilaianHtml({
+        kFilter, sekolah, mapel, tanggal, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: false
+      }, chartUrl);
+    } else {
+      sheet.innerHTML = buildRubrikPenilaianHtml({
+        sekolah, mapel, tanggal, guru, nip, optTtd, fontSize, isForWord: false
+      });
+    }
+  }
+
+  // Buka Modal Pratinjau Capaian Belajar / Rubrik
+  function openModalPreviewCapaian(docType = 'analisis') {
+    const modal = document.getElementById('modalPreviewCapaian');
+    if (!modal) return;
+
+    currentDocType = docType;
+
+    // Perbarui tab button aktif
+    const tabAnalisis = document.getElementById('tabDocAnalisis');
+    const tabRubrik = document.getElementById('tabDocRubrik');
+    if (tabAnalisis && tabRubrik) {
+      if (currentDocType === 'analisis') {
+        tabAnalisis.classList.add('active');
+        tabRubrik.classList.remove('active');
+        document.getElementById('modalPreviewTitleIcon').textContent = '📄';
+        document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Cetak Laporan Analisis Capaian Belajar';
+      } else {
+        tabRubrik.classList.add('active');
+        tabAnalisis.classList.remove('active');
+        document.getElementById('modalPreviewTitleIcon').textContent = '📝';
+        document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Unduh Panduan Rubrik Penilaian LKPD';
+      }
+    }
+
+    // Sinkronisasi pilihan kelas dari filter utama grafik
+    const selK = document.getElementById('prevSelectKelas');
+    if (selK) {
+      selK.innerHTML = '<option value="all">Semua Kelas</option>';
+      (App.kelas || []).forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k.nama;
+        opt.textContent = k.nama;
+        selK.appendChild(opt);
+      });
+      const curGrafikK = document.getElementById('grafikFilterKelas')?.value || 'all';
+      selK.value = curGrafikK;
+    }
+
+    // Sinkronisasi tanggal
+    const inTgl = document.getElementById('prevInputTanggal');
+    if (inTgl && !inTgl.value) {
+      inTgl.value = new Date().toISOString().slice(0, 10);
+    }
+
+    // Tampilkan Modal
+    modal.classList.add('active');
+
+    // Trigger update preview
+    setTimeout(() => {
+      updateCapaianPreview();
+    }, 50);
+  }
+
+  // Eksekusi Cetak / Simpan PDF Dokumen Capaian Belajar
+  function executePrintCapaianPDF() {
+    const paperSize = document.querySelector('input[name="previewPaperSize"]:checked')?.value || 'A4';
+    const orientation = document.querySelector('input[name="previewOrientation"]:checked')?.value || 'portrait';
+    const fontSize = parseFloat(document.getElementById('prevSelectFontSize')?.value) || 10;
+    const kFilter = document.getElementById('prevSelectKelas')?.value || 'all';
+
+    const sekolah = document.getElementById('prevInputSekolah')?.value.trim() || '';
+    const mapel = document.getElementById('prevInputMapel')?.value.trim() || 'IPA';
+    const tanggal = document.getElementById('prevInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+    const guru = document.getElementById('prevInputGuru')?.value.trim() || '';
+    const nip = document.getElementById('prevInputNip')?.value.trim() || '';
+
+    const optTtd = document.getElementById('prevOptTtd')?.checked ?? true;
+    const optChart = document.getElementById('prevOptChart')?.checked ?? true;
+    const optNarasi = document.getElementById('prevOptNarasi')?.checked ?? true;
+
+    // Pasang Ukuran Kertas & Orientasi Dinamis via @page
+    let dynamicStyleEl = document.getElementById('dynamicPrintPageStyle');
+    if (!dynamicStyleEl) {
+      dynamicStyleEl = document.createElement('style');
+      dynamicStyleEl.id = 'dynamicPrintPageStyle';
+      dynamicStyleEl.setAttribute('media', 'print');
+      document.head.appendChild(dynamicStyleEl);
+    }
+
+    let pageSizeCss = 'A4 portrait';
+    if (paperSize === 'A4') {
+      pageSizeCss = orientation === 'landscape' ? 'A4 landscape' : 'A4 portrait';
+    } else {
+      // FOLIO / F4: 215mm × 330mm
+      pageSizeCss = orientation === 'landscape' ? '330mm 215mm landscape' : '215mm 330mm portrait';
+    }
+
+    dynamicStyleEl.textContent = `
+      @page {
+        size: ${pageSizeCss};
+        margin: 10mm 12mm;
+      }
+      @media print {
+        html, body {
+          font-size: ${fontSize}pt !important;
+        }
+        .print-document {
+          font-size: ${fontSize}pt !important;
+        }
+        .print-table th, .print-table td, .table-identitas td, .print-ttd-table td {
+          font-size: ${fontSize}pt !important;
+        }
+      }
+    `;
+
+    // Isi konten ke dalam #printArea
+    const printArea = document.getElementById('printArea');
+    if (!printArea) return;
+
+    let contentHtml = '';
+    if (currentDocType === 'analisis') {
+      const stats = computeMeetingStatsData(kFilter);
+      const chartUrl = generatePrintableChartDataUrl(stats);
+      contentHtml = buildAnalisisPenilaianHtml({
+        kFilter, sekolah, mapel, tanggal, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: false
+      }, chartUrl);
+    } else {
+      contentHtml = buildRubrikPenilaianHtml({
+        sekolah, mapel, tanggal, guru, nip, optTtd, fontSize, isForWord: false
+      });
+    }
+
+    printArea.innerHTML = contentHtml;
+
+    // Tutup modal dan panggil dialog print
+    document.getElementById('modalPreviewCapaian')?.classList.remove('active');
+    setTimeout(() => {
+      window.print();
+    }, 150);
+  }
+
+  // Eksekusi Unduh Dokumen Word (.doc) Terformat Rapi
+  function executeDownloadWord() {
+    const paperSize = document.querySelector('input[name="previewPaperSize"]:checked')?.value || 'A4';
+    const orientation = document.querySelector('input[name="previewOrientation"]:checked')?.value || 'portrait';
+    const fontSize = parseFloat(document.getElementById('prevSelectFontSize')?.value) || 10;
+    const kFilter = document.getElementById('prevSelectKelas')?.value || 'all';
+
+    const sekolah = document.getElementById('prevInputSekolah')?.value.trim() || '';
+    const mapel = document.getElementById('prevInputMapel')?.value.trim() || 'IPA';
+    const tanggal = document.getElementById('prevInputTanggal')?.value || new Date().toISOString().slice(0, 10);
+    const guru = document.getElementById('prevInputGuru')?.value.trim() || '';
+    const nip = document.getElementById('prevInputNip')?.value.trim() || '';
+
+    const optTtd = document.getElementById('prevOptTtd')?.checked ?? true;
+    const optChart = document.getElementById('prevOptChart')?.checked ?? true;
+    const optNarasi = document.getElementById('prevOptNarasi')?.checked ?? true;
+
+    // Dimensi Kertas dalam Milimeter
+    let pageWidthMm = 210;
+    let pageHeightMm = 297;
+    if (paperSize === 'FOLIO') {
+      pageWidthMm = 215;
+      pageHeightMm = 330;
+    }
+    if (orientation === 'landscape') {
+      const temp = pageWidthMm;
+      pageWidthMm = pageHeightMm;
+      pageHeightMm = temp;
+    }
+
+    let docTitle = 'Rubrik_Penilaian_LKPD_IPA';
+    let docBodyHtml = '';
+
+    if (currentDocType === 'analisis') {
+      docTitle = `Laporan_Analisis_Capaian_Belajar_IPA_${kFilter !== 'all' ? kFilter.replace(/\s+/g, '_') : 'Semua_Kelas'}`;
+      const stats = computeMeetingStatsData(kFilter);
+      const chartUrl = optChart ? generatePrintableChartDataUrl(stats) : '';
+      docBodyHtml = buildAnalisisPenilaianHtml({
+        kFilter, sekolah, mapel, tanggal, guru, nip, optTtd, optChart, optNarasi, fontSize, isForWord: true
+      }, chartUrl);
+    } else {
+      docTitle = `Rubrik_Penilaian_Lengkap_LKPD_IPA_${paperSize}_${orientation}`;
+      docBodyHtml = buildRubrikPenilaianHtml({
+        sekolah, mapel, tanggal, guru, nip, optTtd, fontSize, isForWord: true
+      });
+    }
+
+    // Templating Microsoft Word Office XML/HTML
+    const wordHtml = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office'
+            xmlns:w='urn:schemas-microsoft-com:office:word'
+            xmlns='http://www.w3.org/TR/REC-html40'>
+      <head>
+      <meta charset='utf-8'>
+      <title>${docTitle}</title>
+      <!--[if gte mso 9]>
+      <xml>
+        <w:WordDocument>
+          <w:View>Print</w:View>
+          <w:Zoom>100</w:Zoom>
+          <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+      </xml>
+      <![endif]-->
+      <style>
+        @page Section1 {
+          size: ${pageWidthMm}mm ${pageHeightMm}mm;
+          margin: 18mm 18mm 18mm 18mm;
+          mso-page-orientation: ${orientation};
+          mso-header-margin: 10mm;
+          mso-footer-margin: 10mm;
+          mso-paper-source: 0;
+        }
+        div.Section1 {
+          page: Section1;
+        }
+        body {
+          font-family: 'Calibri', 'Times New Roman', Arial, sans-serif;
+          font-size: ${fontSize}pt;
+          line-height: 1.35;
+          color: #000000;
+        }
+        h1 { font-size: ${fontSize + 4}pt; font-weight: bold; text-align: center; margin: 3pt 0; text-transform: uppercase; }
+        h2 { font-size: ${fontSize + 2}pt; font-weight: bold; margin: 10pt 0 4pt 0; color: #000000; border-bottom: 1.5pt solid #000000; padding-bottom: 2pt; text-transform: uppercase; }
+        h3 { font-size: ${fontSize + 1}pt; font-weight: bold; margin: 8pt 0 3pt 0; color: #000000; }
+        h4 { font-size: ${fontSize}pt; font-weight: bold; margin: 8pt 0 3pt 0; color: #000000; }
+        p, li { font-size: ${fontSize}pt; margin: 2pt 0; line-height: 1.35; }
+        table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt 0; }
+        th, td { border: 1pt solid #000000; padding: 4pt 6pt; font-size: ${fontSize}pt; vertical-align: top; }
+        th { background-color: #f1f5f9; font-weight: bold; text-align: center; }
+        .table-identitas td { border: none !important; padding: 2pt 4pt; }
+        .print-ttd-table td { border: none !important; text-align: center; }
+      </style>
+      </head>
+      <body>
+      <div class="Section1">
+        ${docBodyHtml}
+      </div>
+      </body>
+      </html>
+    `;
+
+    // Buat Blob dan download file .doc
+    const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8' });
+    const filename = `${docTitle}_${paperSize}_${orientation}_${fontSize}pt.doc`;
+
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    showToast(`Dokumen Word berhasil diunduh (${filename})!`, 'success');
+  }
+
+  // Pasang Event Listeners untuk Modal Preview Capaian Belajar & Rubrik
+  function setupCapaianPreviewSystem() {
+    // Tombol di Filter Bar Tab Grafik
+    document.getElementById('btnOpenModalAnalisisPdf')?.addEventListener('click', () => openModalPreviewCapaian('analisis'));
+    document.getElementById('btnOpenModalRubrikWord')?.addEventListener('click', () => openModalPreviewCapaian('rubrik'));
+
+    // Tombol Cepat di Header Tabel Capaian
+    document.getElementById('btnQuickAnalisisPdf')?.addEventListener('click', () => openModalPreviewCapaian('analisis'));
+    document.getElementById('btnQuickRubrikWord')?.addEventListener('click', () => openModalPreviewCapaian('rubrik'));
+
+    // Tombol Tutup & Batal Modal
+    document.getElementById('btnCloseModalPreviewCapaian')?.addEventListener('click', () => {
+      document.getElementById('modalPreviewCapaian')?.classList.remove('active');
+    });
+    document.getElementById('btnCancelModalPreviewCapaian')?.addEventListener('click', () => {
+      document.getElementById('modalPreviewCapaian')?.classList.remove('active');
+    });
+
+    // Tutup saat klik di backdrop luar box modal
+    document.getElementById('modalPreviewCapaian')?.addEventListener('click', (e) => {
+      if (e.target.id === 'modalPreviewCapaian') {
+        document.getElementById('modalPreviewCapaian').classList.remove('active');
+      }
+    });
+
+    // Pilihan Tab Dokumen (Analisis Penilaian vs Rubrik Penilaian)
+    document.getElementById('tabDocAnalisis')?.addEventListener('click', () => {
+      currentDocType = 'analisis';
+      document.getElementById('tabDocAnalisis')?.classList.add('active');
+      document.getElementById('tabDocRubrik')?.classList.remove('active');
+      document.getElementById('modalPreviewTitleIcon').textContent = '📄';
+      document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Cetak Laporan Analisis Capaian Belajar';
+      updateCapaianPreview();
+    });
+
+    document.getElementById('tabDocRubrik')?.addEventListener('click', () => {
+      currentDocType = 'rubrik';
+      document.getElementById('tabDocRubrik')?.classList.add('active');
+      document.getElementById('tabDocAnalisis')?.classList.remove('active');
+      document.getElementById('modalPreviewTitleIcon').textContent = '📝';
+      document.getElementById('modalPreviewTitleText').textContent = 'Pratinjau & Unduh Panduan Rubrik Penilaian LKPD';
+      updateCapaianPreview();
+    });
+
+    // Pilihan Format Kertas (A4 vs FOLIO F4)
+    document.querySelectorAll('input[name="previewPaperSize"]').forEach(r => {
+      r.addEventListener('change', updateCapaianPreview);
+    });
+
+    // Pilihan Orientasi (Potrait vs Lanskap)
+    document.querySelectorAll('input[name="previewOrientation"]').forEach(r => {
+      r.addEventListener('change', updateCapaianPreview);
+    });
+
+    // Pilihan Ukuran Font
+    document.getElementById('prevSelectFontSize')?.addEventListener('change', updateCapaianPreview);
+
+    // Filter Kelas di Modal
+    document.getElementById('prevSelectKelas')?.addEventListener('change', updateCapaianPreview);
+
+    // Identitas Teks (Sekolah, Mapel, Tanggal, Guru, NIP)
+    ['prevInputSekolah', 'prevInputMapel', 'prevInputTanggal', 'prevInputGuru', 'prevInputNip'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', updateCapaianPreview);
+        el.addEventListener('change', updateCapaianPreview);
+      }
+    });
+
+    // Checkbox Opsi Lampiran (Tanda Tangan, Grafik, Narasi)
+    ['prevOptTtd', 'prevOptChart', 'prevOptNarasi'].forEach(id => {
+      document.getElementById(id)?.addEventListener('change', updateCapaianPreview);
+    });
+
+    // Tombol Cetak / Simpan PDF
+    document.getElementById('btnPrevExecutePrint')?.addEventListener('click', executePrintCapaianPDF);
+
+    // Tombol Unduh Dokumen Word (.doc)
+    document.getElementById('btnPrevDownloadWord')?.addEventListener('click', executeDownloadWord);
+
+    // Tombol Sesuaikan Layar (Scroll ke atas preview sheet)
+    document.getElementById('btnZoomFit')?.addEventListener('click', () => {
+      const desk = document.getElementById('previewDeskViewport');
+      if (desk) desk.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   // ==================== MODAL KELAS, KELOMPOK & SISWA ====================
   function setupModals() {
     // 1. Modal Kelas
@@ -9680,6 +10948,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     setupFotoViewer();
     setupShareModal();
     setupPrintSystem();
+    setupCapaianPreviewSystem();
     setupAiCorrectionScanner();
   }
 
@@ -9691,6 +10960,9 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
 
   // Ekspos fungsi ke global window agar dapat dipanggil inline atau via console
   window.openModalPrintConfig = openModalPrintConfig;
+  window.openModalPreviewCapaian = openModalPreviewCapaian;
+  window.executePrintCapaianPDF = executePrintCapaianPDF;
+  window.executeDownloadWord = executeDownloadWord;
   window.exportRekapToCSV = exportRekapToCSV;
   window.executePrintPDF = executePrintPDF;
   window.App = App;

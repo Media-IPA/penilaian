@@ -184,4 +184,65 @@
     vertical-align: top;
     text-align: center;
   }
+
+  /* Gaya Khusus Dokumen Analisis Capaian & Rubrik Penilaian */
+  .print-chart-container {
+    text-align: center;
+    margin: 8px 0 12px 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-chart-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 290px;
+    border: 1px solid #94a3b8;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .print-section-title {
+    font-size: 11pt;
+    font-weight: 800;
+    color: #0f172a;
+    border-bottom: 1.5px solid #0f172a;
+    padding-bottom: 3px;
+    margin: 12px 0 6px 0;
+    text-transform: uppercase;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .print-narasi-box {
+    border: 1px solid #475569;
+    background-color: #f8fafc !important;
+    border-radius: 4px;
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  .print-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-kpi-card {
+    border: 1px solid #475569;
+    border-radius: 4px;
+    padding: 6px 8px;
+    background: #f8fafc !important;
+    text-align: center;
+    -webkit-print-color-adjust: exact !important;
+  }
 }
+
