@@ -6085,7 +6085,8 @@
     KELOMPOK: 'wardipa_simple_kelompok',
     TOPIK: 'wardipa_simple_topik',
     PENILAIAN: 'wardipa_simple_penilaian',
-    PROFILE: 'wardipa_teacher_profile'
+    PROFILE: 'wardipa_teacher_profile',
+    EVAL_SCORES: 'wardipa_eval_scores'
   };
 
   const DATA_VERSION_KEY = 'wardipa_data_ver';
@@ -11446,9 +11447,34 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     return { p1, p2, p3 };
   }
 
+  function getStoredEvaluasiScores() {
+    return getData(KEYS.EVAL_SCORES, {});
+  }
+
+  function saveStoredEvaluasiScores(map) {
+    setData(KEYS.EVAL_SCORES, map);
+  }
+
+  function getRawEvaluasiScoreForStudent(nama) {
+    const customMap = getStoredEvaluasiScores();
+    if (customMap && customMap[nama]) {
+      return {
+        p1: Math.max(0, Math.min(10, Number(customMap[nama].p1 ?? 9))),
+        p2: Math.max(0, Math.min(10, Number(customMap[nama].p2 ?? 9))),
+        p3: Math.max(0, Math.min(10, Number(customMap[nama].p3 ?? 9)))
+      };
+    }
+    const def = EVALUASI_SISWA_SCORES_K7[nama] || getDeterministicPassingScores(nama);
+    return {
+      p1: Math.max(0, Math.min(10, Number(def.p1 ?? 9))),
+      p2: Math.max(0, Math.min(10, Number(def.p2 ?? 9))),
+      p3: Math.max(0, Math.min(10, Number(def.p3 ?? 9)))
+    };
+  }
+
   // Hitung skor evaluasi per siswa berdasarkan pertemuan yang dipilih
   function getEvaluasiScoreForStudent(nama, pertemuan = 'all') {
-    const raw = EVALUASI_SISWA_SCORES_K7[nama] || getDeterministicPassingScores(nama);
+    const raw = getRawEvaluasiScoreForStudent(nama);
     const p1 = raw.p1;
     const p2 = raw.p2;
     const p3 = raw.p3;
@@ -11468,9 +11494,11 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     }
 
     const skor = Number(((benar / totalSoal) * 100).toFixed(1));
-    const predikat = skor >= 88 ? 'Sangat Baik (A)' : 'Baik (B)';
-    const keterangan = 'TUNTAS';
-    const tindakLanjut = 'Pengayaan & Pemantapan Konsep';
+    const predikat = skor >= 88 ? 'Sangat Baik (A)' : (skor >= 75 ? 'Baik (B)' : 'Cukup (C)');
+    const keterangan = skor >= 75 ? 'TUNTAS' : 'BELUM TUNTAS';
+    const tindakLanjut = skor >= 88 
+      ? 'Pengayaan Mandiri & Tutor Sebaya' 
+      : (skor >= 75 ? 'Pengayaan & Pemantapan Konsep' : 'Bimbingan Konseptual & Remedial');
 
     return {
       p1Benar: p1,
@@ -11867,13 +11895,16 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
   // Update Tampilan Tombol Tab Sub-Navigasi
   function updateEvalTabButtons() {
     const tabNilai = document.getElementById('tabBtnEvalNilai');
+    const tabInput = document.getElementById('tabBtnEvalInput');
     const tabAnalisis = document.getElementById('tabBtnEvalAnalisis');
+
+    [tabNilai, tabInput, tabAnalisis].forEach(t => t?.classList.remove('active'));
 
     if (evalActiveTab === 'nilai') {
       tabNilai?.classList.add('active');
-      tabAnalisis?.classList.remove('active');
+    } else if (evalActiveTab === 'input') {
+      tabInput?.classList.add('active');
     } else {
-      tabNilai?.classList.remove('active');
       tabAnalisis?.classList.add('active');
     }
   }
@@ -11881,15 +11912,18 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
   // Render Pane yang Sedang Aktif
   function renderEvaluasiActivePane() {
     const paneNilai = document.getElementById('evalPaneNilai');
+    const paneInput = document.getElementById('evalPaneInput');
     const paneAnalisis = document.getElementById('evalPaneAnalisis');
 
+    if (paneNilai) paneNilai.style.display = evalActiveTab === 'nilai' ? 'block' : 'none';
+    if (paneInput) paneInput.style.display = evalActiveTab === 'input' ? 'block' : 'none';
+    if (paneAnalisis) paneAnalisis.style.display = evalActiveTab === 'analisis' ? 'block' : 'none';
+
     if (evalActiveTab === 'nilai') {
-      if (paneNilai) paneNilai.style.display = 'block';
-      if (paneAnalisis) paneAnalisis.style.display = 'none';
       renderEvaluasiNilaiPane();
+    } else if (evalActiveTab === 'input') {
+      renderEvaluasiInputPane();
     } else {
-      if (paneNilai) paneNilai.style.display = 'none';
-      if (paneAnalisis) paneAnalisis.style.display = 'block';
       renderEvaluasiAnalisisPane();
     }
   }
@@ -11980,7 +12014,12 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
           <span style="font-weight: 700; color: #38bdf8; font-size: 0.88rem;">🎯 Cakupan Materi Evaluasi:</span>
           <span style="color: #e2e8f0; font-size: 0.86rem; margin-left: 0.35rem;">${pTitle}</span>
         </div>
-        <span class="badge badge-emerald" style="font-weight: 700; font-size: 0.78rem;">KKTP Satuan Pendidikan: 75</span>
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span class="badge badge-emerald" style="font-weight: 700; font-size: 0.78rem;">KKTP: 75</span>
+          <button type="button" id="btnGoToInputNilai" class="btn btn-warning btn-xs" style="font-weight: 700; font-size: 0.76rem; padding: 3px 9px;">
+            ✏️ Ruang Input Nilai
+          </button>
+        </div>
       </div>
 
       <!-- TABEL REKAP PENGOLAHAN NILAI -->
@@ -12063,9 +12102,306 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     `;
 
     container.innerHTML = html;
+
+    document.getElementById('btnGoToInputNilai')?.addEventListener('click', () => {
+      evalActiveTab = 'input';
+      updateEvalTabButtons();
+      renderEvaluasiActivePane();
+    });
   }
 
-  // Render Pane 2: Analisis Sebaran Capaian Butir Soal Sesuai Soal Evaluasi 1.pdf
+  // Render Pane 2: Ruang Input & Edit Nilai Siswa Sesuai Perolehan yang Ada
+  function renderEvaluasiInputPane() {
+    const container = document.getElementById('evalPaneInput');
+    if (!container) return;
+
+    const kelas = document.getElementById('evalSelectKelas')?.value || 'Kelas 7';
+    const pertemuan = document.getElementById('evalSelectPertemuan')?.value || 'all';
+    const siswaList = getSiswaListForEvaluasi(kelas);
+
+    const totalPeserta = siswaList.length;
+    const scores = siswaList.map((s, idx) => {
+      const raw = getRawEvaluasiScoreForStudent(s.nama);
+      const res = getEvaluasiScoreForStudent(s.nama, 'all');
+      return {
+        no: idx + 1,
+        id: s.id,
+        nama: s.nama,
+        p1: raw.p1,
+        p2: raw.p2,
+        p3: raw.p3,
+        ...res
+      };
+    });
+
+    const sumSkor = scores.reduce((acc, r) => acc + r.skor, 0);
+    const avgSkor = totalPeserta > 0 ? Number((sumSkor / totalPeserta).toFixed(1)) : 0;
+    const passCount = scores.filter(r => r.skor >= 75).length;
+    const passRate = totalPeserta > 0 ? Math.round((passCount / totalPeserta) * 100) : 100;
+
+    let pHighlightTitle = 'Mengelola 3 Pertemuan (P1, P2, P3 — 30 Butir Soal)';
+    if (pertemuan === '1') pHighlightTitle = 'Fokus Pertemuan 1: Besaran dan Satuan (10 Soal: No. 1–10)';
+    else if (pertemuan === '2') pHighlightTitle = 'Fokus Pertemuan 2: Konversi Satuan (10 Soal: No. 11–20)';
+    else if (pertemuan === '3') pHighlightTitle = 'Fokus Pertemuan 3: Penggunaan Alat Ukur Jangka Sorong (10 Soal: No. 21–30)';
+
+    let html = `
+      <!-- BANNER PETUNJUK & STATISTIK INPUT -->
+      <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; margin-bottom: 0.85rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span style="font-size: 1.25rem;">✏️</span>
+            <strong style="color: #38bdf8; font-size: 0.96rem;">Ruang Input &amp; Pengelolaan Perolehan Nilai Siswa</strong>
+            <span class="badge badge-emerald" style="font-size: 0.72rem;">Tersinkron Otomatis</span>
+          </div>
+          <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.4;">
+            Nilai awal terisi otomatis sesuai perolehan yang sudah ada (30 Butir Soal). Anda dapat mengubah jumlah jawaban benar P1 (0-10), P2 (0-10), dan P3 (0-10) untuk setiap siswa. Skor akhir (0-100), predikat, dan ketuntasan diperbarui seketika.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+          <button type="button" id="btnSaveEvalInput" class="btn btn-success btn-sm" style="font-weight: 700; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">
+            <span>💾</span> Simpan Perubahan Nilai
+          </button>
+          <button type="button" id="btnResetDefaultEvalInput" class="btn btn-secondary btn-sm" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3);" title="Kembalikan semua nilai ke perolehan standar 100% tuntas">
+            <span>🔄</span> Reset Nilai Awal
+          </button>
+        </div>
+      </div>
+
+      <!-- TOOLBAR CEPAT & PENCARIAN -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.6rem; background: rgba(255, 255, 255, 0.02); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(255, 255, 255, 0.05);">
+        <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+          <input type="text" id="evalInputSearchBox" class="input-control" placeholder="🔍 Cari nama siswa..." style="max-width: 220px; font-size: 0.8rem; padding: 4px 8px;" />
+          <span style="font-size: 0.8rem; color: var(--text-muted);">
+            Menampilkan <strong id="evalInputVisibleCount" style="color: #fff;">${totalPeserta}</strong> siswa &bull; ${pHighlightTitle}
+          </span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+          <span style="font-size: 0.76rem; color: #94a3b8; margin-right: 2px;">⚡ Isi Cepat:</span>
+          <button type="button" class="btn btn-outline btn-xs" id="btnPresetSempurna" title="Set semua jawaban benar 10 (Nilai 100)">Semua 100</button>
+          <button type="button" class="btn btn-outline btn-xs" id="btnPresetTinggi" title="Set semua P1:9, P2:9, P3:9 (Nilai 90)">Semua 90</button>
+          <button type="button" class="btn btn-outline btn-xs" id="btnPresetKKTP" title="Set batas aman KKTP P1:8, P2:8, P3:8 (Nilai 80)">Batas KKTP (80)</button>
+        </div>
+      </div>
+
+      <!-- TABEL FORM INPUT NILAI -->
+      <div class="eval-table-container">
+        <table class="eval-table" id="evalInputTable">
+          <thead>
+            <tr>
+              <th style="width: 40px; text-align: center;">No</th>
+              <th style="min-width: 190px;">Nama Siswa</th>
+              <th style="text-align: center; width: 110px; color: #38bdf8; ${pertemuan === '1' ? 'background: #0369a1;' : ''}" title="Pertemuan 1: Besaran dan Satuan (10 Butir Soal)">
+                P1 (0–10)<br><span style="font-size: 0.7rem; font-weight: normal; color: #cbd5e1;">Besaran &amp; Satuan</span>
+              </th>
+              <th style="text-align: center; width: 110px; color: #38bdf8; ${pertemuan === '2' ? 'background: #0369a1;' : ''}" title="Pertemuan 2: Konversi Satuan (10 Butir Soal)">
+                P2 (0–10)<br><span style="font-size: 0.7rem; font-weight: normal; color: #cbd5e1;">Konversi Satuan</span>
+              </th>
+              <th style="text-align: center; width: 110px; color: #38bdf8; ${pertemuan === '3' ? 'background: #0369a1;' : ''}" title="Pertemuan 3: Penggunaan Alat Ukur Jangka Sorong (10 Butir Soal)">
+                P3 (0–10)<br><span style="font-size: 0.7rem; font-weight: normal; color: #cbd5e1;">Jangka Sorong</span>
+              </th>
+              <th style="text-align: center; width: 105px; font-weight: 800; color: #fbbf24;">Total Benar<br><span style="font-size: 0.7rem; font-weight: normal; color: #cbd5e1;">Maks 30</span></th>
+              <th style="text-align: center; width: 95px; font-weight: 800;">Nilai (100)</th>
+              <th style="text-align: center; width: 115px;">Predikat</th>
+              <th style="text-align: center; width: 100px;">Status KKTP</th>
+              <th style="text-align: center; width: 55px;">Reset</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    scores.forEach((s) => {
+      const predikatBadge = s.skor >= 88 ? 'badge-emerald' : (s.skor >= 75 ? 'badge-blue' : 'badge-amber');
+      const kktpBadge = s.skor >= 75 ? 'badge-emerald' : 'badge-amber';
+      const kktpText = s.skor >= 75 ? '✓ TUNTAS' : 'BELUM TUNTAS';
+
+      html += `
+        <tr class="eval-input-row" data-nama="${s.nama}">
+          <td style="text-align: center; color: var(--text-muted); font-weight: 600;">${s.no}</td>
+          <td style="font-weight: 700; color: #f8fafc;" class="eval-student-name">${s.nama}</td>
+          <td style="text-align: center;">
+            <input type="number" min="0" max="10" step="1" value="${s.p1}" class="eval-input-number eval-field-p1" data-nama="${s.nama}" />
+          </td>
+          <td style="text-align: center;">
+            <input type="number" min="0" max="10" step="1" value="${s.p2}" class="eval-input-number eval-field-p2" data-nama="${s.nama}" />
+          </td>
+          <td style="text-align: center;">
+            <input type="number" min="0" max="10" step="1" value="${s.p3}" class="eval-input-number eval-field-p3" data-nama="${s.nama}" />
+          </td>
+          <td style="text-align: center; font-weight: 800; color: #fbbf24; font-size: 0.95rem;">
+            <span class="eval-cell-total">${s.benar}</span> / 30
+          </td>
+          <td style="text-align: center;">
+            <span class="eval-score-badge eval-cell-skor">${formatIndoDecimal(s.skor)}</span>
+          </td>
+          <td style="text-align: center;">
+            <span class="badge ${predikatBadge} eval-cell-predikat" style="font-size: 0.76rem;">${s.predikat}</span>
+          </td>
+          <td style="text-align: center;">
+            <span class="badge ${kktpBadge} eval-cell-kktp" style="font-weight: 700; font-size: 0.76rem;">${kktpText}</span>
+          </td>
+          <td style="text-align: center;">
+            <button type="button" class="btn btn-xs btn-outline eval-btn-reset-row" data-nama="${s.nama}" title="Reset nilai ${s.nama} ke default">↺</button>
+          </td>
+        </tr>
+      `;
+    });
+
+    html += `
+          </tbody>
+        </table>
+      </div>
+    `;
+
+    container.innerHTML = html;
+    bindEvaluasiInputEvents();
+  }
+
+  function bindEvaluasiInputEvents() {
+    const table = document.getElementById('evalInputTable');
+    if (!table) return;
+
+    function updateRowCalculation(tr) {
+      const nama = tr.getAttribute('data-nama');
+      const inP1 = tr.querySelector('.eval-field-p1');
+      const inP2 = tr.querySelector('.eval-field-p2');
+      const inP3 = tr.querySelector('.eval-field-p3');
+      if (!inP1 || !inP2 || !inP3) return;
+
+      let p1 = parseInt(inP1.value, 10);
+      let p2 = parseInt(inP2.value, 10);
+      let p3 = parseInt(inP3.value, 10);
+
+      if (isNaN(p1)) p1 = 0;
+      if (isNaN(p2)) p2 = 0;
+      if (isNaN(p3)) p3 = 0;
+
+      if (p1 > 10) { p1 = 10; inP1.value = 10; }
+      if (p1 < 0) { p1 = 0; inP1.value = 0; }
+      if (p2 > 10) { p2 = 10; inP2.value = 10; }
+      if (p2 < 0) { p2 = 0; inP2.value = 0; }
+      if (p3 > 10) { p3 = 10; inP3.value = 10; }
+      if (p3 < 0) { p3 = 0; inP3.value = 0; }
+
+      const total = p1 + p2 + p3;
+      const skor = Number(((total / 30) * 100).toFixed(1));
+      const predikat = skor >= 88 ? 'Sangat Baik (A)' : (skor >= 75 ? 'Baik (B)' : 'Cukup (C)');
+      const kktpText = skor >= 75 ? '✓ TUNTAS' : 'BELUM TUNTAS';
+
+      const cellTotal = tr.querySelector('.eval-cell-total');
+      const cellSkor = tr.querySelector('.eval-cell-skor');
+      const cellPred = tr.querySelector('.eval-cell-predikat');
+      const cellKktp = tr.querySelector('.eval-cell-kktp');
+
+      if (cellTotal) cellTotal.textContent = total;
+      if (cellSkor) cellSkor.textContent = formatIndoDecimal(skor);
+      if (cellPred) {
+        cellPred.textContent = predikat;
+        cellPred.className = `badge ${skor >= 88 ? 'badge-emerald' : (skor >= 75 ? 'badge-blue' : 'badge-amber')} eval-cell-predikat`;
+      }
+      if (cellKktp) {
+        cellKktp.textContent = kktpText;
+        cellKktp.className = `badge ${skor >= 75 ? 'badge-emerald' : 'badge-amber'} eval-cell-kktp`;
+      }
+
+      // Simpan langsung ke penyimpanan
+      const stored = getStoredEvaluasiScores();
+      stored[nama] = { p1, p2, p3 };
+      saveStoredEvaluasiScores(stored);
+    }
+
+    // Input listeners
+    table.querySelectorAll('.eval-input-number').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        const tr = e.target.closest('tr');
+        if (tr) updateRowCalculation(tr);
+      });
+    });
+
+    // Reset single row
+    table.querySelectorAll('.eval-btn-reset-row').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const nama = btn.getAttribute('data-nama');
+        const tr = btn.closest('tr');
+        if (!tr || !nama) return;
+
+        const def = EVALUASI_SISWA_SCORES_K7[nama] || getDeterministicPassingScores(nama);
+        const inP1 = tr.querySelector('.eval-field-p1');
+        const inP2 = tr.querySelector('.eval-field-p2');
+        const inP3 = tr.querySelector('.eval-field-p3');
+        if (inP1) inP1.value = def.p1;
+        if (inP2) inP2.value = def.p2;
+        if (inP3) inP3.value = def.p3;
+
+        updateRowCalculation(tr);
+        showToast(`Nilai ${nama} dikembalikan ke perolehan standar.`, 'info');
+      });
+    });
+
+    // Tombol Simpan Semua
+    document.getElementById('btnSaveEvalInput')?.addEventListener('click', () => {
+      const stored = getStoredEvaluasiScores();
+      table.querySelectorAll('.eval-input-row').forEach(tr => {
+        const nama = tr.getAttribute('data-nama');
+        const p1 = parseInt(tr.querySelector('.eval-field-p1')?.value || '0', 10);
+        const p2 = parseInt(tr.querySelector('.eval-field-p2')?.value || '0', 10);
+        const p3 = parseInt(tr.querySelector('.eval-field-p3')?.value || '0', 10);
+        stored[nama] = { p1, p2, p3 };
+      });
+      saveStoredEvaluasiScores(stored);
+      showToast('✓ Data nilai evaluasi seluruh siswa berhasil disimpan ke basis data!', 'success');
+    });
+
+    // Tombol Reset Semua
+    document.getElementById('btnResetDefaultEvalInput')?.addEventListener('click', () => {
+      if (confirm('Kembalikan seluruh nilai siswa ke perolehan standar awal (100% tuntas)?')) {
+        saveStoredEvaluasiScores({});
+        renderEvaluasiInputPane();
+        showToast('✓ Nilai seluruh siswa dikembalikan ke perolehan standar awal.', 'info');
+      }
+    });
+
+    // Presets
+    function applyPreset(p1Val, p2Val, p3Val) {
+      table.querySelectorAll('.eval-input-row').forEach(tr => {
+        const inP1 = tr.querySelector('.eval-field-p1');
+        const inP2 = tr.querySelector('.eval-field-p2');
+        const inP3 = tr.querySelector('.eval-field-p3');
+        if (inP1) inP1.value = p1Val;
+        if (inP2) inP2.value = p2Val;
+        if (inP3) inP3.value = p3Val;
+        updateRowCalculation(tr);
+      });
+      showToast(`✓ Nilai seluruh siswa diatur ke P1:${p1Val}, P2:${p2Val}, P3:${p3Val}`, 'success');
+    }
+
+    document.getElementById('btnPresetSempurna')?.addEventListener('click', () => applyPreset(10, 10, 10));
+    document.getElementById('btnPresetTinggi')?.addEventListener('click', () => applyPreset(9, 9, 9));
+    document.getElementById('btnPresetKKTP')?.addEventListener('click', () => applyPreset(8, 8, 8));
+
+    // Live search box
+    const searchBox = document.getElementById('evalInputSearchBox');
+    if (searchBox) {
+      searchBox.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        let visibleCount = 0;
+        table.querySelectorAll('.eval-input-row').forEach(tr => {
+          const name = tr.querySelector('.eval-student-name')?.textContent.toLowerCase() || '';
+          if (name.includes(query)) {
+            tr.style.display = '';
+            visibleCount++;
+          } else {
+            tr.style.display = 'none';
+          }
+        });
+        const cntElem = document.getElementById('evalInputVisibleCount');
+        if (cntElem) cntElem.textContent = visibleCount;
+      });
+    }
+  }
+
+  // Render Pane 3: Analisis Sebaran Capaian Butir Soal Sesuai Soal Evaluasi 1.pdf
   function renderEvaluasiAnalisisPane() {
     const container = document.getElementById('evalPaneAnalisis');
     if (!container) return;
@@ -12081,20 +12417,25 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       butirList = EVALUASI_BUTIR_SOAL_30.filter(b => b.pertemuan === pNum);
     }
 
-    // Kalkulasi capaian per butir secara deterministik dan selaras dengan skor siswa
+    // Kalkulasi capaian per butir selaras dengan skor siswa saat ini
     const analisisItems = butirList.map(b => {
-      // Jumlah siswa benar per nomor butir (17 hingga 20 siswa)
-      const offset = (b.id * 7) % 4; // 0, 1, 2, atau 3
-      const benarCount = Math.max(17, totalSiswa - (offset === 3 ? 2 : offset === 2 ? 1 : 0));
-      const persen = Number(((benarCount / totalSiswa) * 100).toFixed(1));
-      const kesukaran = persen >= 95 ? 'Mudah' : 'Sedang';
+      const pScores = siswaList.map(s => {
+        const raw = getRawEvaluasiScoreForStudent(s.nama);
+        return b.pertemuan === 1 ? raw.p1 : (b.pertemuan === 2 ? raw.p2 : raw.p3);
+      });
+      const avgP = pScores.length > 0 ? (pScores.reduce((acc, v) => acc + v, 0) / pScores.length) : 9.0;
+      const offset = (b.id * 7) % 3;
+      const basePct = avgP * 10;
+      const persen = Math.min(100, Math.max(50, Number((basePct - (offset === 2 ? 3 : offset === 1 ? 1.5 : 0)).toFixed(1))));
+      const benarCount = Math.min(totalSiswa, Math.max(0, Math.round((persen / 100) * totalSiswa)));
+      const kesukaran = persen >= 92 ? 'Mudah' : (persen >= 75 ? 'Sedang' : 'Sukar');
 
       return {
         ...b,
         benarCount,
         persen,
         kesukaran,
-        ketercapaian: '✓ Tercapai'
+        ketercapaian: persen >= 75 ? '✓ Tercapai' : 'Perlu Penguatan'
       };
     });
 
@@ -12849,6 +13190,12 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     // Sub-Navigasi Tab Modal
     document.getElementById('tabBtnEvalNilai')?.addEventListener('click', () => {
       evalActiveTab = 'nilai';
+      updateEvalTabButtons();
+      renderEvaluasiActivePane();
+    });
+
+    document.getElementById('tabBtnEvalInput')?.addEventListener('click', () => {
+      evalActiveTab = 'input';
       updateEvalTabButtons();
       renderEvaluasiActivePane();
     });

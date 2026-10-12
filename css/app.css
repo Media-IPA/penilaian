@@ -1196,4 +1196,25 @@ canvas {
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
+.eval-input-number {
+  width: 68px;
+  padding: 4px 6px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid #475569;
+  border-radius: var(--radius-sm);
+  color: #38bdf8;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.eval-input-number:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
+  background: rgba(15, 23, 42, 1);
+  color: #fff;
+}
+
 

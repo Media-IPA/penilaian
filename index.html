@@ -1677,7 +1677,10 @@
       <!-- TABS SUB-NAVIGASI MODAL -->
       <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; flex-wrap: wrap;">
         <button type="button" id="tabBtnEvalNilai" class="doc-tab-btn active">
-          <span>📊</span> Rekapitulasi Nilai Siswa (Tuntas Semua)
+          <span>📊</span> Rekapitulasi Nilai Siswa
+        </button>
+        <button type="button" id="tabBtnEvalInput" class="doc-tab-btn">
+          <span>✏️</span> Ruang Input &amp; Edit Nilai Siswa
         </button>
         <button type="button" id="tabBtnEvalAnalisis" class="doc-tab-btn">
           <span>📈</span> Analisis Capaian Butir Soal (30 Nomor)
@@ -1714,7 +1717,12 @@
           <!-- Stat Cards & Tabel Nilai rendered by JS -->
         </div>
 
-        <!-- PANE 2: ANALISIS CAPAIAN BUTIR SOAL (30 NOMOR) -->
+        <!-- PANE 2: RUANG INPUT & EDIT NILAI SISWA -->
+        <div id="evalPaneInput" class="eval-pane" style="display: none;">
+          <!-- Ruang Input Nilai Siswa rendered by JS -->
+        </div>
+
+        <!-- PANE 3: ANALISIS CAPAIAN BUTIR SOAL (30 NOMOR) -->
         <div id="evalPaneAnalisis" class="eval-pane" style="display: none;">
           <!-- Analisis Butir Soal rendered by JS -->
         </div>
