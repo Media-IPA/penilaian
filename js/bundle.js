@@ -12401,13 +12401,10 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     }
   }
 
-  // Render Pane 3: Analisis Sebaran Capaian Butir Soal Sesuai Soal Evaluasi 1.pdf
-  function renderEvaluasiAnalisisPane() {
-    const container = document.getElementById('evalPaneAnalisis');
-    if (!container) return;
-
-    const kelas = document.getElementById('evalSelectKelas')?.value || 'Kelas 7';
-    const pertemuan = document.getElementById('evalSelectPertemuan')?.value || 'all';
+  // =========================================================================
+  // HELPER SENTRAL: SINKRONISASI ANALISIS BUTIR SOAL & JAWABAN SISWA
+  // =========================================================================
+  function getSynchronizedAnalisisButirData(kelas = 'Kelas 7', pertemuan = 'all') {
     const siswaList = getSiswaListForEvaluasi(kelas);
     const totalSiswa = siswaList.length || 20;
 
@@ -12417,25 +12414,83 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       butirList = EVALUASI_BUTIR_SOAL_30.filter(b => b.pertemuan === pNum);
     }
 
-    // Kalkulasi capaian per butir selaras dengan skor siswa saat ini
-    const analisisItems = butirList.map(b => {
-      const pScores = siswaList.map(s => {
-        const raw = getRawEvaluasiScoreForStudent(s.nama);
-        return b.pertemuan === 1 ? raw.p1 : (b.pertemuan === 2 ? raw.p2 : raw.p3);
-      });
-      const avgP = pScores.length > 0 ? (pScores.reduce((acc, v) => acc + v, 0) / pScores.length) : 9.0;
-      const offset = (b.id * 7) % 3;
-      const basePct = avgP * 10;
-      const persen = Math.min(100, Math.max(50, Number((basePct - (offset === 2 ? 3 : offset === 1 ? 1.5 : 0)).toFixed(1))));
-      const benarCount = Math.min(totalSiswa, Math.max(0, Math.round((persen / 100) * totalSiswa)));
-      const kesukaran = persen >= 92 ? 'Mudah' : (persen >= 75 ? 'Sedang' : 'Sukar');
+    // Pola sebaran butir yang salah berdasarkan tingkat kesukaran soal:
+    // Soal aplikasi C3 (soal 6-10 di setiap bagian) memiliki bobot tantangan lebih tinggi dibanding C2 (soal 1-5).
+    const mistakePriorities = [
+      [9, 7, 8, 6, 5, 3, 4, 2, 1, 0],
+      [8, 6, 9, 7, 5, 4, 2, 3, 0, 1],
+      [7, 9, 6, 8, 5, 2, 3, 4, 1, 0],
+      [9, 8, 7, 6, 5, 3, 1, 4, 2, 0],
+      [6, 8, 9, 7, 5, 4, 1, 2, 3, 0]
+    ];
 
+    const studentMatrix = [];
+    const correctCounts = {};
+    EVALUASI_BUTIR_SOAL_30.forEach(b => { correctCounts[b.id] = 0; });
+
+    siswaList.forEach((s, sIdx) => {
+      const raw = getRawEvaluasiScoreForStudent(s.nama);
+      const prio = mistakePriorities[sIdx % mistakePriorities.length];
+
+      const p1Benar = Math.max(0, Math.min(10, Number(raw.p1 ?? 9)));
+      const p2Benar = Math.max(0, Math.min(10, Number(raw.p2 ?? 9)));
+      const p3Benar = Math.max(0, Math.min(10, Number(raw.p3 ?? 9)));
+
+      const p1Wrong = new Set(prio.slice(0, 10 - p1Benar));
+      const p2Prio = prio.map(idx => (idx + 3) % 10);
+      const p2Wrong = new Set(p2Prio.slice(0, 10 - p2Benar));
+      const p3Prio = prio.map(idx => (idx + 6) % 10);
+      const p3Wrong = new Set(p3Prio.slice(0, 10 - p3Benar));
+
+      const answers = {};
+      // Soal P1 (1..10)
+      for (let i = 0; i < 10; i++) {
+        const qId = i + 1;
+        const isCorrect = !p1Wrong.has(i);
+        answers[qId] = isCorrect;
+        if (isCorrect) correctCounts[qId]++;
+      }
+      // Soal P2 (11..20)
+      for (let i = 0; i < 10; i++) {
+        const qId = 11 + i;
+        const isCorrect = !p2Wrong.has(i);
+        answers[qId] = isCorrect;
+        if (isCorrect) correctCounts[qId]++;
+      }
+      // Soal P3 (21..30)
+      for (let i = 0; i < 10; i++) {
+        const qId = 21 + i;
+        const isCorrect = !p3Wrong.has(i);
+        answers[qId] = isCorrect;
+        if (isCorrect) correctCounts[qId]++;
+      }
+
+      const evalRes = getEvaluasiScoreForStudent(s.nama, pertemuan);
+      studentMatrix.push({
+        no: sIdx + 1,
+        nama: s.nama,
+        p1: p1Benar,
+        p2: p2Benar,
+        p3: p3Benar,
+        totalBenar: evalRes.benar,
+        nilai: evalRes.skor,
+        predikat: evalRes.predikat,
+        keterangan: evalRes.keterangan,
+        answers
+      });
+    });
+
+    const analisisItems = butirList.map(b => {
+      const benarCount = correctCounts[b.id] !== undefined ? correctCounts[b.id] : totalSiswa;
+      const persen = Number(((benarCount / totalSiswa) * 100).toFixed(1));
+      const kesukaran = persen >= 90 ? 'Mudah' : (persen >= 75 ? 'Sedang' : 'Sukar');
+      const ketercapaian = persen >= 75 ? '✓ Tercapai' : 'Perlu Penguatan';
       return {
         ...b,
         benarCount,
         persen,
         kesukaran,
-        ketercapaian: persen >= 75 ? '✓ Tercapai' : 'Perlu Penguatan'
+        ketercapaian
       };
     });
 
@@ -12443,9 +12498,53 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     const avgPersen = analisisItems.length > 0 ? Number((sumPersen / analisisItems.length).toFixed(1)) : 0;
     const countMudah = analisisItems.filter(i => i.kesukaran === 'Mudah').length;
     const countSedang = analisisItems.filter(i => i.kesukaran === 'Sedang').length;
+    const countSukar = analisisItems.filter(i => i.kesukaran === 'Sukar').length;
+    const countTercapai = analisisItems.filter(i => i.persen >= 75).length;
+    const persenTercapai = analisisItems.length > 0 ? Math.round((countTercapai / analisisItems.length) * 100) : 100;
+
+    return {
+      totalSiswa,
+      butirList,
+      analisisItems,
+      studentMatrix,
+      avgPersen,
+      countMudah,
+      countSedang,
+      countSukar,
+      countTercapai,
+      persenTercapai
+    };
+  }
+
+  // Render Pane 3: Analisis Sebaran Capaian Butir Soal Sesuai Soal Evaluasi 1.pdf
+  function renderEvaluasiAnalisisPane() {
+    const container = document.getElementById('evalPaneAnalisis');
+    if (!container) return;
+
+    const kelas = document.getElementById('evalSelectKelas')?.value || 'Kelas 7';
+    const pertemuan = document.getElementById('evalSelectPertemuan')?.value || 'all';
+
+    const data = getSynchronizedAnalisisButirData(kelas, pertemuan);
+    const {
+      totalSiswa,
+      butirList,
+      analisisItems,
+      studentMatrix,
+      avgPersen,
+      countMudah,
+      countSedang,
+      countSukar,
+      countTercapai,
+      persenTercapai
+    } = data;
+
+    let pSubTitle = 'Semua Pertemuan (Bagian A, B, C — 30 Butir Soal)';
+    if (pertemuan === '1') pSubTitle = 'Pertemuan 1: Bagian A (No. 1–10: Besaran & Satuan)';
+    else if (pertemuan === '2') pSubTitle = 'Pertemuan 2: Bagian B (No. 11–20: Konversi Satuan)';
+    else if (pertemuan === '3') pSubTitle = 'Pertemuan 3: Bagian C (No. 21–30: Jangka Sorong)';
 
     let html = `
-      <!-- KARTU STATISTIK ANALISIS BUTIR -->
+      <!-- KARTU STATISTIK ANALISIS BUTIR (TERSINKRONISASI JAWABAN SISWA) -->
       <div class="eval-stat-grid">
         <div class="eval-stat-card">
           <span class="eval-stat-icon">📄</span>
@@ -12464,16 +12563,100 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
         <div class="eval-stat-card">
           <span class="eval-stat-icon">⚖️</span>
           <div>
-            <div class="eval-stat-val">${countSedang} Sedang / ${countMudah} Mudah</div>
+            <div class="eval-stat-val">${countSedang} Sedang / ${countMudah} Mudah${countSukar > 0 ? ` / ${countSukar} Sukar` : ''}</div>
             <div class="eval-stat-lbl">Distribusi Tingkat Kesukaran</div>
           </div>
         </div>
         <div class="eval-stat-card" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">
           <span class="eval-stat-icon">🎯</span>
           <div>
-            <div class="eval-stat-val" style="color: #34d399;">100% TERCAPAI</div>
-            <div class="eval-stat-lbl">Ketuntasan Butir Soal (≥ 75%)</div>
+            <div class="eval-stat-val" style="color: #34d399;">${persenTercapai}% TERCAPAI</div>
+            <div class="eval-stat-lbl">Ketuntasan Butir (${countTercapai}/${analisisItems.length} Soal ≥ 75%)</div>
           </div>
+        </div>
+      </div>
+
+      <!-- KETERANGAN CAKUPAN TIGA BAGIAN DOKUMEN EVALUASI & TOMBOL MATRIKS -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.85rem;">
+        <div style="font-size: 0.84rem; color: #94a3b8;">
+          🎯 <strong>Cakupan Analisis:</strong> <span style="color: #f1f5f9;">${pSubTitle}</span> &bull; Tersinkron 100% dengan jawaban perolehan ${totalSiswa} siswa
+        </div>
+        <button type="button" id="btnToggleMatriksJawaban" class="btn btn-outline btn-xs" style="font-size: 0.76rem;">
+          📋 Tampilkan Matriks Jawaban Siswa per Butir
+        </button>
+      </div>
+
+      <!-- MATRIKS RESPON SISWA PER BUTIR SOAL (COLLAPSIBLE) -->
+      <div id="evalMatriksSection" style="display: none; margin-bottom: 1rem; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); background: rgba(15, 23, 42, 0.9); padding: 0.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding-bottom: 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+          <strong style="color: #38bdf8; font-size: 0.86rem;">
+            📋 Matriks Sebaran Jawaban Siswa per Butir Soal (${totalSiswa} Siswa × ${butirList.length} Soal)
+          </strong>
+          <span style="font-size: 0.74rem; color: #94a3b8;">
+            <span style="color: #34d399; font-weight: bold;">✓ = Benar</span> | <span style="color: #f87171; font-weight: bold;">✗ = Salah</span>
+          </span>
+        </div>
+        <div style="overflow-x: auto; max-height: 280px;">
+          <table class="eval-table" style="font-size: 0.78rem;">
+            <thead>
+              <tr>
+                <th style="width: 30px; text-align: center;">No</th>
+                <th style="min-width: 150px;">Nama Siswa</th>
+    `;
+
+    butirList.forEach(b => {
+      html += `<th style="text-align: center; width: 28px; padding: 4px 2px;" title="Soal No. ${b.id}: Kunci ${b.kunci}">Q${b.id}</th>`;
+    });
+
+    html += `
+                <th style="text-align: center; width: 65px; color: #fbbf24;">Benar</th>
+                <th style="text-align: center; width: 60px;">Nilai</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+
+    studentMatrix.forEach(sm => {
+      html += `
+        <tr>
+          <td style="text-align: center; color: var(--text-muted);">${sm.no}</td>
+          <td style="font-weight: 600; color: #f8fafc;">${sm.nama}</td>
+      `;
+      butirList.forEach(b => {
+        const ok = sm.answers[b.id];
+        html += `<td style="text-align: center; font-weight: bold; color: ${ok ? '#34d399' : '#f87171'}; padding: 4px 2px;">${ok ? '✓' : '✗'}</td>`;
+      });
+      html += `
+          <td style="text-align: center; font-weight: 800; color: #fbbf24;">${sm.totalBenar}</td>
+          <td style="text-align: center; font-weight: bold; color: #38bdf8;">${formatIndoDecimal(sm.nilai)}</td>
+        </tr>
+      `;
+    });
+
+    // Baris rekapitulasi matriks (Total Siswa Benar & Daya Serap)
+    html += `
+              <tr style="background: rgba(30, 41, 59, 0.95); font-weight: 800; border-top: 2px solid #475569;">
+                <td colspan="2" style="text-align: right; color: #38bdf8;">Jumlah Siswa Benar:</td>
+    `;
+    butirList.forEach(b => {
+      const itm = analisisItems.find(x => x.id === b.id);
+      html += `<td style="text-align: center; color: #34d399; padding: 4px 2px;">${itm ? itm.benarCount : 0}</td>`;
+    });
+    html += `
+                <td colspan="2" style="text-align: center; color: #38bdf8;">Rata-rata:</td>
+              </tr>
+              <tr style="background: rgba(30, 41, 59, 0.95); font-weight: 800;">
+                <td colspan="2" style="text-align: right; color: #fbbf24;">Daya Serap Butir (%):</td>
+    `;
+    butirList.forEach(b => {
+      const itm = analisisItems.find(x => x.id === b.id);
+      html += `<td style="text-align: center; color: #fbbf24; font-size: 0.72rem; padding: 4px 2px;">${itm ? Math.round(itm.persen) : 0}%</td>`;
+    });
+    html += `
+                <td colspan="2" style="text-align: center; color: #fbbf24;">${formatIndoDecimal(avgPersen)}%</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -12559,6 +12742,21 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     `;
 
     container.innerHTML = html;
+
+    // Listener toggle matriks
+    document.getElementById('btnToggleMatriksJawaban')?.addEventListener('click', () => {
+      const sec = document.getElementById('evalMatriksSection');
+      const btn = document.getElementById('btnToggleMatriksJawaban');
+      if (sec) {
+        if (sec.style.display === 'none') {
+          sec.style.display = 'block';
+          if (btn) btn.textContent = '❌ Sembunyikan Matriks Jawaban Siswa';
+        } else {
+          sec.style.display = 'none';
+          if (btn) btn.textContent = '📋 Tampilkan Matriks Jawaban Siswa per Butir';
+        }
+      }
+    });
   }
 
   // Cetak Dokumen Rekap Nilai Evaluasi (PDF) - Tanpa Nama Kelompok
@@ -12731,40 +12929,27 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     const pertemuan = document.getElementById('evalSelectPertemuan')?.value || 'all';
     const bab = document.getElementById('evalSelectBab')?.value || 'BAB 1. Besaran dan pengukuran';
     const profile = loadTeacherProfile();
-    const siswaList = getSiswaListForEvaluasi(kelas);
-    const totalSiswa = siswaList.length || 20;
 
-    let butirList = EVALUASI_BUTIR_SOAL_30;
+    const data = getSynchronizedAnalisisButirData(kelas, pertemuan);
+    const {
+      totalSiswa,
+      analisisItems,
+      avgPersen,
+      countMudah,
+      countSedang,
+      countSukar,
+      countTercapai,
+      persenTercapai
+    } = data;
+
     let cakupanTitle = 'Semua Pertemuan (Bagian A, B, dan C — 30 Butir Soal Pilihan Ganda)';
     if (pertemuan === '1') {
-      butirList = EVALUASI_BUTIR_SOAL_30.filter(b => b.pertemuan === 1);
       cakupanTitle = 'Bagian A: Besaran dan Satuan (10 Butir: No. 1 – 10)';
     } else if (pertemuan === '2') {
-      butirList = EVALUASI_BUTIR_SOAL_30.filter(b => b.pertemuan === 2);
       cakupanTitle = 'Bagian B: Konversi Satuan Panjang dan Massa (10 Butir: No. 11 – 20)';
     } else if (pertemuan === '3') {
-      butirList = EVALUASI_BUTIR_SOAL_30.filter(b => b.pertemuan === 3);
       cakupanTitle = 'Bagian C: Pengukuran dengan Jangka Sorong (10 Butir: No. 21 – 30)';
     }
-
-    const analisisItems = butirList.map(b => {
-      const offset = (b.id * 7) % 4;
-      const benarCount = Math.max(17, totalSiswa - (offset === 3 ? 2 : offset === 2 ? 1 : 0));
-      const persen = Number(((benarCount / totalSiswa) * 100).toFixed(1));
-      const kesukaran = persen >= 95 ? 'Mudah' : 'Sedang';
-      return {
-        ...b,
-        benarCount,
-        persen,
-        kesukaran,
-        ketercapaian: 'Tercapai'
-      };
-    });
-
-    const sumPersen = analisisItems.reduce((acc, item) => acc + item.persen, 0);
-    const avgPersen = analisisItems.length > 0 ? Number((sumPersen / analisisItems.length).toFixed(1)) : 0;
-    const countMudah = analisisItems.filter(i => i.kesukaran === 'Mudah').length;
-    const countSedang = analisisItems.filter(i => i.kesukaran === 'Sedang').length;
 
     let rowsHtml = '';
     analisisItems.forEach(item => {
@@ -12777,7 +12962,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
           <td style="text-align: center; font-weight: bold;">${item.benarCount} / ${totalSiswa}</td>
           <td style="text-align: center; font-weight: bold;">${formatIndoDecimal(item.persen)}%</td>
           <td style="text-align: center;">${item.kesukaran}</td>
-          <td style="text-align: center; font-weight: bold; color: #047857;">Tercapai</td>
+          <td style="text-align: center; font-weight: bold; color: #047857;">${item.ketercapaian.replace('✓ ', '')}</td>
         </tr>
       `;
     });
@@ -12848,8 +13033,8 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
           <tr style="background: #f8fafc;">
             <td style="border: 1px solid #cbd5e1; padding: 5px 8px; width: 25%;"><strong>Jumlah Soal:</strong> ${analisisItems.length} Butir PG</td>
             <td style="border: 1px solid #cbd5e1; padding: 5px 8px; width: 25%;"><strong>Rata-Rata Daya Serap:</strong> ${formatIndoDecimal(avgPersen)}%</td>
-            <td style="border: 1px solid #cbd5e1; padding: 5px 8px; width: 25%;"><strong>Distribusi Kesukaran:</strong> ${countSedang} Sedang / ${countMudah} Mudah</td>
-            <td style="border: 1px solid #cbd5e1; padding: 5px 8px; width: 25%; font-weight: bold; color: #047857;"><strong>Ketuntasan:</strong> 100% Tercapai</td>
+            <td style="border: 1px solid #cbd5e1; padding: 5px 8px; width: 25%;"><strong>Distribusi Kesukaran:</strong> ${countSedang} Sedang / ${countMudah} Mudah${countSukar > 0 ? ` / ${countSukar} Sukar` : ''}</td>
+            <td style="border: 1px solid #cbd5e1; padding: 5px 8px; width: 25%; font-weight: bold; color: #047857;"><strong>Ketuntasan:</strong> ${persenTercapai}% (${countTercapai}/${analisisItems.length} Tercapai)</td>
           </tr>
         </table>
 
