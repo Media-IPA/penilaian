@@ -6133,13 +6133,17 @@
   }
 
   function loadTeacherProfile() {
-    return getData(KEYS.PROFILE, {
-      sekolah: '',
+    const prof = getData(KEYS.PROFILE, {
+      sekolah: 'SMPN SATAP BULU MINUNG',
       kepsek: '',
       nipKepsek: '',
       guru: '',
       nipGuru: ''
     });
+    if (!prof.sekolah || prof.sekolah.includes('SELAYAR') || prof.sekolah === 'SMP / MTs') {
+      prof.sekolah = 'SMPN SATAP BULU MINUNG';
+    }
+    return prof;
   }
 
   function saveTeacherProfile(partial) {
@@ -10701,7 +10705,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
                 <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipKepsekDisplay}</p>
               </td>
               <td style="width: 50%; vertical-align: top; text-align: center; border: none !important; padding: 0 10px;">
-                <p style="margin: 0 0 52px 0;">....................., ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
+                <p style="margin: 0 0 52px 0;">Dampal Selatan, ${formatTanggalIndo(tanggal)}<br/><strong>Guru Mata Pelajaran IPA</strong></p>
                 <p style="font-weight: 700; text-decoration: underline; margin: 0;"><strong>${guruDisplay}</strong></p>
                 <p style="margin: 3px 0 0 0; font-size: ${fontSize - 1}pt; color: #475569;">${nipGuruDisplay}</p>
               </td>
@@ -12292,10 +12296,11 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
         
         <!-- KOP SEKOLAH -->
         <div style="text-align: center; border-bottom: 2.5px solid #000; padding-bottom: 5px; margin-bottom: 12px;">
-          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH KABUPATEN KEPULAUAN SELAYAR</h4>
-          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN, KEPEMUDAAN DAN OLAHRAGA</h4>
-          <h2 style="margin: 2px 0 0 0; font-size: 13pt; font-weight: 800; text-transform: uppercase;">${profile.sekolah || 'SMP NEGERI SATAP 7 KEPULAUAN SELAYAR'}</h2>
-          <p style="margin: 2px 0 0 0; font-size: 8.5pt; font-style: italic;">Alamat: Jl. Poros Lembang Bau, Kec. Pasimarannu, Kab. Kepulauan Selayar</p>
+          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH KABUPATEN TOLITOLI</h4>
+          <h4 style="margin: 0; font-size: 10pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
+          <h4 style="margin: 0; font-size: 9.5pt; font-weight: bold; text-transform: uppercase;">KECAMATAN DAMPAL SELATAN</h4>
+          <h2 style="margin: 2px 0 0 0; font-size: 13pt; font-weight: 800; text-transform: uppercase;">${(profile.sekolah && !profile.sekolah.includes('SELAYAR') && profile.sekolah !== 'SMP / MTs') ? profile.sekolah : 'SMPN SATAP BULU MINUNG'}</h2>
+          <p style="margin: 2px 0 0 0; font-size: 8.5pt; font-style: italic;">Alamat : Jl. Sardan, No 01 Desa Puse, Kec. Dampal Selatan, Kab. Tolitoli</p>
         </div>
 
         <!-- JUDUL LAPORAN -->
@@ -12361,7 +12366,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
               NIP. ${profile.nipKepsek || '...........................................'}
             </td>
             <td style="width: 50%; border: none !important; text-align: center;">
-              Kepulauan Selayar, ${tglIndo}<br>Guru Mata Pelajaran IPA<br><br><br><br>
+              Dampal Selatan, ${tglIndo}<br>Guru Mata Pelajaran IPA<br><br><br><br>
               <strong>${profile.guru || '...................................................'}</strong><br>
               NIP. ${profile.nipGuru || '...........................................'}
             </td>
@@ -12443,10 +12448,11 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
         
         <!-- KOP SEKOLAH -->
         <div style="text-align: center; border-bottom: 2.5px solid #000; padding-bottom: 5px; margin-bottom: 12px;">
-          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH KABUPATEN KEPULAUAN SELAYAR</h4>
-          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN, KEPEMUDAAN DAN OLAHRAGA</h4>
-          <h2 style="margin: 2px 0 0 0; font-size: 13pt; font-weight: 800; text-transform: uppercase;">${profile.sekolah || 'SMP NEGERI SATAP 7 KEPULAUAN SELAYAR'}</h2>
-          <p style="margin: 2px 0 0 0; font-size: 8.5pt; font-style: italic;">Alamat: Jl. Poros Lembang Bau, Kec. Pasimarannu, Kab. Kepulauan Selayar</p>
+          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH KABUPATEN TOLITOLI</h4>
+          <h4 style="margin: 0; font-size: 10pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
+          <h4 style="margin: 0; font-size: 9.5pt; font-weight: bold; text-transform: uppercase;">KECAMATAN DAMPAL SELATAN</h4>
+          <h2 style="margin: 2px 0 0 0; font-size: 13pt; font-weight: 800; text-transform: uppercase;">${(profile.sekolah && !profile.sekolah.includes('SELAYAR') && profile.sekolah !== 'SMP / MTs') ? profile.sekolah : 'SMPN SATAP BULU MINUNG'}</h2>
+          <p style="margin: 2px 0 0 0; font-size: 8.5pt; font-style: italic;">Alamat : Jl. Sardan, No 01 Desa Puse, Kec. Dampal Selatan, Kab. Tolitoli</p>
         </div>
 
         <!-- JUDUL LAPORAN -->
@@ -12515,7 +12521,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
               NIP. ${profile.nipKepsek || '...........................................'}
             </td>
             <td style="width: 50%; border: none !important; text-align: center;">
-              Kepulauan Selayar, ${tglIndo}<br>Guru Mata Pelajaran IPA<br><br><br><br>
+              Dampal Selatan, ${tglIndo}<br>Guru Mata Pelajaran IPA<br><br><br><br>
               <strong>${profile.guru || '...................................................'}</strong><br>
               NIP. ${profile.nipGuru || '...........................................'}
             </td>
@@ -12637,10 +12643,11 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
       </head>
       <body>
         <div style="text-align: center; border-bottom: 2.5px solid #000; padding-bottom: 6px; margin-bottom: 12px;">
-          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH KABUPATEN KEPULAUAN SELAYAR</h4>
-          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN, KEPEMUDAAN DAN OLAHRAGA</h4>
-          <h2 style="margin: 2px 0 0 0; font-size: 13pt; font-weight: bold; text-transform: uppercase;">${profile.sekolah || 'SMP NEGERI SATAP 7 KEPULAUAN SELAYAR'}</h2>
-          <p style="margin: 2px 0 0 0; font-size: 8.5pt; font-style: italic;">Alamat: Jl. Poros Lembang Bau, Kec. Pasimarannu, Kab. Kepulauan Selayar</p>
+          <h4 style="margin: 0; font-size: 10.5pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH KABUPATEN TOLITOLI</h4>
+          <h4 style="margin: 0; font-size: 10pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
+          <h4 style="margin: 0; font-size: 9.5pt; font-weight: bold; text-transform: uppercase;">KECAMATAN DAMPAL SELATAN</h4>
+          <h2 style="margin: 2px 0 0 0; font-size: 13pt; font-weight: bold; text-transform: uppercase;">${(profile.sekolah && !profile.sekolah.includes('SELAYAR') && profile.sekolah !== 'SMP / MTs') ? profile.sekolah : 'SMPN SATAP BULU MINUNG'}</h2>
+          <p style="margin: 2px 0 0 0; font-size: 8.5pt; font-style: italic;">Alamat : Jl. Sardan, No 01 Desa Puse, Kec. Dampal Selatan, Kab. Tolitoli</p>
         </div>
 
         <div style="text-align: center; margin-bottom: 12px;">
@@ -12702,7 +12709,7 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
               NIP. ${profile.nipKepsek || '...........................................'}
             </td>
             <td style="width: 50%; border: none !important; text-align: center;">
-              Kepulauan Selayar, ${tglIndo}<br>Guru Mata Pelajaran IPA<br><br><br><br>
+              Dampal Selatan, ${tglIndo}<br>Guru Mata Pelajaran IPA<br><br><br><br>
               <strong>${profile.guru || '...................................................'}</strong><br>
               NIP. ${profile.nipGuru || '...........................................'}
             </td>
