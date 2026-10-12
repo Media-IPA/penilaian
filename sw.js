@@ -1,5 +1,5 @@
 // Service Worker WARDIPA LKPD Rubrik Manager
-const CACHE_NAME = 'wardipa-rubrik-v23';
+const CACHE_NAME = 'wardipa-rubrik-v24';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
