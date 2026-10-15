@@ -8557,36 +8557,41 @@
           II. Matriks Rubrik Dimensi 1: Pemahaman Konsep (Memahami)
         </h4>
         <p style="margin: 4px 0 6px 0; font-size: ${fontSize}pt;">
-          <strong>Cara Perolehan:</strong> Dihitung otomatis dari <code>(Jumlah Benar ÷ 15 Soal) × 100%</code>. Mengukur persentase ketepatan siswa dalam menjawab 15 butir soal objektif LKPD (isian, B/S, menjodohkan).
+          <strong>Cara Perolehan:</strong> Dihitung otomatis dari <strong>15 butir tes objektif LKPD</strong> (5 isian singkat, 5 benar/salah, 5 menjodohkan). Tiap butir benar bernilai 1 poin (Skor Max = 15). Formula Standar Arikunto (2013): <code>Skor (%) = (Jumlah Benar ÷ 15) × 100%</code>. Bobot tugas: 1/3 (33,3%).
         </p>
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
           <thead>
             <tr style="background-color: #f1f5f9;">
-              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 18%; text-align: center;">Rentang Skor</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Jumlah Benar</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Skor (%)</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 22%; text-align: center;">Kategori Capaian</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Deskriptor Kualitatif Kemampuan Siswa</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">≥ 85%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">13 – 15 Benar</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">87% – 100%</td>
               <td style="text-align: center; font-weight: 700; color: #059669; border: 1px solid #1e293b; padding: 5px 8px;">Sangat Baik (A)</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Konsep dasar sangat dikuasai (13–15 butir benar). Menguasai konsep esensial materi secara mendalam.</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Konsep dasar sangat dikuasai mendalam &amp; mandiri. Menguasai seluruh konsep esensial materi.</td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">70% – 84%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">11 – 12 Benar</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">73% – 84%</td>
               <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Baik (B)</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Konsep dikuasai secara tepat (11–12 butir benar). Memenuhi target capaian pembelajaran minimum.</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Konsep materi dikuasai secara tepat. Memenuhi target ketuntasan capaian pembelajaran (KKM).</td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">55% – 69%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">8 – 10 Benar</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">53% – 69%</td>
               <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Cukup (C)</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Perlu sedikit penguatan (8–10 butir benar). Memahami sebagian konsep dasar namun masih terdapat kekeliruan.</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Perlu sedikit penguatan. Memahami sebagian konsep dasar namun masih terdapat kekeliruan minor.</td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">&lt; 55%</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">0 – 7 Benar</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">0% – 47%</td>
               <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">Perlu Bimbingan (D)</td>
-              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Belum tuntas (&le; 7 butir benar). Belum menguasai konsep dasar materi, memerlukan pendampingan intensif.</td>
+              <td style="border: 1px solid #1e293b; padding: 5px 8px;">Belum tuntas KKM (&lt; 70). Belum menguasai konsep dasar materi, membutuhkan remedial terarah.</td>
             </tr>
           </tbody>
         </table>
@@ -8596,43 +8601,43 @@
           III. Matriks Rubrik Dimensi 2: Aplikasi Konsep Sains (Mengaplikasi)
         </h4>
         <p style="margin: 4px 0 6px 0; font-size: ${fontSize}pt;">
-          <strong>Cara Perolehan:</strong> Rata-rata dari skor rubrik penilaian guru skala 1,0–4,0. Mengukur kemampuan bernalar dalam menerapkan konsep materi ke dalam kegiatan eksperimen atau fenomena nyata.
+          <strong>Cara Perolehan:</strong> Diperoleh dari <strong>5 butir soal aplikasi konsep &amp; penalaran IPA</strong> pada LKPD (pemecahan masalah praktikum &amp; fenomena alam nyata). Guru menetapkan <strong>Level 1–4</strong> (setara skala 1–5: 1 soal = 20 poin). Bobot tugas: 1/3 (33,3%).
         </p>
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
           <thead>
             <tr style="background-color: #f1f5f9;">
-              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Tingkat</th>
-              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 22%; text-align: center;">Skor &amp; Predikat</th>
-              <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Indikator Capaian Rubrik</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 16%; text-align: center;">5 Butir Soal LKPD</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 22%; text-align: center;">Level &amp; Nilai Konversi</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Indikator Capaian Rubrik Aplikasi Siswa</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 4</td>
-              <td style="text-align: center; font-weight: 700; color: #059669; border: 1px solid #1e293b; padding: 5px 8px;">Level 4: Sangat Baik (Skor 4 / 100)</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Benar 5 Soal (100%)</td>
+              <td style="text-align: center; font-weight: 700; color: #059669; border: 1px solid #1e293b; padding: 5px 8px;">Level 4: Sangat Baik (100)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #475569; font-weight: normal;">Skala 1–5: Level 5</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Penerapan konsep materi tepat pada semua kegiatan, analisis mendalam, dan alasan logis.
+                Penerapan konsep materi tepat pada semua kegiatan LKPD, analisis mendalam, perhitungan runut, dan alasan ilmiah logis.
               </td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 3</td>
-              <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Level 3: Baik (Skor 3 / 75)</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Benar 3 – 4 Soal (60–80%)</td>
+              <td style="text-align: center; font-weight: 700; color: #0284c7; border: 1px solid #1e293b; padding: 5px 8px;">Level 3: Baik (75)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #475569; font-weight: normal;">Skala 1–5: Level 3–4</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Penerapan konsep materi tepat pada sebagian besar kegiatan, penjelasan cukup jelas.
+                Penerapan konsep materi tepat pada sebagian besar kegiatan (3–4 soal benar), alur penalaran dan penjelasan cukup jelas.
               </td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 2</td>
-              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Level 2: Cukup (Skor 2 / 50)</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Benar 2 Soal (40%)</td>
+              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">Level 2: Cukup (50)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #475569; font-weight: normal;">Skala 1–5: Level 2</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Penerapan konsep materi masih sebagian tepat, terdapat beberapa kekeliruan analisis.
+                Penerapan konsep materi masih sebagian tepat (2 soal benar), terdapat beberapa keraguan atau kekeliruan analisis di soal lain.
               </td>
             </tr>
             <tr>
-              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level 1</td>
-              <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">Level 1: Perlu Bimbingan (Skor 1 / 25)</td>
+              <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Benar 0 – 1 Soal (0–20%)</td>
+              <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">Level 1: Perlu Bimbingan (25)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #475569; font-weight: normal;">Skala 1–5: Level 1</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Belum mampu menerapkan konsep materi, jawaban keliru atau banyak yang kosong.
+                Belum mampu menerapkan konsep materi (hanya benar 0–1 soal), jawaban keliru atau banyak kosong, butuh pendampingan intensif.
               </td>
             </tr>
           </tbody>
@@ -8643,43 +8648,43 @@
           IV. Matriks Rubrik Dimensi 3: Refleksi Metakognitif (Merefleksi)
         </h4>
         <p style="margin: 4px 0 6px 0; font-size: ${fontSize}pt;">
-          <strong>Cara Perolehan:</strong> Rata-rata penilaian guru skala 1,0–4,0 berdasarkan kedalaman refleksi belajar siswa (bukan dinilai dari pemberian bintang).
+          <strong>Cara Perolehan:</strong> Dinilai dari <strong>kedalaman respon uraian metakognitif siswa</strong> (pemahaman konsep baru, kendala yang dihadapi, dan solusi mandiri). Nilai resmi tugas bersumber dari Rubrik Guru Level L1–L4 yang diselaraskan dengan Self-Rating Bintang siswa (⭐ 1–5). Bobot tugas: 1/3 (33,3%).
         </p>
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: ${fontSize}pt; border: 1px solid #1e293b;">
           <thead>
             <tr style="background-color: #f1f5f9;">
               <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 14%; text-align: center;">Level Rubrik</th>
-              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 22%; text-align: center;">Kategori Kualitas</th>
+              <th style="padding: 6px 8px; border: 1px solid #1e293b; width: 22%; text-align: center;">Skor, Predikat &amp; Bintang</th>
               <th style="padding: 6px 8px; border: 1px solid #1e293b; text-align: left;">Indikator Kedalaman Refleksi Metakognisi</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L4</td>
-              <td style="text-align: center; font-weight: 700; color: #7c3aed; border: 1px solid #1e293b; padding: 5px 8px;">L4: Sangat Reflektif (Skor 4 / 100)</td>
+              <td style="text-align: center; font-weight: 700; color: #7c3aed; border: 1px solid #1e293b; padding: 5px 8px;">L4: Sangat Reflektif (100)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #b45309; font-weight: normal;">⭐⭐⭐⭐⭐ (5★ Mandiri)</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Mengidentifikasi pemahaman baru, kendala, dan contoh penerapan dengan spesifik.
+                Mengidentifikasi pemahaman baru secara spesifik dan mendalam, merinci kendala belajar dengan jujur, serta menemukan solusi mandiri.
               </td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L3</td>
-              <td style="text-align: center; font-weight: 700; color: #4338ca; border: 1px solid #1e293b; padding: 5px 8px;">L3: Reflektif (Skor 3 / 75)</td>
+              <td style="text-align: center; font-weight: 700; color: #4338ca; border: 1px solid #1e293b; padding: 5px 8px;">L3: Reflektif (75)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #b45309; font-weight: normal;">⭐⭐⭐⭐ (4★ Mandiri)</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Menyampaikan pemahaman baru dan proses belajar secara relevan dan cukup jelas.
+                Menyampaikan pemahaman konsep baru dan proses belajar secara relevan dan cukup jelas, alur berpikir runtut.
               </td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L2</td>
-              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">L2: Kurang Reflektif (Skor 2 / 50)</td>
+              <td style="text-align: center; font-weight: 700; color: #d97706; border: 1px solid #1e293b; padding: 5px 8px;">L2: Kurang Reflektif (50)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #b45309; font-weight: normal;">⭐⭐⭐ (2–3★ Mandiri)</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Refleksi masih sangat singkat atau umum (hanya menulis seru/senang/paham tanpa rincian).
+                Refleksi masih sangat singkat atau umum (hanya menulis seru/senang/paham tanpa rincian konsep materi IPA yang dipelajari).
               </td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold; border: 1px solid #1e293b; padding: 5px 8px;">Level L1</td>
-              <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">L1: Belum Reflektif (Skor 1 / 25)</td>
+              <td style="text-align: center; font-weight: 700; color: #dc2626; border: 1px solid #1e293b; padding: 5px 8px;">L1: Belum Reflektif (25)<br/><span style="font-size: ${fontSize - 1.5}pt; color: #b45309; font-weight: normal;">⭐ (1★ Mandiri)</span></td>
               <td style="border: 1px solid #1e293b; padding: 5px 8px;">
-                Belum mampu merefleksikan proses belajar (kolom kosong atau tidak relevan).
+                Belum mampu merefleksikan proses belajar (kolom refleksi kosong, asal-asalan, atau jawaban tidak berhubungan dengan topik).
               </td>
             </tr>
           </tbody>
