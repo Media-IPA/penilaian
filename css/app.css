@@ -1217,4 +1217,47 @@ canvas {
   color: #fff;
 }
 
+.eval-input-number:disabled,
+.eval-input-number[readonly],
+.eval-input-number.is-locked {
+  background: rgba(15, 23, 42, 0.45) !important;
+  border-color: rgba(148, 163, 184, 0.25) !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed !important;
+  opacity: 0.85;
+}
+
+.eval-input-number::-webkit-outer-spin-button,
+.eval-input-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.eval-input-number {
+  -moz-appearance: textfield;
+}
+
+.btn-lock-active {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #fff !important;
+  border: 1px solid #059669 !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35) !important;
+}
+
+.btn-lock-active:hover {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+}
+
+.btn-unlock-active {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #fff !important;
+  border: 1px solid #d97706 !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35) !important;
+}
+
+.btn-unlock-active:hover {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+}
+
+
 

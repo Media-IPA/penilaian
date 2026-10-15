@@ -418,6 +418,9 @@
           <button id="btnExportCsv" class="btn btn-success btn-sm" onclick="exportRekapToCSV()">
             <span>📗</span> Ekspor Excel (CSV)
           </button>
+          <button type="button" id="btnToggleLockRekap" class="btn btn-sm" style="font-weight: 600; padding: 0.4rem 0.8rem; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 0.35rem;" title="Kunci data rekapitulasi nilai agar aman dari perubahan atau penghapusan yang tidak sengaja">
+            <span id="rekapLockIcon">🔒</span> <span id="rekapLockText">Kunci Rekap</span>
+          </button>
           <button id="btnRekapModalEvaluasi" class="btn btn-warning btn-sm" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);" title="Buka Evaluasi Pembelajaran BAB 1 (3 Pertemuan - 30 Soal)">
             <span>🎯</span> Evaluasi Pembelajaran
           </button>
@@ -1632,6 +1635,7 @@
               <span>Evaluasi Pembelajaran IPA</span>
               <span class="badge badge-blue" style="font-size: 0.75rem; padding: 2px 8px;">Kurikulum Merdeka</span>
               <span class="badge badge-emerald" style="font-size: 0.75rem; padding: 2px 8px;">✓ 100% TUNTAS SEMUA</span>
+              <span id="evalHeaderLockBadge" class="badge badge-emerald" style="font-size: 0.75rem; padding: 2px 8px;">🔒 NILAI TERKUNCI</span>
             </h3>
             <p style="color: var(--text-muted); font-size: 0.78rem; margin: 0.2rem 0 0 0;">
               Asesmen BAB 1 Kelas 7 (3 Pertemuan: Besaran &amp; Satuan, Konversi Satuan, Jangka Sorong) &bull; Pengolahan Nilai 30 Nomor Soal &bull; Seluruh Siswa Mencapai KKTP (&ge; 75)
@@ -1665,9 +1669,13 @@
           </div>
         </div>
 
-        <!-- BADGE KETUNTASAN KLASIKAL -->
-        <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-          <div style="text-align: right;">
+        <!-- TOMBOL KUNCI PENGOLAHAN NILAI & BADGE KETUNTASAN KLASIKAL -->
+        <div style="display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap;">
+          <button type="button" id="btnToggleLockEvaluasi" class="btn btn-sm btn-unlock-active" style="font-weight: 700; padding: 0.45rem 0.95rem; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 0.45rem; transition: all 0.2s ease;" title="Kunci pengolahan nilai agar tersimpan aman dan tidak berubah saat aplikasi dibuka kembali">
+            <span id="evalLockBtnIcon">🔓</span>
+            <span id="evalLockBtnText">Buka Kunci untuk Edit</span>
+          </button>
+          <div style="text-align: right; border-left: 1px solid rgba(255, 255, 255, 0.1); padding-left: 0.85rem;">
             <div style="font-size: 0.72rem; color: #94a3b8; text-transform: uppercase;">Ketuntasan KKTP (≥ 75)</div>
             <div style="font-size: 0.95rem; font-weight: 800; color: #34d399;" id="evalHeaderKetuntasanText">20 / 20 Siswa Tuntas (100%)</div>
           </div>
