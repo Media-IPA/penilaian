@@ -55,8 +55,8 @@
       id: 'top-b1-p3',
       bab: 'BAB 1. Besaran dan pengukuran',
       pertemuan_ke: 3,
-      materi: 'Alat ukur dan cara penggunaannya',
-      nama: 'BAB 1 (P3): Alat ukur dan cara penggunaannya',
+      materi: 'Jangka sorong',
+      nama: 'BAB 1 (P3): Jangka sorong',
       defaultSoal: 15
     }
   ];
@@ -1177,7 +1177,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1228,7 +1228,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1279,7 +1279,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1330,7 +1330,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1381,7 +1381,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1432,7 +1432,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1483,7 +1483,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1534,7 +1534,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1585,7 +1585,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1636,7 +1636,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1687,7 +1687,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1738,7 +1738,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1789,7 +1789,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1840,7 +1840,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1891,7 +1891,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1942,7 +1942,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -1993,7 +1993,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -2044,7 +2044,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -2095,7 +2095,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -2146,7 +2146,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -2197,7 +2197,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2248,7 +2248,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2299,7 +2299,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2350,7 +2350,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2401,7 +2401,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2452,7 +2452,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2503,7 +2503,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2554,7 +2554,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2605,7 +2605,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2656,7 +2656,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2707,7 +2707,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2758,7 +2758,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2809,7 +2809,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2860,7 +2860,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2911,7 +2911,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -2962,7 +2962,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -3013,7 +3013,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -3064,7 +3064,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -3115,7 +3115,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -3166,7 +3166,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -3727,7 +3727,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -3778,7 +3778,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -3829,7 +3829,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -3880,7 +3880,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -3931,7 +3931,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -3982,7 +3982,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -4033,7 +4033,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -4084,7 +4084,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -4135,7 +4135,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -4186,7 +4186,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -4237,7 +4237,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4288,7 +4288,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4339,7 +4339,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4390,7 +4390,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4441,7 +4441,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4492,7 +4492,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4543,7 +4543,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4594,7 +4594,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4645,7 +4645,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -4696,7 +4696,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -5206,7 +5206,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5257,7 +5257,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5308,7 +5308,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5359,7 +5359,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5410,7 +5410,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5461,7 +5461,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5512,7 +5512,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5563,7 +5563,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5614,7 +5614,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P2): Pengukuran Panjang, Massa \u0026 Waktu",
+        "topik_nama":  "BAB 1 (P2): Konversi satuan",
         "pertemuan_ke":  2
     },
     {
@@ -5665,7 +5665,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -5716,7 +5716,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -5767,7 +5767,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -5818,7 +5818,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -5869,7 +5869,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -5920,7 +5920,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -5971,7 +5971,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -6022,7 +6022,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     },
     {
@@ -6073,7 +6073,7 @@
         "foto_lkpd":  [
 
                       ],
-        "topik_nama":  "BAB 1 (P3): Konversi Satuan \u0026 Ketelitian Alat Ukur",
+        "topik_nama":  "BAB 1 (P3): Jangka sorong",
         "pertemuan_ke":  3
     }
 ];
@@ -6093,7 +6093,7 @@
   };
 
   const DATA_VERSION_KEY = 'wardipa_data_ver';
-  const CURRENT_DATA_VERSION = 'v12_k7_merefleksi_meningkat_p1_rendah_p2_sedang_p3_tinggi';
+  const CURRENT_DATA_VERSION = 'v13_k7_topik_p2_konversi_satuan_p3_jangka_sorong';
   const DEFAULT_GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyUbje5oXG3BzOSqqnCNzJDsUUIcVBkXDK2RCDTntPMwDdlsxgtCZod070oFUXUDQpxrw/exec';
 
   function initStorage() {
@@ -6110,6 +6110,13 @@
       } else {
         const hasEval = existingPen.some(p => p.id && p.id.startsWith('pen-eval-'));
         if (hasEval) {
+          existingPen.forEach(p => {
+            if (Number(p.pertemuan_ke) === 2 || p.topikId === 'top-b1-p2') {
+              p.topik_nama = 'BAB 1 (P2): Konversi satuan';
+            } else if (Number(p.pertemuan_ke) === 3 || p.topikId === 'top-b1-p3') {
+              p.topik_nama = 'BAB 1 (P3): Jangka sorong';
+            }
+          });
           localStorage.setItem(KEYS.PENILAIAN, JSON.stringify(existingPen));
         } else {
           localStorage.setItem(KEYS.PENILAIAN, JSON.stringify(SAMPLE_PENILAIAN));
@@ -6122,6 +6129,42 @@
       if (!localStorage.getItem(KEYS.KELOMPOK)) localStorage.setItem(KEYS.KELOMPOK, JSON.stringify(DEFAULT_KELOMPOK));
       if (!localStorage.getItem(KEYS.TOPIK)) localStorage.setItem(KEYS.TOPIK, JSON.stringify(DEFAULT_TOPIK));
       if (!localStorage.getItem(KEYS.PENILAIAN)) localStorage.setItem(KEYS.PENILAIAN, JSON.stringify(SAMPLE_PENILAIAN));
+    }
+
+    const curTopik = getData(KEYS.TOPIK, null);
+    if (curTopik && Array.isArray(curTopik)) {
+      let tMod = false;
+      curTopik.forEach(t => {
+        if (Number(t.pertemuan_ke) === 2 && t.nama !== 'BAB 1 (P2): Konversi satuan') {
+          t.materi = 'Konversi satuan';
+          t.nama = 'BAB 1 (P2): Konversi satuan';
+          tMod = true;
+        } else if (Number(t.pertemuan_ke) === 3 && (t.materi !== 'Jangka sorong' || t.nama !== 'BAB 1 (P3): Jangka sorong')) {
+          t.materi = 'Jangka sorong';
+          t.nama = 'BAB 1 (P3): Jangka sorong';
+          tMod = true;
+        }
+      });
+      if (tMod) {
+        localStorage.setItem(KEYS.TOPIK, JSON.stringify(curTopik));
+      }
+    }
+
+    const curPen = getData(KEYS.PENILAIAN, null);
+    if (curPen && Array.isArray(curPen)) {
+      let pMod = false;
+      curPen.forEach(p => {
+        if ((Number(p.pertemuan_ke) === 2 || p.topikId === 'top-b1-p2') && p.topik_nama !== 'BAB 1 (P2): Konversi satuan') {
+          p.topik_nama = 'BAB 1 (P2): Konversi satuan';
+          pMod = true;
+        } else if ((Number(p.pertemuan_ke) === 3 || p.topikId === 'top-b1-p3') && p.topik_nama !== 'BAB 1 (P3): Jangka sorong') {
+          p.topik_nama = 'BAB 1 (P3): Jangka sorong';
+          pMod = true;
+        }
+      });
+      if (pMod) {
+        localStorage.setItem(KEYS.PENILAIAN, JSON.stringify(curPen));
+      }
     }
 
     if (localStorage.getItem(KEYS.EVAL_LOCKED) === null) {
@@ -7385,7 +7428,8 @@
       const avgNilaiTugas = Number((sumNilaiTugas / n).toFixed(1));
       const persentaseTuntas = Number(((countTuntas / n) * 100).toFixed(1));
 
-      const topikNama = pEntries[0]?.topik_nama || `Topik Pertemuan ${pKe}`;
+      const matchingTopik = App.topik?.find(t => Number(t.pertemuan_ke) === pKe || t.id === pEntries[0]?.topikId);
+      const topikNama = matchingTopik?.nama || pEntries[0]?.topik_nama || `Topik Pertemuan ${pKe}`;
 
       return {
         pertemuan: pKe,
@@ -7404,6 +7448,7 @@
     updateGrafikKpiCards(meetingStats);
     drawTrendCanvas(meetingStats, dFilter);
     renderTabelCapaian(meetingStats);
+    renderDistribusiLevelSection(data, pertemuanList);
   }
 
   function updateGrafikKpiCards(meetingStats) {
@@ -7856,6 +7901,379 @@
     showToast('Grafik capaian belajar berhasil diunduh sebagai gambar (PNG)!', 'success');
   }
 
+  function exportDistribusiToPNG() {
+    const canvas = document.getElementById('canvasGrafikDistribusi');
+    if (!canvas) return;
+    const url = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Grafik_Distribusi_Level_Siswa_L1_L2_L3_${new Date().toISOString().slice(0, 10)}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast('Grafik distribusi level siswa berhasil diunduh sebagai gambar (PNG)!', 'success');
+  }
+
+  // ==================== GRAFIK DISTRIBUSI LEVEL SISWA (L1, L2, L3) PER PERTEMUAN ====================
+  function renderDistribusiLevelSection(data = null, pertemuanList = null) {
+    if (!data) {
+      const kFilter = document.getElementById('grafikFilterKelas')?.value || 'all';
+      data = App.penilaian || [];
+      if (kFilter !== 'all') {
+        const normK = kFilter.trim().toLowerCase();
+        data = data.filter(p => (p.kelas || '').trim().toLowerCase() === normK);
+      }
+    }
+    if (!pertemuanList) {
+      const pSet = new Set(data.map(p => Number(p.pertemuan_ke) || 1));
+      pertemuanList = Array.from(pSet).sort((a, b) => a - b);
+      if (pertemuanList.length === 0) pertemuanList = [1, 2, 3];
+    }
+
+    const aspek = document.getElementById('grafikDistribusiAspek')?.value || 'merefleksi';
+
+    // Konfigurasi kategori berdasarkan aspek yang dipilih
+    let config = {
+      title: 'Distribusi Siswa per Tingkatan Level L1, L2, L3, L4 (Dimensi Merefleksi)',
+      categories: [
+        { key: 'l1', label: 'L1: Belum Reflektif', badgeText: 'L1', color: '#f43f5e', fill: '#f43f5e', desc: 'Kolom refleksi kosong atau belum relevan' },
+        { key: 'l2', label: 'L2: Kurang Reflektif', badgeText: 'L2', color: '#f59e0b', fill: '#f59e0b', desc: 'Uraian sangat singkat/normatif ("seru/paham") tanpa analisis kendala' },
+        { key: 'l3', label: 'L3: Reflektif', badgeText: 'L3', color: '#38bdf8', fill: '#38bdf8', desc: 'Menjelaskan pemahaman konsep baru & evaluasi proses belajar' },
+        { key: 'l4', label: 'L4: Sangat Reflektif', badgeText: 'L4', color: '#a855f7', fill: '#a855f7', desc: 'Spesifik & mendalam mengenali kendala, pemaknaan, dan solusi mandiri' }
+      ]
+    };
+
+    if (aspek === 'mengaplikasi') {
+      config = {
+        title: 'Distribusi Siswa per Tingkatan Level 1–4 (Dimensi Mengaplikasi LKPD)',
+        categories: [
+          { key: 'l1', label: 'Level 1: Perlu Bimbingan', badgeText: 'Level 1', color: '#f43f5e', fill: '#f43f5e', desc: 'Benar 0–1 butir soal penerapan prosedur/rumus IPA' },
+          { key: 'l2', label: 'Level 2: Cukup', badgeText: 'Level 2', color: '#f59e0b', fill: '#f59e0b', desc: 'Benar 2 butir soal penerapan LKPD' },
+          { key: 'l3', label: 'Level 3: Baik', badgeText: 'Level 3', color: '#38bdf8', fill: '#38bdf8', desc: 'Benar 3–4 butir soal penerapan LKPD' },
+          { key: 'l4', label: 'Level 4: Sangat Baik', badgeText: 'Level 4', color: '#10b981', fill: '#10b981', desc: 'Benar 5 butir soal tuntas & analisis praktikum tepat' }
+        ]
+      };
+    } else if (aspek === 'kognitif_3d') {
+      config = {
+        title: 'Ketuntasan 3 Level Kognitif IPA per Pertemuan (L1, L2, L3)',
+        categories: [
+          { key: 'l1', label: 'L1: Memahami (Tuntas ≥70%)', badgeText: 'L1 (Memahami)', color: '#38bdf8', fill: '#38bdf8', desc: 'Kognitif Dasar: Menguasai 15 butir tes objektif konsep IPA' },
+          { key: 'l2', label: 'L2: Mengaplikasi (Level ≥3)', badgeText: 'L2 (Mengaplikasi)', color: '#10b981', fill: '#10b981', desc: 'Aplikasi Konsep: Terampil bernalar & prosedur praktikum' },
+          { key: 'l3', label: 'L3: Merefleksi (Reflektif Level ≥3)', badgeText: 'L3 (Merefleksi)', color: '#a855f7', fill: '#a855f7', desc: 'Penalaran & Metakognisi: Evaluasi kesadaran proses belajar' }
+        ]
+      };
+    } else if (aspek === 'nilai_tugas') {
+      config = {
+        title: 'Distribusi Tingkat Ketuntasan Nilai Tugas LKPD (L1 - L4)',
+        categories: [
+          { key: 'l1', label: 'L1: Perlu Bimbingan (< 55)', badgeText: 'L1 (<55)', color: '#f43f5e', fill: '#f43f5e', desc: 'Belum mencapai ketuntasan minimum tugas' },
+          { key: 'l2', label: 'L2: Cukup (55–69)', badgeText: 'L2 (55–69)', color: '#f59e0b', fill: '#f59e0b', desc: 'Mendekati batas KKM / KKTP 70' },
+          { key: 'l3', label: 'L3: Baik (70–84)', badgeText: 'L3 (70–84)', color: '#38bdf8', fill: '#38bdf8', desc: 'Tuntas KKM kompetensi IPA (70+)' },
+          { key: 'l4', label: 'L4: Sangat Baik (85–100)', badgeText: 'L4 (85–100)', color: '#10b981', fill: '#10b981', desc: 'Mencapai penguasaan optimal materi IPA' }
+        ]
+      };
+    }
+
+    const titleElem = document.getElementById('grafikDistribusiTitle');
+    if (titleElem) {
+      titleElem.innerHTML = `<span>📊</span> ${config.title}`;
+    }
+
+    // Hitung distribusi jumlah siswa per pertemuan
+    const distData = pertemuanList.map(pKe => {
+      const pEntries = data.filter(p => (Number(p.pertemuan_ke) || 1) === pKe);
+      const totalSiswa = pEntries.length;
+      const matchingTopik = App.topik?.find(t => Number(t.pertemuan_ke) === pKe || t.id === pEntries[0]?.topikId);
+      const topikNama = matchingTopik?.nama || pEntries[0]?.topik_nama || `Pertemuan ${pKe}`;
+
+      const counts = {};
+      config.categories.forEach(cat => counts[cat.key] = 0);
+
+      pEntries.forEach(entry => {
+        if (aspek === 'merefleksi') {
+          const lvl = Number(entry.pengetahuan?.merefleksi?.level) || 1;
+          if (lvl >= 4) counts.l4++;
+          else if (lvl === 3) counts.l3++;
+          else if (lvl === 2) counts.l2++;
+          else counts.l1++;
+        } else if (aspek === 'mengaplikasi') {
+          const lvl = Number(entry.pengetahuan?.mengaplikasi?.level) || 1;
+          if (lvl >= 4) counts.l4++;
+          else if (lvl === 3) counts.l3++;
+          else if (lvl === 2) counts.l2++;
+          else counts.l1++;
+        } else if (aspek === 'kognitif_3d') {
+          const mem = entry.pengetahuan?.memahami?.skor_persen ?? 0;
+          const apl = entry.pengetahuan?.mengaplikasi?.level ?? 1;
+          const ref = entry.pengetahuan?.merefleksi?.level ?? 1;
+          if (mem >= 70) counts.l1++;
+          if (apl >= 3) counts.l2++;
+          if (ref >= 3) counts.l3++;
+        } else if (aspek === 'nilai_tugas') {
+          const nt = entry.nilai_tugas || calcNilaiTugas(
+            entry.pengetahuan?.memahami?.jumlah_benar,
+            entry.pengetahuan?.mengaplikasi?.level,
+            entry.pengetahuan?.merefleksi?.level
+          );
+          const score = nt.nilai_akhir || 0;
+          if (score >= 85) counts.l4++;
+          else if (score >= 70) counts.l3++;
+          else if (score >= 55) counts.l2++;
+          else counts.l1++;
+        }
+      });
+
+      return {
+        pertemuan: pKe,
+        topik: topikNama,
+        totalSiswa,
+        counts
+      };
+    });
+
+    renderDistribusiLegend(config);
+    drawDistributionCanvas(distData, config);
+    renderDistribusiTable(distData, config, aspek);
+  }
+
+  function renderDistribusiLegend(config) {
+    const legendElem = document.getElementById('grafikDistribusiLegend');
+    if (!legendElem) return;
+    legendElem.innerHTML = config.categories.map(cat => `
+      <span style="display: inline-flex; align-items: center; gap: 0.4rem; color: #cbd5e1; font-weight: 500;" title="${cat.desc}">
+        <span style="display: inline-block; width: 13px; height: 13px; border-radius: 3px; background: ${cat.color}; box-shadow: 0 0 6px ${cat.color}66;"></span>
+        <strong style="color: ${cat.color};">${cat.badgeText}</strong>: <span style="font-size: 0.8rem; color: #94a3b8;">${cat.label.includes(':') ? cat.label.split(':')[1] : cat.label}</span>
+      </span>
+    `).join('');
+  }
+
+  function drawDistributionCanvas(distData, config) {
+    const canvas = document.getElementById('canvasGrafikDistribusi');
+    if (!canvas) return;
+
+    const parent = canvas.parentElement;
+    const displayW = parent.clientWidth || 700;
+    const displayH = parent.clientHeight || 350;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = displayW * dpr;
+    canvas.height = displayH * dpr;
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, displayW, displayH);
+
+    if (distData.length === 0 || distData.every(d => d.totalSiswa === 0)) {
+      ctx.fillStyle = '#64748b';
+      ctx.font = '14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Belum ada data siswa tersimpan untuk ditampilkan pada grafik distribusi.', displayW / 2, displayH / 2);
+      return;
+    }
+
+    const padding = { top: 35, right: 35, bottom: 50, left: 55 };
+    const chartW = displayW - padding.left - padding.right;
+    const chartH = displayH - padding.top - padding.bottom;
+
+    // Hitung nilai maksimum count untuk skala Y
+    let maxCount = 0;
+    distData.forEach(d => {
+      config.categories.forEach(c => {
+        if (d.counts[c.key] > maxCount) maxCount = d.counts[c.key];
+      });
+      if (d.totalSiswa > maxCount) maxCount = Math.max(maxCount, d.totalSiswa);
+    });
+    if (maxCount === 0) maxCount = 5;
+
+    // Tentukan skala Y dengan kelipatan bulat yang nyaman
+    let yMax = 5;
+    if (maxCount <= 5) yMax = 5;
+    else if (maxCount <= 10) yMax = 10;
+    else if (maxCount <= 20) yMax = 20;
+    else if (maxCount <= 30) yMax = 30;
+    else if (maxCount <= 40) yMax = 40;
+    else yMax = Math.ceil(maxCount / 10) * 10;
+
+    const ySteps = 5;
+    ctx.lineWidth = 1;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.font = '11px sans-serif';
+
+    // Gambar grid garis horizontal & label sumbu Y
+    for (let i = 0; i <= ySteps; i++) {
+      const ratio = i / ySteps;
+      const yVal = Math.round(ratio * yMax);
+      const yPos = padding.top + chartH - ratio * chartH;
+
+      ctx.strokeStyle = i === 0 ? 'rgba(148, 163, 184, 0.35)' : 'rgba(148, 163, 184, 0.1)';
+      ctx.beginPath();
+      ctx.moveTo(padding.left, yPos);
+      ctx.lineTo(padding.left + chartW, yPos);
+      ctx.stroke();
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText(`${yVal} Siswa`, padding.left - 8, yPos);
+    }
+
+    // Gambar batang per kelompok pertemuan
+    const numMeetings = distData.length;
+    const slotW = chartW / numMeetings;
+    const numCats = config.categories.length;
+
+    distData.forEach((m, mIdx) => {
+      const groupCenterX = padding.left + (mIdx + 0.5) * slotW;
+
+      // Garis pemisah vertikal tipis antar pertemuan
+      if (mIdx > 0) {
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)';
+        ctx.beginPath();
+        ctx.moveTo(padding.left + mIdx * slotW, padding.top);
+        ctx.lineTo(padding.left + mIdx * slotW, padding.top + chartH);
+        ctx.stroke();
+      }
+
+      // Lebar tiap batang dalam grup
+      const groupAvailW = Math.min(slotW * 0.78, numCats * 42);
+      const barGap = 4;
+      const barW = Math.max(14, (groupAvailW - (numCats - 1) * barGap) / numCats);
+      const groupStart = groupCenterX - (numCats * barW + (numCats - 1) * barGap) / 2;
+
+      config.categories.forEach((cat, cIdx) => {
+        const count = m.counts[cat.key] || 0;
+        const barH = (count / yMax) * chartH;
+        const barX = groupStart + cIdx * (barW + barGap);
+        const barY = padding.top + chartH - barH;
+
+        if (barH > 0) {
+          ctx.fillStyle = cat.color;
+          ctx.beginPath();
+          if (ctx.roundRect) {
+            ctx.roundRect(barX, barY, barW, barH, [4, 4, 0, 0]);
+          } else {
+            ctx.rect(barX, barY, barW, barH);
+          }
+          ctx.fill();
+
+          // Angka jumlah siswa di atas batang
+          ctx.font = 'bold 11px sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText(`${count}`, barX + barW / 2, barY - 3);
+
+          // Jika batang cukup tinggi, cetak persentase di dalam batang
+          const pct = m.totalSiswa > 0 ? Math.round((count / m.totalSiswa) * 100) : 0;
+          if (barH >= 34 && barW >= 22) {
+            ctx.font = '9px sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+            ctx.textBaseline = 'top';
+            ctx.fillText(`${pct}%`, barX + barW / 2, barY + 4);
+          }
+        } else {
+          ctx.fillStyle = 'rgba(148, 163, 184, 0.3)';
+          ctx.font = '10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText('0', barX + barW / 2, padding.top + chartH - 2);
+        }
+      });
+
+      // Label Pertemuan di Sumbu X
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillText(`Pertemuan ${m.pertemuan}`, groupCenterX, padding.top + chartH + 10);
+
+      ctx.font = '10.5px sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText(`(${m.totalSiswa} Siswa)`, groupCenterX, padding.top + chartH + 26);
+    });
+  }
+
+  function renderDistribusiTable(distData, config, aspek) {
+    const theadRow = document.getElementById('tableDistribusiHeaderRow');
+    const tbody = document.getElementById('tableDistribusiBody');
+    if (!theadRow || !tbody) return;
+
+    theadRow.innerHTML = `
+      <th style="padding: 0.75rem 1rem; font-weight: 600; width: 14%;">Pertemuan</th>
+      <th style="padding: 0.75rem 1rem; font-weight: 600; width: 22%;">Topik Pembelajaran</th>
+      <th style="padding: 0.75rem 1rem; font-weight: 600; text-align: center; width: 12%;">Total Siswa</th>
+      ${config.categories.map(cat => `
+        <th style="padding: 0.75rem 1rem; font-weight: 700; text-align: center; color: ${cat.color};">
+          ${cat.badgeText}
+        </th>
+      `).join('')}
+      <th style="padding: 0.75rem 1rem; font-weight: 600; width: 22%;">Catatan Sebaran</th>
+    `;
+
+    tbody.innerHTML = '';
+    if (distData.length === 0 || distData.every(d => d.totalSiswa === 0)) {
+      tbody.innerHTML = `<tr><td colspan="${4 + config.categories.length}" style="padding: 2rem; text-align: center; color: var(--text-muted);">Belum ada data siswa pada filter ini.</td></tr>`;
+      return;
+    }
+
+    distData.forEach(m => {
+      const tr = document.createElement('tr');
+      tr.style.cssText = 'border-bottom: 1px solid rgba(255,255,255,0.06); transition: background 0.15s ease;';
+      tr.addEventListener('mouseenter', () => tr.style.background = 'rgba(255,255,255,0.04)');
+      tr.addEventListener('mouseleave', () => tr.style.background = 'transparent');
+
+      // Cari kategori dengan jumlah siswa terbanyak
+      let maxCatKey = '';
+      let maxVal = -1;
+      config.categories.forEach(cat => {
+        const val = m.counts[cat.key] || 0;
+        if (val > maxVal) {
+          maxVal = val;
+          maxCatKey = cat.key;
+        }
+      });
+      const domCat = config.categories.find(c => c.key === maxCatKey);
+      const domPct = m.totalSiswa > 0 ? Math.round((maxVal / m.totalSiswa) * 100) : 0;
+
+      let catatanText = '';
+      if (m.totalSiswa === 0) {
+        catatanText = '<span style="color: var(--text-dim);">-</span>';
+      } else {
+        catatanText = `<span style="display: inline-flex; align-items: center; gap: 0.35rem;">
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: ${domCat?.color || '#38bdf8'};"></span>
+          Mayoritas di <strong>${domCat?.badgeText}</strong> (${maxVal} siswa / ${domPct}%)
+        </span>`;
+      }
+
+      tr.innerHTML = `
+        <td style="padding: 0.75rem 1rem; font-weight: bold; color: #fff;">
+          Pertemuan ${m.pertemuan}
+        </td>
+        <td style="padding: 0.75rem 1rem; color: var(--text-muted); font-size: 0.85rem;">
+          ${m.topik}
+        </td>
+        <td style="padding: 0.75rem 1rem; text-align: center; font-weight: 600; color: #cbd5e1;">
+          ${m.totalSiswa} Siswa
+        </td>
+        ${config.categories.map(cat => {
+          const val = m.counts[cat.key] || 0;
+          const pct = m.totalSiswa > 0 ? Math.round((val / m.totalSiswa) * 100) : 0;
+          return `
+            <td style="padding: 0.75rem 1rem; text-align: center;">
+              <span class="badge" style="background: ${cat.color}1f; color: ${cat.color}; border: 1px solid ${cat.color}55; font-size: 0.82rem; font-weight: 700;">
+                ${val} <span style="font-weight: normal; font-size: 0.75rem; opacity: 0.9;">(${pct}%)</span>
+              </span>
+            </td>
+          `;
+        }).join('')}
+        <td style="padding: 0.75rem 1rem; font-size: 0.82rem; color: #cbd5e1;">
+          ${catatanText}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
   // ==================== MODAL PREVIEW & EKSPOR PDF/WORD CAPAIAN & RUBRIK ====================
   let currentDocType = 'analisis'; // 'analisis' | 'rubrik'
 
@@ -7897,8 +8315,8 @@
       const avgNilaiTugas = Number((sumNilaiTugas / n).toFixed(1));
       const persentaseTuntas = Number(((countTuntas / n) * 100).toFixed(1));
 
-      const matchingTopik = App.topik?.find(t => Number(t.pertemuan_ke) === pKe);
-      const topikNama = pEntries[0]?.topik_nama || matchingTopik?.nama || `Pertemuan ${pKe}`;
+      const matchingTopik = App.topik?.find(t => Number(t.pertemuan_ke) === pKe || t.id === pEntries[0]?.topikId);
+      const topikNama = matchingTopik?.nama || pEntries[0]?.topik_nama || `Pertemuan ${pKe}`;
 
       return {
         pertemuan: pKe,
@@ -9452,6 +9870,73 @@
       showToast(`Materi "${newTopik.nama}" berhasil ditambahkan!`, 'success');
       loadExistingGradeIfAny();
     });
+
+    // 5. Modal Bedah Kuantitatif Nilai Mengaplikasi
+    const modalBedah = document.getElementById('modalBedahMengaplikasi');
+    const openBedahModal = () => {
+      if (modalBedah) {
+        modalBedah.classList.add('active');
+        updateKalkulatorSimulasiMengaplikasi();
+      }
+    };
+    const closeBedahModal = () => {
+      if (modalBedah) modalBedah.classList.remove('active');
+    };
+
+    document.getElementById('btnOpenModalBedahMengaplikasi')?.addEventListener('click', openBedahModal);
+    document.getElementById('btnOpenModalBedahMengaplikasiInline')?.addEventListener('click', openBedahModal);
+    document.getElementById('btnCloseModalBedahMengaplikasi')?.addEventListener('click', closeBedahModal);
+    document.getElementById('btnCancelModalBedahMengaplikasi')?.addEventListener('click', closeBedahModal);
+    modalBedah?.addEventListener('click', (e) => {
+      if (e.target.id === 'modalBedahMengaplikasi') closeBedahModal();
+    });
+
+    ['calcSimL1', 'calcSimL2', 'calcSimL3', 'calcSimL4'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', updateKalkulatorSimulasiMengaplikasi);
+    });
+  }
+
+  function updateKalkulatorSimulasiMengaplikasi() {
+    const n1 = Math.max(0, parseInt(document.getElementById('calcSimL1')?.value, 10) || 0);
+    const n2 = Math.max(0, parseInt(document.getElementById('calcSimL2')?.value, 10) || 0);
+    const n3 = Math.max(0, parseInt(document.getElementById('calcSimL3')?.value, 10) || 0);
+    const n4 = Math.max(0, parseInt(document.getElementById('calcSimL4')?.value, 10) || 0);
+
+    const totalSiswa = n1 + n2 + n3 + n4;
+    const totalPoin = (n1 * 1) + (n2 * 2) + (n3 * 3) + (n4 * 4);
+    
+    let avgEksak = 0;
+    let avgDisplay = '0,0';
+    let predikat = '-';
+
+    if (totalSiswa > 0) {
+      avgEksak = totalPoin / totalSiswa;
+      const rounded = Number(avgEksak.toFixed(1));
+      avgDisplay = formatIndoDecimal(rounded);
+
+      if (rounded >= 3.5) predikat = 'Level 4 (Sangat Baik)';
+      else if (rounded >= 2.5) predikat = 'Level 3 (Baik)';
+      else if (rounded >= 1.5) predikat = 'Level 2 (Cukup)';
+      else predikat = 'Level 1 (Perlu Bimbingan)';
+    }
+
+    const elTotal = document.getElementById('simResTotalSiswa');
+    const elPoin = document.getElementById('simResTotalPoin');
+    const elAvgEksak = document.getElementById('simResAvgEksak');
+    const elAvgDisplay = document.getElementById('simResAvgDisplay');
+    const elPredikat = document.getElementById('simResPredikat');
+
+    if (elTotal) elTotal.textContent = totalSiswa;
+    if (elPoin) elPoin.textContent = totalPoin;
+    if (elAvgEksak) elAvgEksak.textContent = totalSiswa > 0 ? avgEksak.toFixed(2).replace('.', ',') : '0,00';
+    if (elAvgDisplay) elAvgDisplay.textContent = avgDisplay;
+    if (elPredikat) {
+      elPredikat.textContent = predikat;
+      if (predikat.includes('Level 4')) elPredikat.style.color = '#34d399';
+      else if (predikat.includes('Level 3')) elPredikat.style.color = '#38bdf8';
+      else if (predikat.includes('Level 2')) elPredikat.style.color = '#fbbf24';
+      else elPredikat.style.color = '#f87171';
+    }
   }
 
   // ==================== FITUR LINK SHARE, QR CODE & PENAMPIL FOTO LKPD ====================
@@ -11399,6 +11884,10 @@ KEMBALIKAN HANYA FORMAT JSON MURNI TANPA MARKDOWN BACKTICKS:
     document.getElementById('grafikFilterKelas')?.addEventListener('change', renderGrafikSection);
     document.getElementById('grafikFilterDimensi')?.addEventListener('change', renderGrafikSection);
     document.getElementById('btnExportGrafikPng')?.addEventListener('click', exportGrafikToPNG);
+    document.getElementById('grafikDistribusiAspek')?.addEventListener('change', () => {
+      renderDistribusiLevelSection();
+    });
+    document.getElementById('btnExportDistribusiPng')?.addEventListener('click', exportDistribusiToPNG);
 
     // Tombol Salin Narasi Penjelasan ke Clipboard
     document.getElementById('btnCopyPenjelasan')?.addEventListener('click', () => {

@@ -345,3 +345,136 @@ export function downloadChartAsPng(canvas, filename = 'grafik-rubrik-wardipa.png
   link.click();
   document.body.removeChild(link);
 }
+
+/**
+ * Merender grafik batang distribusi jumlah siswa di level L1, L2, L3, L4 per pertemuan
+ * @param {HTMLCanvasElement} canvas
+ * @param {Array} distData - Array objek data pertemuan [{ pertemuan, totalSiswa, counts: { l1, l2, l3, l4 } }]
+ * @param {Object} config - { title, categories: [{ key, label, badgeText, color }] }
+ */
+export function renderDistributionLevelChart(canvas, distData = [], config = {}) {
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  const displayW = parent?.clientWidth || 700;
+  const displayH = parent?.clientHeight || 350;
+
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = displayW * dpr;
+  canvas.height = displayH * dpr;
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, displayW, displayH);
+
+  if (distData.length === 0) return;
+
+  const padding = { top: 35, right: 35, bottom: 50, left: 55 };
+  const chartW = displayW - padding.left - padding.right;
+  const chartH = displayH - padding.top - padding.bottom;
+
+  let maxCount = 0;
+  distData.forEach(d => {
+    config.categories.forEach(c => {
+      if (d.counts[c.key] > maxCount) maxCount = d.counts[c.key];
+    });
+  });
+  if (maxCount === 0) maxCount = 5;
+
+  let yMax = 5;
+  if (maxCount <= 5) yMax = 5;
+  else if (maxCount <= 10) yMax = 10;
+  else if (maxCount <= 20) yMax = 20;
+  else if (maxCount <= 30) yMax = 30;
+  else if (maxCount <= 40) yMax = 40;
+  else yMax = Math.ceil(maxCount / 10) * 10;
+
+  const ySteps = 5;
+  ctx.lineWidth = 1;
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.font = '11px sans-serif';
+
+  for (let i = 0; i <= ySteps; i++) {
+    const ratio = i / ySteps;
+    const yVal = Math.round(ratio * yMax);
+    const yPos = padding.top + chartH - ratio * chartH;
+
+    ctx.strokeStyle = i === 0 ? 'rgba(148, 163, 184, 0.35)' : 'rgba(148, 163, 184, 0.1)';
+    ctx.beginPath();
+    ctx.moveTo(padding.left, yPos);
+    ctx.lineTo(padding.left + chartW, yPos);
+    ctx.stroke();
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText(`${yVal} Siswa`, padding.left - 8, yPos);
+  }
+
+  const numMeetings = distData.length;
+  const slotW = chartW / numMeetings;
+  const numCats = config.categories.length;
+
+  distData.forEach((m, mIdx) => {
+    const groupCenterX = padding.left + (mIdx + 0.5) * slotW;
+
+    if (mIdx > 0) {
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)';
+      ctx.beginPath();
+      ctx.moveTo(padding.left + mIdx * slotW, padding.top);
+      ctx.lineTo(padding.left + mIdx * slotW, padding.top + chartH);
+      ctx.stroke();
+    }
+
+    const groupAvailW = Math.min(slotW * 0.78, numCats * 42);
+    const barGap = 4;
+    const barW = Math.max(14, (groupAvailW - (numCats - 1) * barGap) / numCats);
+    const groupStart = groupCenterX - (numCats * barW + (numCats - 1) * barGap) / 2;
+
+    config.categories.forEach((cat, cIdx) => {
+      const count = m.counts[cat.key] || 0;
+      const barH = (count / yMax) * chartH;
+      const barX = groupStart + cIdx * (barW + barGap);
+      const barY = padding.top + chartH - barH;
+
+      if (barH > 0) {
+        ctx.fillStyle = cat.color;
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(barX, barY, barW, barH, [4, 4, 0, 0]);
+        } else {
+          ctx.rect(barX, barY, barW, barH);
+        }
+        ctx.fill();
+
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`${count}`, barX + barW / 2, barY - 3);
+
+        const pct = m.totalSiswa > 0 ? Math.round((count / m.totalSiswa) * 100) : 0;
+        if (barH >= 34 && barW >= 22) {
+          ctx.font = '9px sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+          ctx.textBaseline = 'top';
+          ctx.fillText(`${pct}%`, barX + barW / 2, barY + 4);
+        }
+      } else {
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.3)';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('0', barX + barW / 2, padding.top + chartH - 2);
+      }
+    });
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillText(`Pertemuan ${m.pertemuan}`, groupCenterX, padding.top + chartH + 10);
+
+    ctx.font = '10.5px sans-serif';
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText(`(${m.totalSiswa} Siswa)`, groupCenterX, padding.top + chartH + 26);
+  });
+}
